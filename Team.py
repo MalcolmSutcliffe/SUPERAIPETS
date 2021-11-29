@@ -22,5 +22,8 @@ class Team:
         else if !(self.pets[pos].name_tag == new_pet.name_tag):
             return 0
         else:
-            self.pets[pos].gain_perma_stats((1,1))
+            new_attack = max(new_pet.get_base_attack, self.pets[pos].get_base_attack) + 1
+            new_hp = max(new_pet.get_base_health, self.pets[pos].get_base_health) + 1
+            self.pets[pos].set_base_attack(new_attack)
+            self.pets[pos].set_base_health(new_health)
             self.pets[pos].gain_exp(1)
