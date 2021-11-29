@@ -5,6 +5,8 @@ class Pet
     base_health
     temp_attack
     temp_health
+    attack
+    health
     experience
     item
 
@@ -15,23 +17,71 @@ class Pet
         self.base_health = base_health
         self.temp_attack = temp_attack
         self.temp_health = temp_health
+        self.attack = base_attack + temp_attack
+        self.health = base_health + temp_health
+        if attack > 50:
+            attack = 50
+        if health > 50:
+            health = 50
         self.item = item
 
     def perform_ability():
         #ability goes here
 
-    def gain_perma_stats(plus_stats):
-        self.base_attack += plus_stats[0]
-        self.base_health += plus_stats[1]
+    def get_dmg():
 
-    def gain_temp_stats(plus_stats):
-        self.temp_attack += plus_stats[0]
-        self.temp_health += plus_stats[1]
+        dmg = attack
+
+        if item is MEAT_BONE:
+            dmg += 5
+
+        if item is STEAK:
+            dmg += 20
+            item.set_active(0)
+
+        return dmg
+
+    def take_damage(dmg):
+
+        if item is GARLIC_ARMOR:
+            if dmg <= 3:
+                dmg = 1
+            else
+                dmg -= 2
+
+        if item is MELON_ARMOR:
+            dmg -= 20
+            item.set_active(0)
+
+        if dmg < 0:
+            dmg = 0
+
+        health -= dmg
+
+        if health <= 0:
+            die()
+
+    def die():
+        #idk, probably better to do in battle
+
+    def gain_stats(stats, stat_type=0): #(0 = permanent stats, #1 = temp stat)
+        if stat_type==0:
+            self.base_attack += stats[0]
+            self.base_health += stats[1]
+        if stat_type==1:
+            self.temp_attack += stats[0]
+            self.temp_health += stats[1]
 
     def gain_exp(exp):
         self.experience += exp
 
     #getters and setters
+    def get_attack():
+        return self.attack
+
+    def get_health():
+        return self.health
+
     def get_base_attack():
         return self.base_attack
 

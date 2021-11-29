@@ -1,3 +1,5 @@
+import Pet
+
 class Fish extends Pet:
     name_tag = "Fish"
     base_attack = 2
