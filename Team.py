@@ -29,3 +29,6 @@ class Team:
             self.pets[pos].set_base_attack(new_attack)
             self.pets[pos].set_base_health(new_health)
             self.pets[pos].gain_exp(1)
+
+    def get_pets(self):
+        return self.pets

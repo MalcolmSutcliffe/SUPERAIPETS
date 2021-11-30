@@ -54,7 +54,7 @@ class Pet:
         if dmg < 0:
             dmg = 0
 
-        self.health -= dmg
+        self.health -= dmg/2
 
         if self.health <= 0:
             self.die()

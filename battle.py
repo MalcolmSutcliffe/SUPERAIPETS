@@ -6,8 +6,11 @@ from Pet import Pet
 
 def create_battleground(team1, team2):
     # initialize the battleground
-    battleground = team1.pets.append(team2.pets.reverse())
-
+    # battleground = team1.pets.append(team2.pets.reverse())
+    battleground = [None] * 10
+    for i in range(5):
+        battleground[i] = team1.get_pets()[i]
+        battleground[i + 5] = team2.get_pets()[4-i]
     return battleground
 
 
@@ -23,10 +26,12 @@ def move_teams_up_one(battleground):
             battleground[j] = battleground[j + 1]
             battleground[j + 1] = None
 
+    return battleground
+
 
 def fight(battleground):
     for k in range(4):
-        move_teams_up_one(battleground)
+        battleground = move_teams_up_one(battleground)
     team1_fighter = battleground[4]
     team2_fighter = battleground[5]
     # add abilities tagged as "before attack" for units 4,5 to queue
@@ -78,7 +83,7 @@ def battle(team1, team2):
                 team1_has_units = True
             if battleground[i + 5] is not None:
                 team2_has_units = True
-        print("battling")
+        print("fighting")
         display_battle(team1, team2)
 
     if team1_has_units:
