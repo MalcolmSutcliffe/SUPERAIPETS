@@ -3,6 +3,7 @@ import os
 from battle import *
 from Team import Team
 from Pet import Pet
+import json
 
 # initialize the pygame module
 pygame.display.init()
@@ -12,8 +13,8 @@ pygame.display.set_caption("SUPERAIPETS")
 
 # create window
 window = pygame.display.set_mode((1280, 720))
-fish_Texture = pygame.image.load(os.path.join('../../Downloads/SUPERAIPETS-main/images', 'fish.png'))
-main_menu_bg = pygame.image.load(os.path.join('../../Downloads/SUPERAIPETS-main/images', 'main_menu.png'))
+# fish_Texture = pygame.image.load(os.path.join('images', 'pet-fish.png'))
+main_menu_bg = pygame.image.load(os.path.join('images', 'main_menu.png'))
 
 
 def display_battle(battleground):
@@ -31,24 +32,32 @@ def display_battle(battleground):
 
 
 def main():
+
+    # f = open("SAPinfo.json")
+    # data = json.load(f)
+    # f.close()
+    # for i in data.get("pets"):
+    #     print(i)
+    # print(data.get("pets").get("pet-ant").get("level1Ability"))
+
     team1 = Team()
     team2 = Team()
     my_fishes = []
     for i in range(10):
-        my_fishes.append(Pet("Fish", 2, 3, 0, 0, 0, None, fish_Texture))
-    # my_fish = Pet("Fish", 2, 3, 0, 0, 0, None, fish_Texture)
-    my_fish2 = Pet("Fish", 2, 5, 0, 0, 0, None, fish_Texture)
+        my_fishes.append(Pet("fish"))
+    my_ant = Pet("ant")
     team1.add_pet(my_fishes[0], 0)
     team1.add_pet(my_fishes[1], 1)
     team1.add_pet(my_fishes[2], 2)
     team1.add_pet(my_fishes[3], 3)
     team1.add_pet(my_fishes[4], 4)
-    team2.add_pet(my_fish2, 0)
+    team2.add_pet(my_ant, 0)
     team2.add_pet(my_fishes[6], 1)
     team2.add_pet(my_fishes[7], 2)
     team2.add_pet(my_fishes[8], 3)
     team2.add_pet(my_fishes[9], 4)
     base_battleground = create_battleground(team1, team2)
+
     # 0 = main menu
     # 1 = shop
     # 2 = battle screen

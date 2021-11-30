@@ -1,29 +1,47 @@
 import pygame
 import os
+import json
+
+default_texture = pygame.image.load(os.path.join('images/pet-images', 'none.png'))
+
 
 class Pet:
 
-    default_texture = pygame.image.load(os.path.join('../../Downloads/SUPERAIPETS-main/images', 'none.png'))
-    
-    def __init__(self, name_tag="", base_attack=0, base_health=0, temp_attack=0, temp_health=0, exp=0, item=None, texture=default_texture):
-        self.name_tag = name_tag
-        self.base_attack = base_attack
-        self.base_health = base_health
-        self.temp_attack = temp_attack
-        self.temp_health = temp_health
-        self.attack = base_attack + temp_attack
-        self.health = base_health + temp_health
-        self.experience = exp
-        if self.attack > 50:
-            attack = 50
-        if self.health > 50:
-            health = 50
-        self.item = item
-        self.rightSprite = texture
-        self.leftSprite = pygame.transform.flip(texture, True, False)
+    def __init__(self, name_tag=""):
+
+        f = open("SAPinfo.json")
+        data = json.load(f)
+        f.close()
+
+        self.base_attack = 1
+        self.base_health = 1
+
+        self.name_tag = "pet-" + name_tag
+        pet_data = data.get("pets").get("bee")
+
+        try:
+            pet_data = data.get("pets").get(self.name_tag)
+        except AttributeError:
+            print("Error: the pet tag '" + self.name_tag + "' does not exist!")
+
+        self.base_attack = pet_data.get("baseAttack")
+        self.base_health = pet_data.get("baseHealth")
+        self.packs = pet_data.get("packs")
+        self.temp_attack = 0
+        self.temp_health = 0
+        self.attack = self.base_attack
+        self.health = self.base_health
+        self.experience = 0
+        self.status = None
+        try:
+            self.rightSprite = pygame.image.load(os.path.join('images/pet-images', self.name_tag + ".png"))
+        except FileNotFoundError:
+            self.rightSprite = default_texture
+            print("image for '" + name_tag + "' not found")
+        self.leftSprite = pygame.transform.flip(self.rightSprite, True, False)
 
     def perform_ability(self):
-        return self.item
+        return self.status
         # ability goes here
 
     def get_dmg(self):

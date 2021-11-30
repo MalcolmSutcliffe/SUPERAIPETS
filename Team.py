@@ -1,12 +1,21 @@
 import copy
-
+import json
 from Pet import Pet
 
 
 class Team:
 
     def __init__(self):
+
+        f = open("SAPinfo.json")
+        data = json.load(f)
+        f.close()
+
         self.pets = [None] * 5  # Type : Pets
+        self.lives = 10
+        self.wins = 0
+        self.turn = data.get("turns").get("turn-1")
+        print(self.turn)
 
     def add_pet(self, new_pet, pos):
         if self.pets[pos] is None:
