@@ -4,30 +4,31 @@ from battle import *
 from Team import Team
 from Pet import Pet
 
- # initialize the pygame module
+# initialize the pygame module
 pygame.display.init()
 pygame.font.init()
 # load and set the logo
 pygame.display.set_caption("SUPERAIPETS")
 
 # create window
-window = pygame.display.set_mode((1280,720))
-fish_Texture = pygame.image.load(os.path.join('images','fish.png'))
-main_menu_bg = pygame.image.load(os.path.join('images','main_menu.png'))
+window = pygame.display.set_mode((1280, 720))
+fish_Texture = pygame.image.load(os.path.join('images', 'fish.png'))
+main_menu_bg = pygame.image.load(os.path.join('images', 'main_menu.png'))
 
-def displayBattle(team1,team2):
+
+def display_battle(team1, team2):
     pygame.display.flip()
-    window.fill((0,255,0))
+    window.fill((0, 255, 0))
     i = 0
     for x in team1.pets:
-        if x != None:
-            window.blit(x.leftSprite,((150+(94*i)),300))
-        i+=1
+        if x is not None:
+            window.blit(x.leftSprite, ((150 + (94 * i)), 300))
+        i += 1
     i = 0
     for y in team2.pets:
-        if y != None:
-            window.blit(y.rightSprite,((690+(94*i)),300))
-        i+=1
+        if y is not None:
+            window.blit(y.rightSprite, ((690 + (94 * i)), 300))
+        i += 1
     i = 0
 
 
@@ -51,29 +52,28 @@ def main():
     screen = 0
 
     running = True
-    white = (255,255,255)
-    red = (255,0,0)
-    green = (0,255,0)
+    white = (255, 255, 255)
+    red = (255, 0, 0)
+    green = (0, 255, 0)
 
     while running:
         pygame.event.get()
         pygame.display.flip()
         if screen == 0:
-            window.blit(main_menu_bg,(0,0))
-            
+            window.blit(main_menu_bg, (0, 0))
+
         elif screen == 1:
             window.fill(red)
         else:
-            displayBattle(team1,team2)
-        
+            display_battle(team1, team2)
 
-        ##event handling here
+        # event handling here
         for event in pygame.event.get():
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
                     if screen == 2:
                         print("what up")
-                        battle(team1,team2)
+                        battle(team1, team2)
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
                 x = pos[0]
@@ -93,6 +93,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
