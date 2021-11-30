@@ -3,7 +3,7 @@ import os
 
 class Pet:
 
-    default_texture = pygame.image.load(os.path.join('images','none.png'))
+    default_texture = pygame.image.load(os.path.join('../../Downloads/SUPERAIPETS-main/images', 'none.png'))
     
     def __init__(self, name="", base_attack=0, base_health=0, temp_attack=0, temp_health=0, exp=0, item=None, texture=default_texture):
         self.name = name
