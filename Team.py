@@ -1,10 +1,12 @@
+import copy
+
 from Pet import Pet
 
 
 class Team:
 
     def __init__(self):
-        self.pets = [None]*5
+        self.pets = [None] * 5  # Type : Pets
 
     def add_pet(self, new_pet, pos):
         if self.pets[pos] is None:

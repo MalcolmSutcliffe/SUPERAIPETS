@@ -22,10 +22,10 @@ def display_battle(battleground):
     i = 0
     for x in battleground:
         if x is not None:
-            if i <=4:
+            if i <= 4:
                 window.blit(x.leftSprite, ((150 + (94 * i)), 300))
             else:
-                window.blit(x.rightSprite, ((150 + (94 * i)), 300))  
+                window.blit(x.rightSprite, ((150 + (94 * i)), 300))
         i += 1
     i = 0
 
@@ -33,19 +33,22 @@ def display_battle(battleground):
 def main():
     team1 = Team()
     team2 = Team()
-    my_fish = Pet("Fish", 2, 3, 0, 0, 0, None, fish_Texture)
-    my_fish2 = Pet("Fish", 2, 3, 0, 0, 0, None, fish_Texture)
-    team1.add_pet(my_fish, 0)
-    team1.add_pet(my_fish, 1)
-    team1.add_pet(my_fish, 2)
-    team1.add_pet(my_fish, 3)
-    team1.add_pet(my_fish, 4)
+    my_fishes = []
+    for i in range(10):
+        my_fishes.append(Pet("Fish", 2, 3, 0, 0, 0, None, fish_Texture))
+    # my_fish = Pet("Fish", 2, 3, 0, 0, 0, None, fish_Texture)
+    my_fish2 = Pet("Fish", 2, 5, 0, 0, 0, None, fish_Texture)
+    team1.add_pet(my_fishes[0], 0)
+    team1.add_pet(my_fishes[1], 1)
+    team1.add_pet(my_fishes[2], 2)
+    team1.add_pet(my_fishes[3], 3)
+    team1.add_pet(my_fishes[4], 4)
     team2.add_pet(my_fish2, 0)
-    # team2.add_pet(my_fish[6], 1)
-    # team2.add_pet(my_fish[7], 2)
-    # team2.add_pet(my_fish[8], 3)
-    # team2.add_pet(my_fish[9], 4)
-    baseBattleground = create_battleground(team1, team2)
+    team2.add_pet(my_fishes[6], 1)
+    team2.add_pet(my_fishes[7], 2)
+    team2.add_pet(my_fishes[8], 3)
+    team2.add_pet(my_fishes[9], 4)
+    base_battleground = create_battleground(team1, team2)
     # 0 = main menu
     # 1 = shop
     # 2 = battle screen
@@ -65,7 +68,7 @@ def main():
         elif screen == 1:
             window.fill(red)
         else:
-            display_battle(baseBattleground)
+            display_battle(base_battleground)
 
         # event handling here
         for event in pygame.event.get():
