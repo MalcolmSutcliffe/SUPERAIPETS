@@ -16,18 +16,16 @@ fish_Texture = pygame.image.load(os.path.join('images', 'fish.png'))
 main_menu_bg = pygame.image.load(os.path.join('images', 'main_menu.png'))
 
 
-def display_battle(team1, team2):
+def display_battle(battleground):
     pygame.display.flip()
     window.fill((0, 255, 0))
     i = 0
-    for x in team1.pets:
+    for x in battleground:
         if x is not None:
-            window.blit(x.leftSprite, ((150 + (94 * i)), 300))
-        i += 1
-    i = 0
-    for y in team2.pets:
-        if y is not None:
-            window.blit(y.rightSprite, ((690 + (94 * i)), 300))
+            if i <=4:
+                window.blit(x.leftSprite, ((150 + (94 * i)), 300))
+            else:
+                window.blit(x.rightSprite, ((150 + (94 * i)), 300))  
         i += 1
     i = 0
 
@@ -46,6 +44,7 @@ def main():
     # team2.add_pet(my_fish, 2)
     team2.add_pet(my_fish, 3)
     team2.add_pet(my_fish, 4)
+    baseBattleground = create_battleground(team1, team2)
     # 0 = main menu
     # 1 = shop
     # 2 = battle screen
@@ -65,7 +64,7 @@ def main():
         elif screen == 1:
             window.fill(red)
         else:
-            display_battle(team1, team2)
+            display_battle(baseBattleground)
 
         # event handling here
         for event in pygame.event.get():
