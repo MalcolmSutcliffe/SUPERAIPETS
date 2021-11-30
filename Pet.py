@@ -51,13 +51,13 @@ class Pet:
         #     dmg -= 20
         #     self.item.set_active(0)
 
-        if dmg < 0:
-            dmg = 0
+        # if dmg < 0:
+        #     dmg = 0
 
-        self.health -= dmg/2
+        self.health = self.health - dmg
 
-        if self.health <= 0:
-            self.die()
+        # if self.health <= 0:
+        #     self.die()
 
     def die(self):
         return self.health
