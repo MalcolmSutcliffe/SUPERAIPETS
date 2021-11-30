@@ -4,7 +4,7 @@ from Pet import Pet
 class Team:
 
     def __init__(self):
-        self.pets = []
+        self.pets = [None]*5
 
     def add_pet(self, new_pet, pos):
         if self.pets[pos] is None:
