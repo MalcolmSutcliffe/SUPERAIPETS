@@ -1,6 +1,11 @@
+import pygame
+import os
+
 class Pet:
 
-    def __init__(self, name="", base_attack=0, base_health=0, temp_attack=0, temp_health=0, exp=0, item=None):
+    default_texture = pygame.image.load(os.path.join('images','none.png'))
+    
+    def __init__(self, name="", base_attack=0, base_health=0, temp_attack=0, temp_health=0, exp=0, item=None, texture=default_texture):
         self.name = name
         self.base_attack = base_attack
         self.base_health = base_health
@@ -14,6 +19,8 @@ class Pet:
         if self.health > 50:
             health = 50
         self.item = item
+        self.rightSprite = texture
+        self.leftSprite = pygame.transform.flip(texture, True, False)
 
     def perform_ability(self):
         return self.item
