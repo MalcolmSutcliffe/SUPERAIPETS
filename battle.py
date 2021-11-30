@@ -1,5 +1,5 @@
 import pygame
-from SuperAiPets import displayBattle
+from SuperAiPets import display_battle
 from Team import Team
 from Pet import Pet
 
