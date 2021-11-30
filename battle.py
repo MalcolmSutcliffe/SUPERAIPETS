@@ -79,7 +79,7 @@ def battle(team1, team2):
             if battleground[i + 5] is not None:
                 team2_has_units = True
         print("battling")
-        displayBattle(team1, team2)
+        display_battle(team1, team2)
 
     if team1_has_units:
         winner = team1
