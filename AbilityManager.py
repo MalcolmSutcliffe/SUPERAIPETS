@@ -1,37 +1,49 @@
 from Battleground import Battleground
-
-TRIGGERS = {"AfterAttack",
-            "BeforeAttack",
-            "Buy",
-            "BuyAfterLoss",
-            "BuyFood",
-            "BuyTier1Animal",
-            "CastsAbility",
-            "EatsShopFood",
-            "EndOfTurn",
-            "EndOfTurnWith2PlusGold",
-            "EndOfTurnWith3PlusGold",
-            "EndOfTurnWith4OrLessAnimals",
-            "EndOfTurnWithLvl3Friend",
-            "Faint",
-            "Hurt",
-            "KnockOut",
-            "LevelUp",
-            "Sell",
-            "StartOfBattle",
-            "StartOfTurn",
-            "Summoned",
-            }
-
-TRIGGERED_BY = {"EachFriend",
-                "FriendAhead",
-                "Player",
-                "Self",
-                }
+from enum import Enum
 
 
-def send_triggers(trigger_type, trigger_index, space):
+class TRIGGER(Enum):
+    AfterAttack = "AfterAttack"
+    BeforeAttack = "BeforeAttack"
+    Buy = "Buy"
+    BuyAfterLoss = "BuyAfterLoss"
+    BuyFood = "BuyFood"
+    BuyTier1Animal = "BuyTier1Animal"
+    CastsAbility = "CastsAbility"
+    EatsShopFood = "EatsShopFood"
+    EndOfTurn = "EndOfTurn"
+    EndOfTurnWith2PlusGold = "EndOfTurnWith2PlusGold"
+    EndOfTurnWith3PlusGold = "EndOfTurnWith3PlusGold"
+    EndOfTurnWith4OrLessAnimals = "EndOfTurnWith4OrLessAnimals"
+    EndOfTurnWithLvl3Friend = "EndOfTurnWithLvl3Friend"
+    Faint = "Faint"
+    Hurt = "Hurt"
+    KnockOut = "Knockout"
+    LevelUp = "LevelUp"
+    Sell = "Sell"
+    StartOfBattle = "StartOfBattle"
+    StartOfTurn = "StartOfTurn"
+    Summoned = "Summoned"
+
+
+class TRIGGERED_BY(Enum):
+    EachFriend = "EachFriend"
+    FriendAhead = "FriendAhead"
+    Player = "Player"
+    Self = "Self"
+
+
+# inputs: trigger_type = a TRIGGER, trigger_from = the pet object  causing the trigger, battleground: the
+# battleground that this trigger is happening on
+# will send the proper triggers to all the pets on the battleground, and the pet's ability logic will decide to
+# perform the ability or not.
+def send_triggers(trigger_type, trigger_from, space):
     # if trigger happens on a battlefield
+    trigger_index = -1
+    for i in range(9):
+        if space[i] == trigger_from:
+            trigger_index = i
+
     if space is Battleground:
 
         # check if the index is in range
@@ -44,7 +56,7 @@ def send_triggers(trigger_type, trigger_index, space):
             return
 
         # EachFriend (excluding self)
-        trigger = [trigger_type, "EachFriend"]
+        trigger = [trigger_type, TRIGGERED_BY.EachFriend]
 
         if is_team1:
             for i in range(4):
@@ -56,7 +68,7 @@ def send_triggers(trigger_type, trigger_index, space):
                     space[i].recieve_trigger(trigger)
 
         # FriendAhead
-        trigger = [trigger_type, "FriendAhead"]
+        trigger = [trigger_type, TRIGGERED_BY.FriendAhead]
         if 1 <= trigger_index <= 4:
             for i in range(trigger_index):
                 if space[trigger_index - 1 - i] is not None:
@@ -69,7 +81,7 @@ def send_triggers(trigger_type, trigger_index, space):
                     break
 
         # Self
-        trigger = [trigger_type, "Self"]
+        trigger = [trigger_type, TRIGGERED_BY.Self]
         space[trigger_index].recieve_trigger(trigger)
 
         # There is no player trigger in battleground (auto-battler and such)
@@ -109,7 +121,10 @@ class AbilityManager:
     def __init__(self):
         self.ability_queue = []
 
-    # inputs: trigger_type = a TRIGGER, trigger_from = the index of the pet who caused the trigger, battleground: the
-    # battleground that this trigger is happening on
-    # will send the proper triggers to all the pets on the battleground, and the pet's ability logic will decide to
-    # perform the ability or not.
+    def add_to_queue(self, ability_instance):
+        self.ability_queue.append(ability_instance)
+
+    def perform_abilities(self):
+        self.ability_queue.sort()
+        for a in self.ability_queue:
+            a.execute()

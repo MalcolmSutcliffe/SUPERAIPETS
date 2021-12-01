@@ -3,13 +3,14 @@ import os
 import json
 from PetAbility import PetAbility
 import AbilityManager
+from AbilityManager import *
 
 default_texture = pygame.image.load(os.path.join('images/pet-images', 'none.png'))
 
 
 class Pet:
 
-    def __init__(self, name_tag=""):
+    def __init__(self, name_tag="", team=None, battleground=None):
 
         f = open("SAPinfo.json")
         data = json.load(f)
@@ -17,6 +18,9 @@ class Pet:
 
         self.base_attack = 1
         self.base_health = 1
+
+        self.team = team
+        self.battleground = battleground
 
         self.name_tag = "pet-" + name_tag
         pet_data = data.get("pets").get("bee")
@@ -45,12 +49,12 @@ class Pet:
         self.leftSprite = pygame.transform.flip(self.rightSprite, True, False)
 
     def perform_ability(self):
-        return self.status
+        print(self.name_tag + " performed his ability!")
         # ability goes here
 
     def receive_trigger(self, trigger):
         if trigger[0] == self.ability.get_trigger() and trigger[1] == self.ability.get_triggered_by():
-            self.perform_ability()
+            self.battleground.AM.add_to_queue(self.ability)
 
     def get_dmg(self):
 
@@ -82,11 +86,14 @@ class Pet:
 
         self.health = self.health - dmg
 
+        AbilityManager.send_triggers(TRIGGER.Hurt, self, self.battleground)
+
         if self.health <= 0:
             self.faint()
 
     def faint(self):
-        AbilityManager.send_triggers("Faint", self)
+        AbilityManager.send_triggers(TRIGGER.Faint, self, self.battleground)
+        # self.battleground = None
 
     def gain_stats(self, stats, stat_type=0):  # (0 = permanent stats, #1 = temp stat)
         if stat_type == 0:

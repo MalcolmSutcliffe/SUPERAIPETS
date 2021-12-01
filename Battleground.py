@@ -1,12 +1,16 @@
 import copy
 import pygame
 from SuperAiPets import *
+from AbilityManager import *
 
 
 class Battleground:
 
     def __init__(self, team1, team2):
+        self.team1 = team1
+        self.team2 = team2
         self.battleground = [None] * 10
+        self.AM = AbilityManager()
         for i in range(5):
             self.battleground[i] = copy.copy(team1.get_pets()[i])
             self.battleground[i + 5] = copy.copy(team2.get_pets()[4 - i])

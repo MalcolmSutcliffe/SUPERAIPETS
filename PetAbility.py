@@ -1,4 +1,5 @@
 import json
+from AbilityManager import TRIGGER
 
 
 class PetAbility:
