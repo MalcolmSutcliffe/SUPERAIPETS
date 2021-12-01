@@ -17,11 +17,11 @@ window = pygame.display.set_mode((1280, 720))
 main_menu_bg = pygame.image.load(os.path.join('images', 'main_menu.png'))
 
 
-def display_battle(battleground):
+def display_battle(bg_object):
     pygame.display.flip()
     window.fill((0, 255, 0))
     i = 0
-    for x in battleground:
+    for x in bg_object.battleground:
         if x is not None:
             if i <= 4:
                 window.blit(x.leftSprite, ((150 + (94 * i)), 300))
@@ -56,7 +56,7 @@ def main():
     team2.add_pet(my_fishes[7], 2)
     team2.add_pet(my_fishes[8], 3)
     team2.add_pet(my_fishes[9], 4)
-    base_battleground = create_battleground(team1, team2)
+    base_battleground = Battleground(team1, team2)
 
     # 0 = main menu
     # 1 = shop

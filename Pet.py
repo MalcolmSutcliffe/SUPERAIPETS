@@ -34,7 +34,8 @@ class Pet:
         self.experience = 0
         self.status = None
         try:
-            self.rightSprite = pygame.transform.scale(pygame.image.load(os.path.join('images/pet-images', self.name_tag + ".png")),(64,64))
+            self.rightSprite = pygame.transform.scale(
+                pygame.image.load(os.path.join('images/pet-images', self.name_tag + ".png")), (64, 64))
         except FileNotFoundError:
             self.rightSprite = default_texture
             print("image for '" + name_tag + "' not found")
