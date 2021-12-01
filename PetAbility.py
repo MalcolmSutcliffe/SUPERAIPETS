@@ -1,5 +1,5 @@
 import json
-from AbilityManager import TRIGGER
+from AbilityManager import *
 
 
 class PetAbility:
@@ -19,8 +19,8 @@ class PetAbility:
             print("Error: the pet tag '" + pet_tag + "' does not exist!")
 
         self.description = self.ability_data.get("description")
-        self.trigger = self.ability_data.get("trigger")
-        self.triggered_by = self.ability_data.get("triggeredBy").get("kind")
+        self.trigger = TRIGGER[self.ability_data.get("trigger")]
+        self.triggered_by = TRIGGERED_BY[self.ability_data.get("triggeredBy").get("kind")]
         self.effect_type = self.ability_data.get("effect").get("type")
 
     def generate_ability_function(self):

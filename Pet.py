@@ -33,7 +33,7 @@ class Pet:
         self.base_attack = pet_data.get("baseAttack")
         self.base_health = pet_data.get("baseHealth")
         self.packs = pet_data.get("packs")
-        self.ability = PetAbility(name_tag, 1)
+        self.ability = PetAbility(self.name_tag, 1)
         self.temp_attack = 0
         self.temp_health = 0
         self.attack = self.base_attack
@@ -86,13 +86,13 @@ class Pet:
 
         self.health = self.health - dmg
 
-        AbilityManager.send_triggers(TRIGGER.Hurt, self, self.battleground)
+        send_triggers_battle(TRIGGER.Hurt, self, self.battleground)
 
         if self.health <= 0:
             self.faint()
 
     def faint(self):
-        AbilityManager.send_triggers(TRIGGER.Faint, self, self.battleground)
+        send_triggers_battle(TRIGGER.Faint, self, self.battleground)
         # self.battleground = None
 
     def gain_stats(self, stats, stat_type=0):  # (0 = permanent stats, #1 = temp stat)
@@ -130,6 +130,9 @@ class Pet:
 
     def get_total_attack(self):
         return self.base_attack + self.temp_attack
+
+    def set_battleground(self, bg):
+        self.battleground = bg
 
     def set_base_attack(self, ba):
         self.base_attack = ba

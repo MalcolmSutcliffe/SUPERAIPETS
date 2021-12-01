@@ -1,4 +1,4 @@
-from Battleground import Battleground
+from Battleground import *
 from enum import Enum
 
 
@@ -37,83 +37,82 @@ class TRIGGERED_BY(Enum):
 # battleground that this trigger is happening on
 # will send the proper triggers to all the pets on the battleground, and the pet's ability logic will decide to
 # perform the ability or not.
-def send_triggers(trigger_type, trigger_from, space):
+# want to change to just send_triggers
+def send_triggers_battle(trigger_type, trigger_from, battlezone):
     # if trigger happens on a battlefield
     trigger_index = -1
     for i in range(9):
-        if space[i] == trigger_from:
+        if battlezone.get_battleground()[i] == trigger_from:
             trigger_index = i
 
-    if space is Battleground:
+    # check if the index is in range
+    if 0 <= trigger_index <= 4:
+        is_team1 = True
+    elif 5 <= trigger_index <= 9:
+        is_team1 = False
+    else:
+        print("Error: index out of bounds.")
+        return
 
-        # check if the index is in range
-        if 0 <= trigger_index <= 4:
-            is_team1 = True
-        elif 5 <= trigger_index <= 9:
-            is_team1 = False
-        else:
-            print("Error: index out of bounds.")
-            return
+    # EachFriend (excluding self)
+    trigger = [trigger_type, TRIGGERED_BY.EachFriend]
 
-        # EachFriend (excluding self)
-        trigger = [trigger_type, TRIGGERED_BY.EachFriend]
+    if is_team1:
+        for i in range(4):
+            if battlezone.get_battleground()[i] is not None and not i == trigger_index:
+                battlezone.get_battleground()[i].receive_trigger(trigger)
+    else:
+        for i in range(5, 9):
+            if battlezone.get_battleground()[i] is not None and not i == trigger_index:
+                battlezone.get_battleground()[i].receive_trigger(trigger)
 
-        if is_team1:
-            for i in range(4):
-                if space[i] is not None and not i == trigger_index:
-                    space[i].recieve_trigger(trigger)
-        else:
-            for i in range(5, 9):
-                if space[i] is not None and not i == trigger_index:
-                    space[i].recieve_trigger(trigger)
+    # FriendAhead
+    trigger = [trigger_type, TRIGGERED_BY.FriendAhead]
+    if 1 <= trigger_index <= 4:
+        for i in range(trigger_index):
+            if battlezone.get_battleground()[trigger_index - 1 - i] is not None:
+                battlezone.get_battleground()[trigger_index-1-i].receive_trigger(trigger)
+                break
+    if 5 <= trigger_index <= 8:
+        for i in range(trigger_index - 4):
+            if battlezone.get_battleground()[trigger_index + 1 + i] is not None:
+                battlezone.get_battleground()[trigger_index+1+i].receive_trigger(trigger)
+                break
 
-        # FriendAhead
-        trigger = [trigger_type, TRIGGERED_BY.FriendAhead]
-        if 1 <= trigger_index <= 4:
-            for i in range(trigger_index):
-                if space[trigger_index - 1 - i] is not None:
-                    space[i].recieve_trigger(trigger)
-                    break
-        if 5 <= trigger_index <= 8:
-            for i in range(trigger_index - 4):
-                if space[trigger_index + 1 + i] is not None:
-                    space[i].recieve_trigger(trigger)
-                    break
+    # Self
+    trigger = [trigger_type, TRIGGERED_BY.Self]
+    battlezone.get_battleground()[trigger_index].receive_trigger(trigger)
 
-        # Self
-        trigger = [trigger_type, TRIGGERED_BY.Self]
-        space[trigger_index].recieve_trigger(trigger)
+    # There is no player trigger in battleground (auto-battler and such)
 
-        # There is no player trigger in battleground (auto-battler and such)
-
-        # if space is Shop:
-        #
-        #     # check if the index is in range
-        #     if not 0 <= trigger_index <= 4:
-        #         print("Error: index out of bounds.")
-        #         return
-        #
-        #     # EachFriend (excluding self)
-        #     trigger = [trigger_type, "EachFriend"]
-        #     for i in range(4):
-        #         if space[i] is not None and not i == trigger_index:
-        #             space[i].recieve_trigger(trigger)
-        #
-        #     # FriendAhead
-        #     trigger = [trigger_type, "FriendAhead"]
-        #     for i in range(trigger_index):
-        #         if space[trigger_index - 1 - i] is not None:
-        #             space[i].recieve_trigger(trigger)
-        #             break
-        #
-        #     # Player
-        #     trigger = [trigger_type, "Player"]
-        #     for i in range(4):
-        #         space[i].recieve_trigger(trigger)
-        #
-        #     # Self
-        #     trigger = [trigger_type, "Self"]
-        #     space[trigger_index].recieve_trigger(trigger)
+    # if space is Shop:
+    #
+    #     # check if the index is in range
+    #     if not 0 <= trigger_index <= 4:
+    #         print("Error: index out of bounds.")
+    #         return
+    #
+    #     # EachFriend (excluding self)
+    #     trigger = [trigger_type, "EachFriend"]
+    #     for i in range(4):
+    #         if space[i] is not None and not i == trigger_index:
+    #             space[i].recieve_trigger(trigger)
+    #
+    #     # FriendAhead
+    #     trigger = [trigger_type, "FriendAhead"]
+    #     for i in range(trigger_index):
+    #         if space[trigger_index - 1 - i] is not None:
+    #             space[i].recieve_trigger(trigger)
+    #             break
+    #
+    #     # Player
+    #     trigger = [trigger_type, "Player"]
+    #     for i in range(4):
+    #         space[i].recieve_trigger(trigger)
+    #
+    #     # Self
+    #     trigger = [trigger_type, "Self"]
+    #     space[trigger_index].recieve_trigger(trigger)
 
 
 class AbilityManager:

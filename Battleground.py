@@ -13,7 +13,9 @@ class Battleground:
         self.AM = AbilityManager()
         for i in range(5):
             self.battleground[i] = copy.copy(team1.get_pets()[i])
+            self.battleground[i].set_battleground(self)
             self.battleground[i + 5] = copy.copy(team2.get_pets()[4 - i])
+            self.battleground[i+5].set_battleground(self)
 
     def advance_team_1(self):
         # team1
@@ -117,3 +119,6 @@ class Battleground:
             print("team 2 wins")
 
         # time.sleep(2)
+
+    def get_battleground(self):
+        return self.battleground
