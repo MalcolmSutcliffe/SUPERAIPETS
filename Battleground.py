@@ -8,8 +8,8 @@ class Battleground:
     def __init__(self, team1, team2):
         self.battleground = [None] * 10
         for i in range(5):
-            self.battleground[i] = copy.deepcopy(team1.get_pets()[i])
-            self.battleground[i + 5] = copy.deepcopy(team2.get_pets()[4 - i])
+            self.battleground[i] = copy.copy(team1.get_pets()[i])
+            self.battleground[i + 5] = copy.copy(team2.get_pets()[4 - i])
 
     def advance_team_1(self):
         # team1
@@ -49,61 +49,67 @@ class Battleground:
         print("team 1 hp: " + str(team1_fighter.get_health()))
         print("team 2 hp: " + str(team2_fighter.get_health()))
 
+        if team1_fighter.get_health() <= 0:
+            team1_fighter.faint()
+            self.battleground[4] = None
+            print("team 1 animal '" + team1_fighter.get_name_tag() + "' has fainted!")
+        if team2_fighter.get_health() <= 0:
+            team2_fighter.faint()
+            self.battleground[5] = None
+            print("team 2 animal '" + team2_fighter.get_name_tag() + "' has fainted!")
+
     def battle(self):
 
         display_battle(self)
         # time.sleep(0.5)
 
         for k in range(4):
-            battleground = move_teams_up_one(battleground)
+            self.advance_team_1()
+            self.advance_team_2()
 
-        team1_has_units = False
-        team2_has_units = False
-
-        for i in range(5):
-            if battleground[i] is not None:
-                team1_has_units = True
-            if battleground[i + 5] is not None:
-                team2_has_units = True
+        team1_has_units = (self.battleground[4] is not None)
+        team2_has_units = (self.battleground[5] is not None)
 
         while team1_has_units and team2_has_units:
             # move teams up one spot if there is space
-            battleground = move_teams_up_one(battleground)
+            self.advance_team_1()
+            self.advance_team_2()
 
             print("fighting")
-            fight(battleground)
+            self.smack()
 
-            display_battle(battleground)
+            display_battle(self)
             # time.sleep(0.5)
 
             team1_has_units = False
             team2_has_units = False
 
             for i in range(5):
-                if battleground[i] is not None:
+                if self.battleground[i] is not None:
                     team1_has_units = True
-                if battleground[i + 5] is not None:
+                if self.battleground[i + 5] is not None:
                     team2_has_units = True
 
-        display_battle(battleground)
+        display_battle(self)
         # time.sleep(0.5)
 
-        print(battleground[4])
+        # print(self.battleground[4])
 
         for k in range(4):
-            move_teams_up_one(battleground)
+            self.advance_team_1()
+            self.advance_team_1()
 
         # print(battleground)
         # print("cock and ball torture")
-        display_battle(battleground)
+        display_battle(self)
         # time.sleep(0.5)
 
         if team1_has_units:
-            winner = team1
+            # winner = team1
             print("team 1 wins")
 
         if team2_has_units:
-            winner = team2
+            # winner = team2
             print("team 2 wins")
 
         # time.sleep(2)

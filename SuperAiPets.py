@@ -1,6 +1,6 @@
 import pygame
 import os
-from battle import *
+from Battleground import *
 from Team import Team
 from Pet import Pet
 import json
@@ -42,20 +42,26 @@ def main():
 
     team1 = Team()
     team2 = Team()
-    my_fishes = []
-    for i in range(10):
-        my_fishes.append(Pet("fish"))
+    my_fish = Pet("fish")
     my_ant = Pet("ant")
-    team1.add_pet(my_fishes[0], 0)
-    team1.add_pet(my_fishes[1], 1)
-    team1.add_pet(my_fishes[2], 2)
-    team1.add_pet(my_fishes[3], 3)
-    team1.add_pet(my_fishes[4], 4)
-    team2.add_pet(my_ant, 0)
-    team2.add_pet(my_fishes[6], 1)
-    team2.add_pet(my_fishes[7], 2)
-    team2.add_pet(my_fishes[8], 3)
-    team2.add_pet(my_fishes[9], 4)
+    my_cow = Pet("cow")
+    my_dog = Pet("dog")
+    my_beetle = Pet("beetle")
+    my_lobster = Pet("lobster")
+    my_kangaroo = Pet("kangaroo")
+    my_camel = Pet("camel")
+    my_spider = Pet("spider")
+    my_sheep = Pet("sheep")
+    team1.add_pet(my_fish, 0)
+    team1.add_pet(my_ant, 1)
+    team1.add_pet(my_cow, 2)
+    team1.add_pet(my_dog, 3)
+    team1.add_pet(my_beetle, 4)
+    team2.add_pet(my_lobster, 0)
+    team2.add_pet(my_kangaroo, 1)
+    team2.add_pet(my_camel, 2)
+    team2.add_pet(my_spider, 3)
+    team2.add_pet(my_sheep, 4)
     base_battleground = Battleground(team1, team2)
 
     # 0 = main menu
@@ -85,7 +91,7 @@ def main():
                 if event.key == pygame.K_SPACE:
                     if screen == 2:
                         print("what up")
-                        battle(team1, team2)
+                        base_battleground.battle()
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
                 x = pos[0]

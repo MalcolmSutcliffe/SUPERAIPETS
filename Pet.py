@@ -35,7 +35,7 @@ class Pet:
         self.status = None
         try:
             self.rightSprite = pygame.transform.scale(
-                pygame.image.load(os.path.join('images/pet-images', self.name_tag + ".png")), (64, 64))
+                pygame.image.load(os.path.join('images/pet-images', self.name_tag + ".png")), (128, 128))
         except FileNotFoundError:
             self.rightSprite = default_texture
             print("image for '" + name_tag + "' not found")
@@ -75,12 +75,8 @@ class Pet:
 
         self.health = self.health - dmg
 
-        # if self.health <= 0:
-        #     self.die()
-
-    def die(self):
+    def faint(self):
         return self.health
-        # idk, probably better to do in battle
 
     def gain_stats(self, stats, stat_type=0):  # (0 = permanent stats, #1 = temp stat)
         if stat_type == 0:
@@ -94,12 +90,13 @@ class Pet:
         self.experience += exp
 
     # getters and setters
+    def get_name_tag(self):
+        return self.name_tag
+
     def get_attack(self):
-        attack = self.base_attack + self.temp_attack
         return self.attack
 
     def get_health(self):
-        health = self.base_health + self.temp_health
         return self.health
 
     def get_base_attack(self):
