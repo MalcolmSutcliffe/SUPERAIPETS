@@ -1,6 +1,8 @@
 import pygame
 import os
 import json
+from PetAbility import PetAbility
+import AbilityManager
 
 default_texture = pygame.image.load(os.path.join('images/pet-images', 'none.png'))
 
@@ -27,6 +29,7 @@ class Pet:
         self.base_attack = pet_data.get("baseAttack")
         self.base_health = pet_data.get("baseHealth")
         self.packs = pet_data.get("packs")
+        self.ability = PetAbility(name_tag, 1)
         self.temp_attack = 0
         self.temp_health = 0
         self.attack = self.base_attack
@@ -44,6 +47,10 @@ class Pet:
     def perform_ability(self):
         return self.status
         # ability goes here
+
+    def receive_trigger(self, trigger):
+        if trigger[0] == self.ability.get_trigger() and trigger[1] == self.ability.get_triggered_by():
+            self.perform_ability()
 
     def get_dmg(self):
 
@@ -75,8 +82,11 @@ class Pet:
 
         self.health = self.health - dmg
 
+        if self.health <= 0:
+            self.faint()
+
     def faint(self):
-        return self.health
+        AbilityManager.send_triggers("Faint", self)
 
     def gain_stats(self, stats, stat_type=0):  # (0 = permanent stats, #1 = temp stat)
         if stat_type == 0:

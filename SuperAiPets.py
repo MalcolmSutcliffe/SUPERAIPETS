@@ -13,7 +13,6 @@ pygame.display.set_caption("SUPERAIPETS")
 
 # create window
 window = pygame.display.set_mode((1280, 720))
-# fish_Texture = pygame.image.load(os.path.join('images', 'pet-fish.png'))
 main_menu_bg = pygame.image.load(os.path.join('images', 'main_menu.png'))
 
 

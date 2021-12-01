@@ -13,7 +13,7 @@ class PetAbility:
         self.name = pet_tag
 
         try:
-            self.ability_data = data.get("pets").get(pet_tag).get("level"+str(level)+"Ability")
+            self.ability_data = data.get("pets").get(pet_tag).get("level" + str(level) + "Ability")
         except AttributeError:
             print("Error: the pet tag '" + pet_tag + "' does not exist!")
 
@@ -23,9 +23,16 @@ class PetAbility:
         self.effect_type = self.ability_data.get("effect").get("type")
 
     def generate_ability_function(self):
+        return self.name
+        # def ability():
+        #     print(self.name + " used ability!")
+        #
+        # if self.effect_type == "ModifyStats":
+        #     target =
 
-        def ability():
-            print(self.name + " used ability!")
+    # getters and setters
+    def get_trigger(self):
+        return self.trigger
 
-        if self.effect_type == "ModifyStats":
-            target =
+    def get_triggered_by(self):
+        return self.triggered_by
