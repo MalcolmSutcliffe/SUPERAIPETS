@@ -56,7 +56,7 @@ def send_triggers_battle(trigger_type, trigger_from, battlezone):
         return
 
     # EachFriend (excluding self)
-    trigger = [trigger_type, TRIGGERED_BY.EachFriend]
+    trigger = [trigger_type, TRIGGERED_BY.EachFriend, trigger_from]
 
     if is_team1:
         for i, x in enumerate(battlezone.get_team1()):
@@ -68,7 +68,7 @@ def send_triggers_battle(trigger_type, trigger_from, battlezone):
                 x.receive_trigger(trigger)
 
     # FriendAhead
-    trigger = [trigger_type, TRIGGERED_BY.FriendAhead]
+    trigger = [trigger_type, TRIGGERED_BY.FriendAhead, trigger_from]
     if 1 <= trigger_index <= 4:
         for i in range(trigger_index):
             if is_team1:
@@ -83,7 +83,7 @@ def send_triggers_battle(trigger_type, trigger_from, battlezone):
                     break
 
     # Self
-    trigger = [trigger_type, TRIGGERED_BY.Self]
+    trigger = [trigger_type, TRIGGERED_BY.Self, trigger_from]
     trigger_from.receive_trigger(trigger)
 
     # There is no player trigger in battleground (auto-battler and such)
@@ -127,6 +127,6 @@ class AbilityManager:
         self.ability_queue.append(ability_instance)
 
     def perform_abilities(self):
-        self.ability_queue.sort()
+        # self.ability_queue.sort()
         for a in self.ability_queue:
             a.execute()

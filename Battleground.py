@@ -15,9 +15,13 @@ class Battleground:
             self.team1.append(copy.copy(team1.get_pets()[i]))
             self.team1[i].set_battleground(self)
             self.team1[i].set_battleground_team(self.team1)
+            self.team1[i].set_battleground_enemy_team(self.team2)
+            self.team1[i].generate_ability()
             self.team2.append(copy.copy(team2.get_pets()[i]))
             self.team2[i].set_battleground(self)
             self.team2[i].set_battleground_team(self.team2)
+            self.team2[i].set_battleground_enemy_team(self.team1)
+            self.team2[i].generate_ability()
 
     def advance_team(self, team_number):
         if team_number == 1:
@@ -46,17 +50,16 @@ class Battleground:
         team1_fighter = self.team1[4]
         team2_fighter = self.team2[4]
 
-        print("team 1 hp: " + str(team1_fighter.get_health()))
-        print("team 2 hp: " + str(team2_fighter.get_health()))
+        print(team1_fighter)
+        print(team2_fighter)
 
-        print("team 1 attacks for: " + str(team1_fighter.get_attack()) + " damage")
-        print("team 2 attacks for: " + str(team2_fighter.get_attack()) + " damage")
+        team1_fighter.take_damage(team2_fighter)
+        team2_fighter.take_damage(team1_fighter)
 
-        team1_fighter.take_damage(team2_fighter.get_attack())
-        team2_fighter.take_damage(team1_fighter.get_attack())
+        print(team1_fighter)
+        print(team2_fighter)
 
-        print("team 1 hp: " + str(team1_fighter.get_health()))
-        print("team 2 hp: " + str(team2_fighter.get_health()))
+        self.AM.perform_abilities()
 
     def battle(self):
 

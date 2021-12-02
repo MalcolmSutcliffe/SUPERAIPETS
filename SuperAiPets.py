@@ -3,7 +3,6 @@ import os
 from Battleground import *
 from Team import Team
 from Pet import Pet
-import json
 
 # initialize the pygame module
 pygame.display.init()
@@ -14,10 +13,6 @@ pygame.display.set_caption("SUPERAIPETS")
 # create window
 window = pygame.display.set_mode((1280, 720))
 main_menu_bg = pygame.image.load(os.path.join('images', 'main_menu.png'))
-
-f = open("SAPinfo.json")
-data = json.load(f)
-f.close()
 
 
 def display_battle(bg_object):
@@ -54,10 +49,10 @@ def main():
     my_spider = Pet("spider")
     my_sheep = Pet("sheep")
     team1.add_pet(my_fish, 0)
-    team1.add_pet(my_ant, 1)
+    team1.add_pet(my_beetle, 1)
     team1.add_pet(my_cow, 2)
     team1.add_pet(my_dog, 3)
-    team1.add_pet(my_beetle, 4)
+    team1.add_pet(my_ant, 4)
     team2.add_pet(my_lobster, 0)
     team2.add_pet(my_kangaroo, 1)
     team2.add_pet(my_camel, 2)
