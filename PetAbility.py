@@ -1,14 +1,11 @@
 import json
 from AbilityManager import *
+from SuperAiPets import data
 
 
 class PetAbility:
 
-    def __init__(self, pet_tag, level):
-
-        f = open("SAPinfo.json")
-        data = json.load(f)
-        f.close()
+    def __init__(self, pet_tag, level, pet_hp_on_cast):
 
         self.ability_data = None
         self.name = pet_tag

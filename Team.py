@@ -1,15 +1,12 @@
 import copy
 import json
 from Pet import Pet
+from SuperAiPets import data
 
 
 class Team:
 
     def __init__(self):
-
-        f = open("SAPinfo.json")
-        data = json.load(f)
-        f.close()
 
         self.pets = [None] * 5  # Type : Pets
         self.lives = 10

@@ -15,6 +15,10 @@ pygame.display.set_caption("SUPERAIPETS")
 window = pygame.display.set_mode((1280, 720))
 main_menu_bg = pygame.image.load(os.path.join('images', 'main_menu.png'))
 
+f = open("SAPinfo.json")
+data = json.load(f)
+f.close()
+
 
 def display_battle(bg_object):
     pygame.display.flip()

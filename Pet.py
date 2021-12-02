@@ -4,6 +4,7 @@ import json
 from PetAbility import PetAbility
 import AbilityManager
 from AbilityManager import *
+from SuperAiPets import data
 
 default_texture = pygame.image.load(os.path.join('images/pet-images', 'none.png'))
 
@@ -11,10 +12,6 @@ default_texture = pygame.image.load(os.path.join('images/pet-images', 'none.png'
 class Pet:
 
     def __init__(self, name_tag="", team=None, battleground=None):
-
-        f = open("SAPinfo.json")
-        data = json.load(f)
-        f.close()
 
         self.base_attack = 1
         self.base_health = 1
