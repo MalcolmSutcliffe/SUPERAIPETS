@@ -41,47 +41,50 @@ class TRIGGERED_BY(Enum):
 def send_triggers_battle(trigger_type, trigger_from, battlezone):
     # if trigger happens on a battlefield
     trigger_index = -1
-    for i in range(9):
-        if battlezone.get_battleground()[i] == trigger_from:
+    is_team1 = False
+    for i in range(5):
+        if battlezone.get_team1()[i] == trigger_from:
+            is_team1 = True
+            trigger_index = i
+        elif battlezone.get_team2()[i] == trigger_from:
+            is_team1 = False
             trigger_index = i
 
     # check if the index is in range
-    if 0 <= trigger_index <= 4:
-        is_team1 = True
-    elif 5 <= trigger_index <= 9:
-        is_team1 = False
-    else:
-        print("Error: index out of bounds.")
+    if not 0 <= trigger_index <= 4:
+        print("Error: index" + str(trigger_index) + " out of bounds.")
         return
 
     # EachFriend (excluding self)
     trigger = [trigger_type, TRIGGERED_BY.EachFriend]
 
     if is_team1:
-        for i in range(4):
-            if battlezone.get_battleground()[i] is not None and not i == trigger_index:
-                battlezone.get_battleground()[i].receive_trigger(trigger)
+        for i, x in enumerate(battlezone.get_team1()):
+            if x is not None and not i == trigger_from:
+                x.receive_trigger(trigger)
     else:
-        for i in range(5, 9):
-            if battlezone.get_battleground()[i] is not None and not i == trigger_index:
-                battlezone.get_battleground()[i].receive_trigger(trigger)
+        for i, x in enumerate(battlezone.get_team2()):
+            if x is not None and not i == trigger_from:
+                x.receive_trigger(trigger)
 
     # FriendAhead
     trigger = [trigger_type, TRIGGERED_BY.FriendAhead]
     if 1 <= trigger_index <= 4:
         for i in range(trigger_index):
-            if battlezone.get_battleground()[trigger_index - 1 - i] is not None:
-                battlezone.get_battleground()[trigger_index-1-i].receive_trigger(trigger)
-                break
-    if 5 <= trigger_index <= 8:
-        for i in range(trigger_index - 4):
-            if battlezone.get_battleground()[trigger_index + 1 + i] is not None:
-                battlezone.get_battleground()[trigger_index+1+i].receive_trigger(trigger)
-                break
+            if is_team1:
+                x = battlezone.get_team1()[trigger_index-1-i]
+                if x is not None:
+                    x.receive_trigger(trigger)
+                    break
+            else:
+                x = battlezone.get_team2()[trigger_index-1-i]
+                if x is not None:
+                    x.receive_trigger(trigger)
+                    break
 
     # Self
     trigger = [trigger_type, TRIGGERED_BY.Self]
-    battlezone.get_battleground()[trigger_index].receive_trigger(trigger)
+    trigger_from.receive_trigger(trigger)
 
     # There is no player trigger in battleground (auto-battler and such)
 

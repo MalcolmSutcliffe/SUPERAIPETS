@@ -7,41 +7,44 @@ from AbilityManager import *
 class Battleground:
 
     def __init__(self, team1, team2):
-        self.team1 = team1
-        self.team2 = team2
-        self.battleground = [None] * 10
+        self.team1 = []
+        self.team2 = []
+        # self.battleground = [None] * 10
         self.AM = AbilityManager()
         for i in range(5):
-            self.battleground[i] = copy.copy(team1.get_pets()[i])
-            self.battleground[i].set_battleground(self)
-            self.battleground[i + 5] = copy.copy(team2.get_pets()[4 - i])
-            self.battleground[i+5].set_battleground(self)
+            self.team1.append(copy.copy(team1.get_pets()[i]))
+            self.team1[i].set_battleground(self)
+            self.team1[i].set_battleground_team(self.team1)
+            self.team2.append(copy.copy(team2.get_pets()[i]))
+            self.team2[i].set_battleground(self)
+            self.team2[i].set_battleground_team(self.team2)
 
-    def advance_team_1(self):
-        # team1
+    def advance_team(self, team_number):
+        if team_number == 1:
+            team = self.team1
+        elif team_number == 2:
+            team = self.team2
+        else:
+            print("Index out of bounds for func advance_team_1")
+            return
         for j in range(4):
-            if self.battleground[4 - j] is None:
-                self.battleground[4 - j] = self.battleground[3 - j]
-                self.battleground[3 - j] = None
+            if team[4 - j] is None:
+                team[4 - j] = team[3 - j]
+                team[3 - j] = None
                 # print("move " + str(3-j) + " to " + str(4-j))
-
-    def advance_team_2(self):
-        # team2
-        for j in range(5, 9):
-            if self.battleground[j] is None:
-                self.battleground[j] = self.battleground[j + 1]
-                self.battleground[j + 1] = None
 
     def smack(self):
 
-        while self.battleground[4] is None:
-            self.advance_team_1()
+        if self.team1[4] is None:
+            print("Error, no fighter for team 1")
+            return
 
-        while self.battleground[5] is None:
-            self.advance_team_2()
+        while self.team2[4] is None:
+            print("Error, no fighter for team 1")
+            return
 
-        team1_fighter = self.battleground[4]
-        team2_fighter = self.battleground[5]
+        team1_fighter = self.team1[4]
+        team2_fighter = self.team2[4]
 
         print("team 1 hp: " + str(team1_fighter.get_health()))
         print("team 2 hp: " + str(team2_fighter.get_health()))
@@ -55,31 +58,26 @@ class Battleground:
         print("team 1 hp: " + str(team1_fighter.get_health()))
         print("team 2 hp: " + str(team2_fighter.get_health()))
 
-        if team1_fighter.get_health() <= 0:
-            team1_fighter.faint()
-            self.battleground[4] = None
-            print("team 1 animal '" + team1_fighter.get_name_tag() + "' has fainted!")
-        if team2_fighter.get_health() <= 0:
-            team2_fighter.faint()
-            self.battleground[5] = None
-            print("team 2 animal '" + team2_fighter.get_name_tag() + "' has fainted!")
-
     def battle(self):
 
         display_battle(self)
         # time.sleep(0.5)
 
         for k in range(4):
-            self.advance_team_1()
-            self.advance_team_2()
+            self.advance_team(1)
+            self.advance_team(2)
 
-        team1_has_units = (self.battleground[4] is not None)
-        team2_has_units = (self.battleground[5] is not None)
+        team1_has_units = (self.team1[4] is not None)
+        team2_has_units = (self.team2[4] is not None)
 
         while team1_has_units and team2_has_units:
-            # move teams up one spot if there is space
-            self.advance_team_1()
-            self.advance_team_2()
+
+            # move teams up to the front
+            while self.team1[4] is None:
+                self.advance_team(1)
+
+            while self.team2[4] is None:
+                self.advance_team(2)
 
             print("fighting")
             self.smack()
@@ -90,24 +88,28 @@ class Battleground:
             team1_has_units = False
             team2_has_units = False
 
-            for i in range(5):
-                if self.battleground[i] is not None:
+            for x in self.team1:
+                if x is not None:
                     team1_has_units = True
-                if self.battleground[i + 5] is not None:
+                    break
+
+            for x in self.team2:
+                if x is not None:
                     team2_has_units = True
+                    break
 
         display_battle(self)
         # time.sleep(0.5)
 
         # print(self.battleground[4])
 
-        for k in range(4):
-            self.advance_team_1()
-            self.advance_team_1()
+        # for k in range(4):
+        #     self.advance_team(1)
+        #     self.advance_team(2)
 
         # print(battleground)
         # print("cock and ball torture")
-        display_battle(self)
+        # display_battle(self)
         # time.sleep(0.5)
 
         if team1_has_units:
@@ -120,5 +122,8 @@ class Battleground:
 
         # time.sleep(2)
 
-    def get_battleground(self):
-        return self.battleground
+    def get_team1(self):
+        return self.team1
+
+    def get_team2(self):
+        return self.team2

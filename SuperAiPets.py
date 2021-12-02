@@ -19,15 +19,13 @@ main_menu_bg = pygame.image.load(os.path.join('images', 'main_menu.png'))
 def display_battle(bg_object):
     pygame.display.flip()
     window.fill((0, 255, 0))
-    i = 0
-    for x in bg_object.battleground:
+    for i, x in enumerate(bg_object.team1):
         if x is not None:
-            if i <= 4:
-                window.blit(x.leftSprite, ((150 + (94 * i)), 300))
-            else:
-                window.blit(x.rightSprite, ((150 + (94 * i)), 300))
-        i += 1
-    i = 0
+            window.blit(x.leftSprite, ((150 + (94 * i)), 300))
+
+    for i, x in enumerate(bg_object.team2):
+        if x is not None:
+            window.blit(x.rightSprite, ((150 + (94 * (9-i))), 300))
 
 
 def main():

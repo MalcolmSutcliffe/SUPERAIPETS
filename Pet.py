@@ -21,6 +21,7 @@ class Pet:
 
         self.team = team
         self.battleground = battleground
+        self.battleground_team = None
 
         self.name_tag = "pet-" + name_tag
         pet_data = data.get("pets").get("bee")
@@ -55,6 +56,7 @@ class Pet:
     def receive_trigger(self, trigger):
         if trigger[0] == self.ability.get_trigger() and trigger[1] == self.ability.get_triggered_by():
             self.battleground.AM.add_to_queue(self.ability)
+            print(self.name_tag + " received his ability!")
 
     def get_dmg(self):
 
@@ -93,6 +95,10 @@ class Pet:
 
     def faint(self):
         send_triggers_battle(TRIGGER.Faint, self, self.battleground)
+        self.battleground_team[self.battleground_team.index(self)] = None
+        self.battleground_team = None
+        self.battleground = None
+        print("animal '" + self.name_tag + "' has fainted!")
         # self.battleground = None
 
     def gain_stats(self, stats, stat_type=0):  # (0 = permanent stats, #1 = temp stat)
@@ -116,6 +122,9 @@ class Pet:
     def get_health(self):
         return self.health
 
+    def get_battleground_team(self):
+        return self.battleground_team
+
     def get_base_attack(self):
         return self.base_attack
 
@@ -133,6 +142,9 @@ class Pet:
 
     def set_battleground(self, bg):
         self.battleground = bg
+
+    def set_battleground_team(self, bg_team):
+        self.battleground_team = bg_team
 
     def set_base_attack(self, ba):
         self.base_attack = ba
