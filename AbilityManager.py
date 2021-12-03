@@ -127,6 +127,8 @@ class AbilityManager:
         self.ability_queue.append(ability_instance)
 
     def perform_abilities(self):
-        # self.ability_queue.sort()
-        for a in self.ability_queue:
-            a.execute()
+        while len(self.ability_queue) > 0:
+            # self.ability_queue.sort()
+            for a in self.ability_queue:
+                a.execute()
+                self.ability_queue.remove(a)

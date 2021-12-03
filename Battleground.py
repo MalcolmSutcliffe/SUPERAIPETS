@@ -61,6 +61,14 @@ class Battleground:
 
         self.AM.perform_abilities()
 
+        for x in self.team1:
+            if x is not None and x.get_is_fainted():
+                self.team1[self.team1.index(x)] = None
+
+        for x in self.team2:
+            if x is not None and x.get_is_fainted():
+                self.team2[self.team2.index(x)] = None
+
     def battle(self):
 
         display_battle(self)

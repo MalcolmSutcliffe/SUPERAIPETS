@@ -71,25 +71,36 @@ class PetAbility:
 
     def execute(self):
 
+        targets = self.generate_targets()
+        if targets is None or all(x is None for x in targets):
+            return
+
         # Modify Stats
         if self.effect_type == EFFECT_TYPE.ModifyStats:
-            targets = self.generate_targets()
             for target in targets:
                 self.modify_stats(target)
                 print(str(target) + " | gained stats!")
+
+        # finally die
+        if self.pet.get_is_fainted():
+            self.pet.die()
 
     # generates the list of targets for the ability when it is triggered
 
     def generate_targets(self):
         target_info = None
-        try:
-            target_info = self.ability_data.get("effect").get("target")
-        except AttributeError:
-            print("error: the ability is not a targeted ability")
+
+        target_info = self.ability_data.get("effect").get("target")
+
+        if target_info is None:
             return
+
+        # print(str(self) + str(target_info))
+        targets = []
 
         kind = TARGET[target_info.get("kind")]
 
+        # RandomFriend
         if kind == TARGET.RandomFriend:
             n = target_info.get("n")
             if self.pet.get_battleground_team() is None:
@@ -105,6 +116,7 @@ class PetAbility:
             targets = random.sample(friends, n)
             return targets
 
+        # RandomEnemy
         if kind == TARGET.RandomEnemy:
             n = target_info.get("n")
             if self.pet.get_battleground_team() is None:
@@ -113,6 +125,51 @@ class PetAbility:
                 enemies = self.pet.get_battleground_enemy_team()
             n = max(n, len(enemies))
             targets = random.sample(enemies, n)
+            return targets
+
+        # All
+        if kind == TARGET.All:
+            targets = self.pet.get_battleground_team().append(self.pet.get_battleground_enemy_team())
+            return targets
+
+        # AdjacentAnimals
+        if kind == TARGET.AdjacentAnimals:
+
+            team1 = []
+            team2 = []
+
+            for x in self.pet.get_battleground_team():
+                team1.append(x)
+
+            for x in self.pet.get_battleground_enemy_team():
+                team2.insert(0, x)
+
+            targets_list = team1
+            targets_list.append(team2)
+
+            index = targets_list.index(self.pet)
+
+            target1 = None
+            target1_index = index-1
+            while target1_index >= 0 and target1 is None:
+                target1 = targets_list[target1_index]
+                target1_index -= 1
+
+            target2 = None
+            target2_index = index + 1
+            while target2_index <= 9 and target2 is None:
+                target2 = targets_list[target1_index]
+                target2_index += 1
+
+            targets.append([target1, target2])
+            return targets
+
+        # DifferentTierAnimals
+        # note that this will only be triggered in the shop, will add functionality for battleground if needed
+        if kind == TARGET.DifferentTierAnimals:
+            for x in self.pet.get_team():
+                if not x.get_tier() == self.pet.get_tier():
+                    targets.append(x)
             return targets
 
     def modify_stats(self, target):

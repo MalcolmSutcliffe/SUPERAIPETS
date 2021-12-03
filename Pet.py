@@ -1,12 +1,6 @@
-import pygame
-import os
-import json
 from PetAbility import PetAbility
-import AbilityManager
 from AbilityManager import *
-from SAP_Data import DATA
-
-default_texture = pygame.image.load(os.path.join('images/pet-images', 'none.png'))
+from SAP_Data import DATA, default_texture
 
 
 class Pet:
@@ -17,6 +11,8 @@ class Pet:
         self.base_health = 1
 
         self.level = 1
+
+        self.is_fainted = False
 
         self.team = team
         self.battleground = battleground
@@ -50,14 +46,9 @@ class Pet:
             print("image for '" + name_tag + "' not found")
         self.leftSprite = pygame.transform.flip(self.rightSprite, True, False)
 
-    # def perform_ability(self):
-    #     print(self.name_tag + " performed his ability!")
-    #     # ability goes here
-
     def receive_trigger(self, trigger):
         if trigger[0] == self.ability.get_trigger() and trigger[1] == self.ability.get_triggered_by():
             self.battleground.AM.add_to_queue(self.ability)
-            # print(self.name_tag + " received his ability!")
 
     def get_dmg(self):
 
@@ -93,19 +84,23 @@ class Pet:
 
         send_triggers_battle(TRIGGER.Hurt, self, self.battleground)
 
-        # print(self.battleground_team)
-
         if self.health <= 0:
             self.faint()
 
     def faint(self):
         send_triggers_battle(TRIGGER.Faint, self, self.battleground)
-        self.battleground_team[self.battleground_team.index(self)] = None
-        # self.battleground_team = None
-        # self.battleground_enemy_team = None
-        # self.battleground = None
+        # self.battleground_team[self.battleground_team.index(self)] = None
         print("animal '" + self.name_tag + "' has fainted!")
-        # self.battleground = None
+        self.is_fainted = True
+
+    def die(self):
+        self.end_of_battle()
+
+    def end_of_battle(self):
+        self.battleground_team[self.battleground_team.index(self)] = None
+        self.battleground_team = None
+        self.battleground_enemy_team = None
+        self.battleground = None
 
     def gain_stats(self, stats, stat_type=0):  # (0 = permanent stats, #1 = temp stat)
         if stat_type == 0:
@@ -164,6 +159,9 @@ class Pet:
 
     def get_tier(self):
         return self.tier
+
+    def get_is_fainted(self):
+        return self.is_fainted
 
     def set_battleground(self, bg):
         self.battleground = bg
