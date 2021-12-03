@@ -1,4 +1,6 @@
 import copy
+import time
+
 import pygame
 from SuperAiPets import *
 from AbilityManager import *
@@ -7,48 +9,44 @@ from AbilityManager import *
 class Battleground:
 
     def __init__(self, team1, team2):
-        self.team1 = []
-        self.team2 = []
-        # self.battleground = [None] * 10
-        self.AM = AbilityManager()
-        for i in range(5):
-            self.team1.append(copy.copy(team1.get_pets()[i]))
-            self.team1[i].set_battleground(self)
-            self.team1[i].set_battleground_team(self.team1)
-            self.team1[i].set_battleground_enemy_team(self.team2)
-            self.team1[i].generate_ability()
-            self.team2.append(copy.copy(team2.get_pets()[i]))
-            self.team2[i].set_battleground(self)
-            self.team2[i].set_battleground_team(self.team2)
-            self.team2[i].set_battleground_enemy_team(self.team1)
-            self.team2[i].generate_ability()
 
-    def advance_team(self, team_number):
-        if team_number == 1:
-            team = self.team1
-        elif team_number == 2:
-            team = self.team2
-        else:
-            print("Index out of bounds for func advance_team_1")
-            return
-        for j in range(4):
-            if team[4 - j] is None:
-                team[4 - j] = team[3 - j]
-                team[3 - j] = None
-                # print("move " + str(3-j) + " to " + str(4-j))
+        self.team1 = copy.copy(team1)
+        self.team2 = copy.copy(team2)
+        self.team1.set_battleground(self)
+        self.team2.set_battleground(self)
+
+        self.AM = AbilityManager(self)
+
+        for i in range(5):
+
+            self.team1.pets[i] = copy.copy(team1.get_pets()[i])
+            if self.team1.pets[i] is not None:
+                self.team1.pets[i].set_battleground(self)
+                self.team1.pets[i].set_battleground_team(self.team1)
+                self.team1.pets[i].set_battleground_enemy_team(self.team2)
+                self.team1.pets[i].generate_ability()
+
+            self.team2.pets[i] = copy.copy(team2.get_pets()[i])
+            if self.team2.pets[i] is not None:
+                self.team2.pets[i].set_battleground(self)
+                self.team2.pets[i].set_battleground_team(self.team2)
+                self.team2.pets[i].set_battleground_enemy_team(self.team1)
+                self.team2.pets[i].generate_ability()
 
     def smack(self):
 
-        if self.team1[4] is None:
+        time.sleep(0.5)
+
+        if self.team1.pets[4] is None:
             print("Error, no fighter for team 1")
             return
 
-        while self.team2[4] is None:
+        while self.team2.pets[4] is None:
             print("Error, no fighter for team 1")
             return
 
-        team1_fighter = self.team1[4]
-        team2_fighter = self.team2[4]
+        team1_fighter = self.team1.pets[4]
+        team2_fighter = self.team2.pets[4]
 
         print(team1_fighter)
         print(team2_fighter)
@@ -61,13 +59,9 @@ class Battleground:
 
         self.AM.perform_abilities()
 
-        for x in self.team1:
-            if x is not None and x.get_is_fainted():
-                self.team1[self.team1.index(x)] = None
+        self.team1.remove_fainted()
 
-        for x in self.team2:
-            if x is not None and x.get_is_fainted():
-                self.team2[self.team2.index(x)] = None
+        self.team2.remove_fainted()
 
     def battle(self):
 
@@ -75,39 +69,23 @@ class Battleground:
         # time.sleep(0.5)
 
         for k in range(4):
-            self.advance_team(1)
-            self.advance_team(2)
+            self.team1.advance_team()
+            self.team2.advance_team()
 
-        team1_has_units = (self.team1[4] is not None)
-        team2_has_units = (self.team2[4] is not None)
-
-        while team1_has_units and team2_has_units:
+        while self.team1.has_units() and self.team2.has_units():
 
             # move teams up to the front
-            while self.team1[4] is None:
-                self.advance_team(1)
+            while self.team1.pets[4] is None:
+                self.team1.advance_team()
 
-            while self.team2[4] is None:
-                self.advance_team(2)
+            while self.team2.pets[4] is None:
+                self.team2.advance_team()
 
             print("fighting")
             self.smack()
 
             display_battle(self)
             # time.sleep(0.5)
-
-            team1_has_units = False
-            team2_has_units = False
-
-            for x in self.team1:
-                if x is not None:
-                    team1_has_units = True
-                    break
-
-            for x in self.team2:
-                if x is not None:
-                    team2_has_units = True
-                    break
 
         display_battle(self)
         # time.sleep(0.5)
@@ -123,13 +101,16 @@ class Battleground:
         # display_battle(self)
         # time.sleep(0.5)
 
-        if team1_has_units:
+        if self.team1.has_units():
             # winner = team1
             print("team 1 wins")
 
-        if team2_has_units:
+        elif self.team2.has_units():
             # winner = team2
             print("team 2 wins")
+
+        else:
+            print("Draw")
 
         # time.sleep(2)
 

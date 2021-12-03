@@ -12,6 +12,7 @@ class Team:
         self.lives = 10
         self.wins = 0
         self.turn = DATA.get("turns").get("turn-1")
+        self.battleground = None
         print(self.turn)
 
     def add_pet(self, new_pet, pos):
@@ -20,11 +21,76 @@ class Team:
             return 1
         return 0
 
+    def summon_pet(self, index, summon_tag, summon_attack=0, summon_health=0):
+        print("attempting to summon")
+        summon_team = self
+
+        summon_animal = Pet(summon_tag, self, self.battleground)
+        summon_animal.set_base_attack(summon_attack)
+        summon_animal.set_base_health(summon_health)
+
+        if self.has_space():
+            has_summoned = False
+            while not has_summoned:
+                x = self.pets[index]
+                if x is None or x.get_is_fainted():
+                    self.pets[index] = summon_animal
+                    has_summoned = True
+                else:
+                    self.advance_team_from(index)
+                    x = self.pets[index]
+                    if x is None or x.get_is_fainted():
+                        self.pets[index] = summon_animal
+                        has_summoned = True
+                    else:
+                        self.retreat_team()
+        else:
+            return
+
     def sell_pet(self, pos):
         if self.pets[pos] is None:
             return 0
         self.pets[pos] = None
         return 1
+
+    def has_units(self):
+        team_has_units = False
+        for x in self.pets:
+            if x is not None:
+                team_has_units = True
+                break
+        return team_has_units
+
+    def has_space(self):
+        team_has_space = False
+        for x in self.pets:
+            if x is None or x.get_is_fainted():
+                team_has_space = True
+                break
+        return team_has_space
+
+    def advance_team(self):
+        for j in range(4):
+            if self.pets[4 - j] is None:
+                self.pets[4 - j] = self.pets[3 - j]
+                self.pets[3 - j] = None
+
+    def advance_team_from(self, index):
+        for j in range(index):
+            if self.pets[4 - j] is None:
+                self.pets[4 - j] = self.pets[3 - j]
+                self.pets[3 - j] = None
+
+    def retreat_team(self):
+        for j in range(4):
+            if self.pets[j] is None:
+                self.pets[j] = self.pets[j+1]
+                self.pets[j+1] = None
+
+    def remove_fainted(self):
+        for x in self.pets:
+            if x is not None and x.get_is_fainted():
+                self.pets[self.pets.index(x)] = None
 
     # def combine_pet(self, new_pet, pos):
     #     if self.pets[pos] is None:
@@ -40,6 +106,9 @@ class Team:
 
     def get_pets(self):
         return self.pets
+
+    def set_battleground(self, bg):
+        self.battleground = bg
 
     # def __str__(self):
     #     team_string = []

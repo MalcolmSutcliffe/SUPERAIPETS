@@ -43,10 +43,10 @@ def send_triggers_battle(trigger_type, trigger_from, battlezone):
     trigger_index = -1
     is_team1 = False
     for i in range(5):
-        if battlezone.get_team1()[i] == trigger_from:
+        if battlezone.get_team1().get_pets()[i] == trigger_from:
             is_team1 = True
             trigger_index = i
-        elif battlezone.get_team2()[i] == trigger_from:
+        elif battlezone.get_team2().get_pets()[i] == trigger_from:
             is_team1 = False
             trigger_index = i
 
@@ -56,35 +56,35 @@ def send_triggers_battle(trigger_type, trigger_from, battlezone):
         return
 
     # EachFriend (excluding self)
-    trigger = [trigger_type, TRIGGERED_BY.EachFriend, trigger_from]
+    trigger = [trigger_type, TRIGGERED_BY.EachFriend]
 
     if is_team1:
-        for i, x in enumerate(battlezone.get_team1()):
+        for i, x in enumerate(battlezone.get_team1().get_pets()):
             if x is not None and not i == trigger_from:
-                x.receive_trigger(trigger)
+                x.receive_trigger(trigger, trigger_from)
     else:
-        for i, x in enumerate(battlezone.get_team2()):
+        for i, x in enumerate(battlezone.get_team2().get_pets()):
             if x is not None and not i == trigger_from:
-                x.receive_trigger(trigger)
+                x.receive_trigger(trigger, trigger_from)
 
     # FriendAhead
-    trigger = [trigger_type, TRIGGERED_BY.FriendAhead, trigger_from]
+    trigger = [trigger_type, TRIGGERED_BY.FriendAhead]
     if 1 <= trigger_index <= 4:
         for i in range(trigger_index):
             if is_team1:
-                x = battlezone.get_team1()[trigger_index-1-i]
+                x = battlezone.get_team1().get_pets()[trigger_index-1-i]
                 if x is not None:
-                    x.receive_trigger(trigger)
+                    x.receive_trigger(trigger, trigger_from)
                     break
             else:
-                x = battlezone.get_team2()[trigger_index-1-i]
+                x = battlezone.get_team2().get_pets()[trigger_index-1-i]
                 if x is not None:
-                    x.receive_trigger(trigger)
+                    x.receive_trigger(trigger, trigger_from)
                     break
 
     # Self
-    trigger = [trigger_type, TRIGGERED_BY.Self, trigger_from]
-    trigger_from.receive_trigger(trigger)
+    trigger = [trigger_type, TRIGGERED_BY.Self]
+    trigger_from.receive_trigger(trigger, trigger_from)
 
     # There is no player trigger in battleground (auto-battler and such)
 
@@ -120,8 +120,9 @@ def send_triggers_battle(trigger_type, trigger_from, battlezone):
 
 class AbilityManager:
 
-    def __init__(self):
+    def __init__(self, owner):
         self.ability_queue = []
+        self.owner = owner
 
     def add_to_queue(self, ability_instance):
         self.ability_queue.append(ability_instance)
@@ -132,3 +133,4 @@ class AbilityManager:
             for a in self.ability_queue:
                 a.execute()
                 self.ability_queue.remove(a)
+                # display_battle(self.owner)

@@ -772,7 +772,8 @@
           "pet": "pet-zombie-cricket",
           "withAttack": 1,
           "withHealth": 1,
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 1
         }
       },
       "level2Ability": {
@@ -786,7 +787,8 @@
           "pet": "pet-zombie-cricket",
           "withAttack": 2,
           "withHealth": 2,
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 1
         }
       },
       "level3Ability": {
@@ -800,7 +802,8 @@
           "pet": "pet-zombie-cricket",
           "withAttack": 3,
           "withHealth": 3,
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 1
         }
       },
       "probabilities": [
@@ -3894,7 +3897,8 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-dirty-rat",
-          "team": "Enemy"
+          "team": "Enemy",
+          "n": 1
         }
       },
       "level2Ability": {
@@ -3906,7 +3910,8 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-dirty-rat",
-          "team": "Enemy"
+          "team": "Enemy",
+          "n": 1
         }
       },
       "level3Ability": {
@@ -3918,7 +3923,8 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-dirty-rat",
-          "team": "Enemy"
+          "team": "Enemy",
+          "n": 1
         }
       },
       "probabilities": [
@@ -6493,7 +6499,8 @@
           "pet": "pet-ram",
           "withAttack": 2,
           "withHealth": 2,
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 2
         }
       },
       "level2Ability": {
@@ -6507,7 +6514,8 @@
           "pet": "pet-ram",
           "withAttack": 4,
           "withHealth": 4,
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 2
         }
       },
       "level3Ability": {
@@ -6521,7 +6529,8 @@
           "pet": "pet-ram",
           "withAttack": 6,
           "withHealth": 6,
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 2
         }
       },
       "probabilities": [
@@ -7542,7 +7551,8 @@
           "pet": "pet-bus",
           "withAttack": 5,
           "withHealth": 5,
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 1
         }
       },
       "level2Ability": {
@@ -7556,7 +7566,8 @@
           "pet": "pet-bus",
           "withAttack": 10,
           "withHealth": 10,
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 1
         }
       },
       "level3Ability": {
@@ -7570,7 +7581,8 @@
           "pet": "pet-bus",
           "withAttack": 15,
           "withHealth": 15,
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 1
         }
       },
       "probabilities": [
@@ -8573,7 +8585,8 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-chick",
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 1
         }
       },
       "level2Ability": {
@@ -8585,7 +8598,8 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-chick",
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 2
         }
       },
       "level3Ability": {
@@ -8597,7 +8611,8 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-chick",
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 3
         }
       },
       "probabilities": [
@@ -10550,7 +10565,8 @@
           "pet": "pet-zombie-fly",
           "withAttack": 2,
           "withHealth": 2,
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 1
         }
       },
       "level2Ability": {
@@ -10564,7 +10580,8 @@
           "pet": "pet-zombie-fly",
           "withAttack": 4,
           "withHealth": 4,
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 1
         }
       },
       "level3Ability": {
@@ -10578,7 +10595,8 @@
           "pet": "pet-zombie-fly",
           "withAttack": 6,
           "withHealth": 6,
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 1
         }
       },
       "probabilities": [
@@ -13166,7 +13184,8 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-bee",
-          "team": "Friendly"
+          "team": "Friendly",
+          "n": 1
         }
       }
     },

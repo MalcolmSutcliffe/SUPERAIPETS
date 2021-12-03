@@ -18,11 +18,11 @@ main_menu_bg = pygame.image.load(os.path.join('images', 'main_menu.png'))
 def display_battle(bg_object):
     pygame.display.flip()
     window.fill((0, 255, 0))
-    for i, x in enumerate(bg_object.team1):
+    for i, x in enumerate(bg_object.team1.get_pets()):
         if x is not None:
             window.blit(x.leftSprite, ((150 + (94 * i)), 300))
 
-    for i, x in enumerate(bg_object.team2):
+    for i, x in enumerate(bg_object.team2.get_pets()):
         if x is not None:
             window.blit(x.rightSprite, ((150 + (94 * (9-i))), 300))
 
@@ -56,9 +56,9 @@ def main():
     team1.add_pet(my_ant, 4)
     team2.add_pet(my_lobster, 0)
     team2.add_pet(my_kangaroo, 1)
-    team2.add_pet(my_camel, 2)
+    team2.add_pet(my_sheep, 2)
     team2.add_pet(my_spider, 3)
-    team2.add_pet(my_sheep, 4)
+    team2.add_pet(my_camel, 4)
     base_battleground = Battleground(team1, team2)
 
     # 0 = main menu

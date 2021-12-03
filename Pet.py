@@ -1,6 +1,7 @@
 from PetAbility import PetAbility
 from AbilityManager import *
 from SAP_Data import DATA, default_texture
+import os
 
 
 class Pet:
@@ -27,11 +28,15 @@ class Pet:
         except AttributeError:
             print("Error: the pet tag '" + self.name_tag + "' does not exist!")
 
-        self.base_attack = pet_data.get("baseAttack")
-        self.base_health = pet_data.get("baseHealth")
-        self.packs = pet_data.get("packs")
-        self.ability = PetAbility(self)
-        self.tier = pet_data.get("tier")
+        try:
+            self.base_attack = pet_data.get("baseAttack")
+            self.base_health = pet_data.get("baseHealth")
+            self.packs = pet_data.get("packs")
+            self.tier = pet_data.get("tier")
+            self.ability = PetAbility(self)
+        except AttributeError:
+            self.ability = None
+
         self.temp_attack = 0
         self.temp_health = 0
         self.attack = self.base_attack
@@ -46,8 +51,12 @@ class Pet:
             print("image for '" + name_tag + "' not found")
         self.leftSprite = pygame.transform.flip(self.rightSprite, True, False)
 
-    def receive_trigger(self, trigger):
+    def receive_trigger(self, trigger, triggering_entity):
+        if self.ability is None:
+            return
         if trigger[0] == self.ability.get_trigger() and trigger[1] == self.ability.get_triggered_by():
+            # if the animal is fainted, and its ability is not triggered by "Self Faints" then dont perform ability.
+            self.ability.triggering_entity = triggering_entity
             self.battleground.AM.add_to_queue(self.ability)
 
     def get_dmg(self):
@@ -82,10 +91,10 @@ class Pet:
 
         self.health = self.health - dmg
 
-        send_triggers_battle(TRIGGER.Hurt, self, self.battleground)
-
         if self.health <= 0:
             self.faint()
+
+        send_triggers_battle(TRIGGER.Hurt, self, self.battleground)
 
     def faint(self):
         send_triggers_battle(TRIGGER.Faint, self, self.battleground)
@@ -97,7 +106,7 @@ class Pet:
         self.end_of_battle()
 
     def end_of_battle(self):
-        self.battleground_team[self.battleground_team.index(self)] = None
+        self.battleground_team.get_pets()[self.battleground_team.get_pets().index(self)] = None
         self.battleground_team = None
         self.battleground_enemy_team = None
         self.battleground = None
@@ -109,6 +118,8 @@ class Pet:
         if stat_type == 1:
             self.temp_attack += stats[0]
             self.temp_health += stats[1]
+        self.attack += stats[0]
+        self.health += stats[1]
 
     def gain_exp(self, exp):
         self.experience += exp
@@ -174,9 +185,11 @@ class Pet:
 
     def set_base_attack(self, ba):
         self.base_attack = ba
+        self.attack = self.base_attack + self.base_attack
 
     def set_base_health(self, bh):
         self.base_health = bh
+        self.health = self.base_health + self.temp_health
 
     def set_temp_attack(self, ta):
         self.temp_attack = ta
