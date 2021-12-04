@@ -12,6 +12,7 @@ from SAP_Data import ANIMAL_TIERS
 pygame.display.init()
 pygame.font.init()
 myfont = pygame.font.SysFont('Comic Sans MS', 10)
+myfont1 = pygame.font.SysFont('Comic Sans MS', 15)
 # load and set the logo
 pygame.display.set_caption("SUPERAIPETS")
 
@@ -23,10 +24,12 @@ main_menu_bg = pygame.image.load(os.path.join('images', 'main_menu.png'))
 # direction: 0 = left, 1 = right
 def display_pet(pet, direction, xpos, ypos):
     window.blit(pet.get_sprite(direction), (xpos, ypos))
+    name = myfont1.render(pet.name, False, (0, 0, 0))
     pet_attack = myfont.render("AD: " + str(pet.get_attack()), False, (0, 0, 0))
     pet_hp = myfont.render("HP: " + str(pet.get_health()), False, (0, 0, 0))
     status = myfont.render(str(pet.status), False, (0, 0, 0))
     window.blit(status, (xpos+32, ypos))
+    window.blit(name, (xpos+20, ypos -20))
     window.blit(pet_attack, (xpos+32, ypos+120))
     window.blit(pet_hp, (xpos+62, ypos+120))
 
@@ -84,15 +87,18 @@ def main():
     my_dragon.set_status(STATUS.GARLIC_ARMOR)
     # my_sheep.set_status(STATUS.MELON_ARMOR)
 
-    random.seed(56749586465)
+    random.seed(46398039462)
 
     random_pet = []
     for i in range(10):
         random_pet.append(Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:]))
+        random_pet[i].set_level(3)
 
     for i in range(5):
         team1.add_pet(random_pet[i], i)
         team2.add_pet(random_pet[i+5], i)
+        # print(random_pet[i])
+        # print(random_pet[i+5])
 
     # team1.add_pet(my_fish, 0)
     # team1.add_pet(my_beetle, 1)

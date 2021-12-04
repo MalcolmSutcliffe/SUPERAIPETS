@@ -8,7 +8,7 @@ f.close()
 
 default_texture = pygame.image.load(os.path.join('images/pet-images', 'none.png'))
 
-GAME_SPEED = 1
+GAME_SPEED = 0.2
 
 ANIMAL_TIERS = [[], [], [], [], [], []]
 

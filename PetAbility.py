@@ -25,6 +25,7 @@ class EFFECT_TYPE(Enum):
     Swallow = 15                #
     TransferAbility = 16
     TransferStats = 17          #
+    NA = 18
 
 
 class TARGET(Enum):
@@ -101,7 +102,7 @@ class PetAbility:
 
         # SummonPet
         if self.effect_type == EFFECT_TYPE.SummonPet:
-            if self.pet.name == "fly" and self.triggering_entity.name == "zombie-fly":
+            if self.pet.name == "fly" and (self.triggering_entity.name == "zombie-fly"):
                 return
             self.summon(self.triggering_entity, False)
             return
@@ -368,6 +369,10 @@ class PetAbility:
             stats[1] = self.effect.get("healthAmount")
         except AttributeError:
             pass
+
+        if stats[0] == "this":
+            stats[0] = self.pet.get_attack()
+
         if stats[0] is None:
             stats[0] = 0
         if stats[1] is None:
@@ -406,6 +411,9 @@ class PetAbility:
         summon_attack = self.effect.get("withAttack")
         summon_health = self.effect.get("withHealth")
 
+        if summon_attack == "this":
+            summon_attack = self.pet.get_attack()
+
         if summon_attack is None:
             summon_attack = DATA.get("pets").get("pet-"+summon_tag).get("baseAttack")
         if summon_health is None:
@@ -420,13 +428,20 @@ class PetAbility:
         if team is None:
             team = self.pet.get_team()
 
-        if summon_team == "Enemy":
-            team = self.pet.get_battleground_enemy_team()
-
         if team is None:
             return
 
-        target_index = team.get_pets().index(target)
+        try:
+            target_index = team.get_pets().index(target)
+        except ValueError:
+            target_index = 4
+
+        if summon_team == "Enemy":
+            team = self.pet.get_battleground_enemy_team()
+            target_index = 0
+
+        if team is None:
+            return
 
         if n is None:
             n = 1

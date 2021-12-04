@@ -28,6 +28,7 @@ class TRIGGER(Enum):
     StartOfBattle = 19                      # implemented
     StartOfTurn = 20
     Summoned = 21
+    NA = 22
 
 
 class TRIGGERED_BY(Enum):
@@ -36,7 +37,7 @@ class TRIGGERED_BY(Enum):
     FriendAhead = 3                         # implemented
     Player = 4                              # implemented
     Self = 5                                # implemented
-
+    NA = 6
 
 # inputs: trigger_type = a TRIGGER, trigger_from = the pet object  causing the trigger, battleground: the
 # battleground that this trigger is happening on
@@ -99,13 +100,7 @@ class AbilityManager:
 
     def perform_abilities(self):
         while len(self.ability_queue) > 0:
-            print("before sorting: ")
-            for x in self.ability_queue:
-                print("\t" + str(x))
             self.ability_queue.sort()
-            print("after sorting: ")
-            for x in self.ability_queue:
-                print("\t" + str(x))
             self.ability_queue.pop(0).execute()
             self.ability_queue.sort()
             self.battleground.display()

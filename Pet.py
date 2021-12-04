@@ -18,6 +18,8 @@ class Pet:
 
         self.status = status
 
+        self.ability = None
+
         self.team = team
         self.battleground = battleground
         self.battleground_team = None
@@ -37,7 +39,6 @@ class Pet:
             self.base_health = pet_data.get("baseHealth")
             self.packs = pet_data.get("packs")
             self.tier = pet_data.get("tier")
-            self.ability = PetAbility(self)
         except AttributeError:
             self.ability = None
 
@@ -46,7 +47,10 @@ class Pet:
         self.attack = self.base_attack
         self.health = self.base_health
         self.experience = 0
-        self.status = None
+
+        if self.name == "scorpion":
+            self.status = STATUS.POISON_ATTACK
+
         try:
             self.rightSprite = pygame.transform.scale(
                 pygame.image.load(os.path.join('images/pet-images', self.name_tag + ".png")), (128, 128))
@@ -111,6 +115,9 @@ class Pet:
             send_hurt = False
 
         self.health = self.health - dmg
+
+        if dmg >= 1 and attacker.get_status() == STATUS.POISON_ATTACK:
+            self.health = 0
 
         if self.health <= 0 and not self.is_fainted:
             self.faint()

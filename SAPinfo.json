@@ -1167,6 +1167,16 @@
           "untilEndOfBattle": false
         }
       },
+      "level3Ability": {
+        "description": "",
+        "trigger": "NA",
+        "triggeredBy": {
+          "kind": "NA"
+        },
+        "effect": {
+          "kind": "NA"
+        }
+      },
       "probabilities": [
         {
           "kind": "shop",
@@ -2588,51 +2598,39 @@
           "kind": "Player"
         },
         "effect": {
-          "kind": "TransferStats",
-          "copyAttack": true,
-          "copyHealth": false,
-          "from": {
-            "kind": "Self"
-          },
-          "to": {
+          "kind": "ModifyStats",
+          "attackAmount": "this",
+          "target": {
             "kind": "FriendAhead",
             "n": 1
           }
         }
       },
       "level2Ability": {
-        "description": "Start of battle: Give 2X Attack to friend ahead.",
+        "description": "Start of battle: Give Attack to friend ahead.",
         "trigger": "StartOfBattle",
         "triggeredBy": {
           "kind": "Player"
         },
         "effect": {
-          "kind": "TransferStats",
-          "copyAttack": true,
-          "copyHealth": false,
-          "from": {
-            "kind": "Self"
-          },
-          "to": {
+          "kind": "ModifyStats",
+          "attackAmount": "this",
+          "target": {
             "kind": "FriendAhead",
             "n": 2
           }
         }
       },
       "level3Ability": {
-        "description": "Start of battle: Give 3X Attack to friend ahead.",
+        "description": "Start of battle: Give Attack to friend ahead.",
         "trigger": "StartOfBattle",
         "triggeredBy": {
           "kind": "Player"
         },
         "effect": {
-          "kind": "TransferStats",
-          "copyAttack": true,
-          "copyHealth": false,
-          "from": {
-            "kind": "Self"
-          },
-          "to": {
+          "kind": "ModifyStats",
+          "attackAmount": "this",
+          "target": {
             "kind": "FriendAhead",
             "n": 3
           }
@@ -4808,7 +4806,7 @@
             "kind": "AdjacentAnimals"
           },
           "amount": {
-            "multiplier": 200
+            "multiplier": 2.0
           }
         }
       },
@@ -4824,7 +4822,7 @@
             "kind": "AdjacentAnimals"
           },
           "amount": {
-            "multiplier": 300
+            "multiplier": 3.0
           }
         }
       },
@@ -8589,6 +8587,8 @@
           "kind": "SummonPet",
           "pet": "pet-chick",
           "team": "Friendly",
+          "withHealh": 1,
+          "withAttack": "this",
           "n": 1
         }
       },
@@ -8602,6 +8602,8 @@
           "kind": "SummonPet",
           "pet": "pet-chick",
           "team": "Friendly",
+          "withHealh": 1,
+          "withAttack": "this",
           "n": 2
         }
       },
@@ -8615,6 +8617,8 @@
           "kind": "SummonPet",
           "pet": "pet-chick",
           "team": "Friendly",
+          "withHealh": 1,
+          "withAttack": "this",
           "n": 3
         }
       },
@@ -9965,7 +9969,36 @@
         "StandardPack",
         "ExpansionPack1"
       ],
-      "status": "POISON_ATTACK",
+      "level1Ability": {
+        "description": "",
+        "trigger": "NA",
+        "triggeredBy": {
+          "kind": "NA"
+        },
+        "effect": {
+          "kind": "NA"
+        }
+      },
+      "level2Ability": {
+        "description": "",
+        "trigger": "NA",
+        "triggeredBy": {
+          "kind": "NA"
+        },
+        "effect": {
+          "kind": "NA"
+        }
+      },
+      "level3Ability": {
+        "description": "",
+        "trigger": "NA",
+        "triggeredBy": {
+          "kind": "NA"
+        },
+        "effect": {
+          "kind": "NA"
+        }
+      },
       "probabilities": [
         {
           "kind": "shop",
