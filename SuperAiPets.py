@@ -81,7 +81,7 @@ def main():
     # my_sheep.set_status(STATUS.MELON_ARMOR)
     team1.add_pet(my_fish, 0)
     team1.add_pet(my_beetle, 1)
-    team1.add_pet(my_cow, 2)
+    team1.add_pet(my_turtle, 2)
     team1.add_pet(my_sheep, 3)
     team1.add_pet(my_ant, 4)
     team2.add_pet(my_kangaroo, 0)

@@ -99,14 +99,14 @@ class AbilityManager:
 
     def perform_abilities(self):
         while len(self.ability_queue) > 0:
+            print("before sorting: ")
             for x in self.ability_queue:
-                print(x)
+                print("\t" + str(x))
             self.ability_queue.sort()
+            print("after sorting: ")
             for x in self.ability_queue:
-                print(x)
+                print("\t" + str(x))
+            self.ability_queue.pop(0).execute()
             self.ability_queue.sort()
-            for a in self.ability_queue:
-                a.execute()
-                self.ability_queue.remove(a)
-                self.battleground.display()
-                time.sleep(GAME_SPEED)
+            self.battleground.display()
+            time.sleep(GAME_SPEED)

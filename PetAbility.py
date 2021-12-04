@@ -250,6 +250,8 @@ class PetAbility:
         # FriendAhead
         if kind == TARGET.FriendAhead:
             n = target_info.get("n")
+            team = [i for i in team if i is not None]
+            team = [i for i in team if not i.get_is_fainted()]
             for i in range(n):
                 for j in range(team.index(self.pet) + 1 + i, 5):
                     if j <= 4 and team[j] is not None:
@@ -261,9 +263,10 @@ class PetAbility:
         if kind == TARGET.FriendBehind:
             n = target_info.get("n")
             for i in range(n):
-                for j in range(1 + i, 5):
-                    if 4 - j >= 0 and team[4 - j] is not None:
-                        targets.append(team[4 - j])
+                index = team.index(self.pet)
+                for j in range(1, index):
+                    if index - j >= 0 and team[index - j] is not None and targets.count(team[index-j]) == 0:
+                        targets.append(team[index - j])
                         break
             return targets
 
@@ -423,9 +426,9 @@ class PetAbility:
 
     def __gt__(self, other):
         if self.priority == other.priority:
-            return self.pet.get_attack() > other.pet.get_attack()
+            return self.pet.get_attack() < other.pet.get_attack()
         else:
-            return self.priority < other.priority
+            return self.priority > other.priority
 
     # getters and setters
     def get_trigger(self):
