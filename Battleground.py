@@ -34,11 +34,10 @@ class Battleground:
                 self.team2.pets[i].set_battleground_enemy_team(self.team1)
                 self.team2.pets[i].generate_ability()
 
-    def smack(self):
-
+    def display(self):
         display_battle(self)
 
-        time.sleep(GAME_SPEED)
+    def smack(self):
 
         if self.team1.pets[4] is None:
             print("Error, no fighter for team 1")
@@ -58,6 +57,7 @@ class Battleground:
 
         send_triggers(TRIGGER.BeforeAttack, team1_fighter, self)
         send_triggers(TRIGGER.BeforeAttack, team2_fighter, self)
+        self.AM.perform_abilities()
 
         team1_fighter.attack_enemy(team2_fighter)
         team2_fighter.attack_enemy(team1_fighter)
@@ -65,10 +65,9 @@ class Battleground:
         send_triggers(TRIGGER.AfterAttack, team1_fighter, self)
         send_triggers(TRIGGER.AfterAttack, team2_fighter, self)
 
-        print(str(team1_fighter) + " | HP: " + str(team1_fighter.get_health()) + " | Attack: " + str(
-            team1_fighter.get_attack()))
-        print(str(team2_fighter) + " | HP: " + str(team2_fighter.get_health()) + " | Attack: " + str(
-            team2_fighter.get_attack()))
+        display_battle(self)
+
+        time.sleep(GAME_SPEED)
 
         self.AM.perform_abilities()
 
@@ -86,7 +85,7 @@ class Battleground:
             self.team1.advance_team()
             self.team2.advance_team()
 
-        time.sleep(GAME_SPEED)
+        display_battle(self)
 
         while self.team1.has_units() and self.team2.has_units():
 
@@ -97,10 +96,15 @@ class Battleground:
             while self.team2.pets[4] is None:
                 self.team2.advance_team()
 
+            display_battle(self)
+
             time.sleep(GAME_SPEED)
 
             print("Attack!")
             self.smack()
+
+            display_battle(self)
+            time.sleep(GAME_SPEED)
 
             display_battle(self)
             # time.sleep(GAME_SPEED)

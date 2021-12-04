@@ -8,11 +8,13 @@ f.close()
 
 default_texture = pygame.image.load(os.path.join('images/pet-images', 'none.png'))
 
-GAME_SPEED = 0.5
+GAME_SPEED = 1
 
-tier_1_animals = []
-tier_2_animals = []
-tier_3_animals = []
-tier_4_animals = []
-tier_5_animals = []
-tier_6_animals = []
+ANIMAL_TIERS = [[], [], [], [], [], []]
+
+for name in DATA.get("pets"):
+    for i in range(6):
+        if DATA.get("pets").get(name).get("tier") == i+1:
+            ANIMAL_TIERS[i].append(name)
+            continue
+

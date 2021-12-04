@@ -1,5 +1,9 @@
+from pprint import pprint
+
 from Battleground import *
 from enum import Enum
+from SAP_Data import GAME_SPEED
+from SuperAiPets import *
 
 
 class TRIGGER(Enum):
@@ -86,17 +90,23 @@ def send_triggers(trigger_type, trigger_from, zone):
 
 class AbilityManager:
 
-    def __init__(self, owner):
+    def __init__(self, battleground):
         self.ability_queue = []
-        self.owner = owner
+        self.battleground = battleground
 
     def add_to_queue(self, ability_instance):
         self.ability_queue.append(ability_instance)
 
     def perform_abilities(self):
         while len(self.ability_queue) > 0:
-            # self.ability_queue.sort()
+            for x in self.ability_queue:
+                print(x)
+            self.ability_queue.sort()
+            for x in self.ability_queue:
+                print(x)
+            self.ability_queue.sort()
             for a in self.ability_queue:
                 a.execute()
                 self.ability_queue.remove(a)
-                # display_battle(self.owner)
+                self.battleground.display()
+                time.sleep(GAME_SPEED)

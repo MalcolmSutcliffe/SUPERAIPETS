@@ -108,7 +108,7 @@ class Pet:
 
         self.health = self.health - dmg
 
-        if self.health <= 0:
+        if self.health <= 0 and not self.is_fainted:
             self.faint()
             send_triggers(TRIGGER.KnockOut, attacker, self.battleground)
 
@@ -135,6 +135,7 @@ class Pet:
 
     def die(self):
         self.end_of_battle()
+        del self
 
     def end_of_battle(self):
         self.battleground_team.get_pets()[self.battleground_team.get_pets().index(self)] = None

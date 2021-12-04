@@ -40,11 +40,15 @@ class Team:
         summon_animal.set_status(status)
         summon_animal.set_level(1)
 
+        self.remove_fainted()
+        self.battleground.display()
+
         if self.has_space():
             has_summoned = False
+            self.battleground.display()
             while not has_summoned:
                 x = self.pets[index]
-                if x is None or x.get_is_fainted():
+                if x is None:
                     self.pets[index] = summon_animal
                     send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
                     print(str(summon_animal) + " was summoned with status: " + str(status))
@@ -52,7 +56,7 @@ class Team:
                 else:
                     self.advance_team_from(index)
                     x = self.pets[index]
-                    if x is None or x.get_is_fainted():
+                    if x is None:
                         self.pets[index] = summon_animal
                         send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
                         print(str(summon_animal) + " was summoned with status: " + str(status))
@@ -79,7 +83,7 @@ class Team:
     def has_space(self):
         team_has_space = False
         for x in self.pets:
-            if x is None or x.get_is_fainted():
+            if x is None:
                 team_has_space = True
                 break
         return team_has_space
@@ -91,10 +95,10 @@ class Team:
                 self.pets[3 - j] = None
 
     def advance_team_from(self, index):
-        for j in range(index):
-            if self.pets[4 - j] is None:
-                self.pets[4 - j] = self.pets[3 - j]
-                self.pets[3 - j] = None
+        for j in range(index, 4):
+            if self.pets[j+1] is None:
+                self.pets[j+1] = self.pets[j]
+                self.pets[j] = None
 
     def retreat_team(self):
         for j in range(4):
@@ -103,9 +107,11 @@ class Team:
                 self.pets[j+1] = None
 
     def remove_fainted(self):
-        for x in self.pets:
-            if x is not None and x.get_is_fainted():
-                self.pets[self.pets.index(x)].die()
+        for (i, x) in enumerate(self.pets):
+            if x is not None:
+                if x.get_is_fainted():
+                    x.die()
+                    self.pets[i] = None
 
     # def combine_pet(self, new_pet, pos):
     #     if self.pets[pos] is None:

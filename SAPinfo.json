@@ -4268,8 +4268,8 @@
         "effect": {
           "kind": "SummonRandomPet",
           "tier": 3,
-          "baseAttack": 2,
-          "baseHealth": 2
+          "withAttack": 2,
+          "withHealth": 2
         }
       },
       "level2Ability": {
@@ -4281,8 +4281,8 @@
         "effect": {
           "kind": "SummonRandomPet",
           "tier": 3,
-          "baseAttack": 4,
-          "baseHealth": 4
+          "withAttack": 4,
+          "withHealth": 4
         }
       },
       "level3Ability": {
@@ -4294,8 +4294,8 @@
         "effect": {
           "kind": "SummonRandomPet",
           "tier": 3,
-          "baseAttack": 6,
-          "baseHealth": 6
+          "withAttack": 6,
+          "withHealth": 6
         }
       },
       "probabilities": [
@@ -4792,7 +4792,7 @@
             "kind": "AdjacentAnimals"
           },
           "amount": {
-            "attackDamagePercent": 100
+            "multiplier": 1.0
           }
         }
       },
@@ -4808,7 +4808,7 @@
             "kind": "AdjacentAnimals"
           },
           "amount": {
-            "attackDamagePercent": 100
+            "multiplier": 200
           }
         }
       },
@@ -4824,7 +4824,7 @@
             "kind": "AdjacentAnimals"
           },
           "amount": {
-            "attackDamagePercent": 100
+            "multiplier": 300
           }
         }
       },
@@ -10764,7 +10764,7 @@
             "n": 1
           },
           "amount": {
-            "attackDamagePercent": 50
+            "multiplier": 50
           }
         }
       },
@@ -10781,7 +10781,7 @@
             "n": 2
           },
           "amount": {
-            "attackDamagePercent": 50
+            "multiplier": 50
           }
         }
       },
@@ -10798,7 +10798,7 @@
             "n": 3
           },
           "amount": {
-            "attackDamagePercent": 50
+            "multiplier": 50
           }
         }
       },

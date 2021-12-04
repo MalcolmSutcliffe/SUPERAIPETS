@@ -4,7 +4,7 @@ from Battleground import *
 from Team import Team
 from Pet import Pet
 from Status import STATUS
-from SAP_Data import DATA
+from SAP_Data import DATA, ANIMAL_TIERS
 
 # initialize the pygame module
 pygame.display.init()
@@ -55,6 +55,8 @@ def main():
     #     print(i)
     # print(DATA.get("pets").get("pet-ant").get("level1Ability"))
 
+    # print(ANIMAL_TIERS)
+
     team1 = Team()
     team2 = Team()
     my_fish = Pet("fish")
@@ -71,19 +73,22 @@ def main():
     my_dragon = Pet("dragon")
     my_deer = Pet("deer")
     my_turtle = Pet("turtle")
+    my_badger = Pet("badger")
+    my_blowfish = Pet("blowfish")
+    my_rhino = Pet("rhino")
     my_turtle.set_level(2)
     my_dragon.set_status(STATUS.GARLIC_ARMOR)
     # my_sheep.set_status(STATUS.MELON_ARMOR)
     team1.add_pet(my_fish, 0)
     team1.add_pet(my_beetle, 1)
     team1.add_pet(my_cow, 2)
-    team1.add_pet(my_dragon, 3)
+    team1.add_pet(my_sheep, 3)
     team1.add_pet(my_ant, 4)
     team2.add_pet(my_kangaroo, 0)
     team2.add_pet(my_dog, 1)
     team2.add_pet(my_camel, 2)
     team2.add_pet(my_deer, 3)
-    team2.add_pet(my_turtle, 4)
+    team2.add_pet(my_rhino, 4)
     base_battleground = Battleground(team1, team2)
 
     # 0 = main menu
