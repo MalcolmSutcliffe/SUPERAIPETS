@@ -99,7 +99,7 @@ class Battleground:
 
             time.sleep(GAME_SPEED)
 
-            print("fighting")
+            print("Attack!")
             self.smack()
 
             display_battle(self)

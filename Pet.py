@@ -59,7 +59,6 @@ class Pet:
         if self.ability is None:
             return
         if trigger[0] == self.ability.get_trigger() and trigger[1] == self.ability.get_triggered_by():
-            # print(str(self) + " has received ability trigger")
             self.ability.triggering_entity = triggering_entity
             self.battleground.AM.add_to_queue(self.ability)
 
@@ -252,6 +251,9 @@ class Pet:
 
     def set_status(self, status):
         self.status = status
+
+    def set_level(self, lvl):
+        self.level = lvl
 
     def __str__(self):
         return self.name

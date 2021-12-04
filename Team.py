@@ -14,7 +14,6 @@ class Team:
         self.wins = 0
         self.turn = DATA.get("turns").get("turn-1")
         self.battleground = None
-        print(self.turn)
 
     def add_pet(self, new_pet, pos):
         if self.pets[pos] is None:
@@ -23,7 +22,7 @@ class Team:
         new_pet.set_team(self)
         return 0
 
-    def summon_pet(self, index, summon_tag, summon_attack=0, summon_health=0, status=None):
+    def summon_pet(self, index, summon_tag, summon_attack=0, summon_health=0, level=1, status=None):
 
         summon_animal = Pet(summon_tag)
 
@@ -39,6 +38,7 @@ class Team:
         summon_animal.set_base_attack(summon_attack)
         summon_animal.set_base_health(summon_health)
         summon_animal.set_status(status)
+        summon_animal.set_level(1)
 
         if self.has_space():
             has_summoned = False

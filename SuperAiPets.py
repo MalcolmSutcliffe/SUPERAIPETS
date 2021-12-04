@@ -70,17 +70,20 @@ def main():
     my_sheep = Pet("sheep")
     my_dragon = Pet("dragon")
     my_deer = Pet("deer")
-    my_dragon.set_status(STATUS.HONEY_BEE)
+    my_turtle = Pet("turtle")
+    my_turtle.set_level(2)
+    my_dragon.set_status(STATUS.GARLIC_ARMOR)
+    # my_sheep.set_status(STATUS.MELON_ARMOR)
     team1.add_pet(my_fish, 0)
     team1.add_pet(my_beetle, 1)
     team1.add_pet(my_cow, 2)
     team1.add_pet(my_dragon, 3)
     team1.add_pet(my_ant, 4)
-    team2.add_pet(my_camel, 0)
+    team2.add_pet(my_kangaroo, 0)
     team2.add_pet(my_dog, 1)
-    team2.add_pet(my_kangaroo, 2)
-    team2.add_pet(my_sheep, 3)
-    team2.add_pet(my_deer, 4)
+    team2.add_pet(my_camel, 2)
+    team2.add_pet(my_deer, 3)
+    team2.add_pet(my_turtle, 4)
     base_battleground = Battleground(team1, team2)
 
     # 0 = main menu
@@ -109,15 +112,15 @@ def main():
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
                     if screen == 2:
-                        print("what up")
+                        # print("what up")
                         base_battleground.battle()
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
                 x = pos[0]
                 y = pos[1]
-                print(x)
-                print(y)
-                print("\n")
+                # print(x)
+                # print(y)
+                # print("\n")
                 screen += 1
                 if screen == 3:
                     screen = 0

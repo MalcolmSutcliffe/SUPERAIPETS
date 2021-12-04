@@ -60,7 +60,7 @@ def send_triggers(trigger_type, trigger_from, zone):
 
     # check if the index is in range
     if not 0 <= trigger_index <= 4:
-        print("Error: index" + str(trigger_index) + " out of bounds.")
+        # print("Error: index" + str(trigger_index) + " out of bounds.")
         return
 
     # EachFriend (excluding self)
@@ -82,38 +82,6 @@ def send_triggers(trigger_type, trigger_from, zone):
     # Self
     trigger = [trigger_type, TRIGGERED_BY.Self]
     trigger_from.receive_trigger(trigger, trigger_from)
-
-
-# There is no player trigger in battleground (auto-battler and such)
-
-# if space is Shop:
-#
-#     # check if the index is in range
-#     if not 0 <= trigger_index <= 4:
-#         print("Error: index out of bounds.")
-#         return
-#
-#     # EachFriend (excluding self)
-#     trigger = [trigger_type, "EachFriend"]
-#     for i in range(4):
-#         if space[i] is not None and not i == trigger_index:
-#             space[i].recieve_trigger(trigger)
-#
-#     # FriendAhead
-#     trigger = [trigger_type, "FriendAhead"]
-#     for i in range(trigger_index):
-#         if space[trigger_index - 1 - i] is not None:
-#             space[i].recieve_trigger(trigger)
-#             break
-#
-#     # Player
-#     trigger = [trigger_type, "Player"]
-#     for i in range(4):
-#         space[i].recieve_trigger(trigger)
-#
-#     # Self
-#     trigger = [trigger_type, "Self"]
-#     space[trigger_index].recieve_trigger(trigger)
 
 
 class AbilityManager:

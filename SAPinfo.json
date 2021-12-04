@@ -2246,7 +2246,7 @@
         "effect": {
           "kind": "ApplyStatus",
           "status": "WEAK",
-          "to": {
+          "target": {
             "kind": "RandomEnemy",
             "n": 1
           }
@@ -2261,7 +2261,7 @@
         "effect": {
           "kind": "ApplyStatus",
           "status": "WEAK",
-          "to": {
+          "target": {
             "kind": "RandomEnemy",
             "n": 2
           }
@@ -2276,7 +2276,7 @@
         "effect": {
           "kind": "ApplyStatus",
           "status": "WEAK",
-          "to": {
+          "target": {
             "kind": "RandomEnemy",
             "n": 3
           }
@@ -6003,7 +6003,7 @@
             {
               "kind": "ApplyStatus",
               "status": "MELON_ARMOR",
-              "to": {
+              "target": {
                 "kind": "Self"
               }
             },
@@ -6031,7 +6031,7 @@
             {
               "kind": "ApplyStatus",
               "status": "MELON_ARMOR",
-              "to": {
+              "target": {
                 "kind": "Self"
               }
             },
@@ -6059,7 +6059,7 @@
             {
               "kind": "ApplyStatus",
               "status": "MELON_ARMOR",
-              "to": {
+              "target": {
                 "kind": "Self"
               }
             },
@@ -6972,7 +6972,7 @@
         "effect": {
           "kind": "ApplyStatus",
           "status": "MELON_ARMOR",
-          "to": {
+          "target": {
             "kind": "FriendBehind",
             "n": 1
           }
@@ -6987,7 +6987,7 @@
         "effect": {
           "kind": "ApplyStatus",
           "status": "MELON_ARMOR",
-          "to": {
+          "target": {
             "kind": "FriendBehind",
             "n": 2
           }
@@ -7002,7 +7002,7 @@
         "effect": {
           "kind": "ApplyStatus",
           "status": "MELON_ARMOR",
-          "to": {
+          "target": {
             "kind": "FriendBehind",
             "n": 3
           }
@@ -9643,7 +9643,7 @@
         "effect": {
           "kind": "ApplyStatus",
           "status": "WEAK",
-          "to": {
+          "target": {
             "kind": "All"
           }
         }
@@ -9657,7 +9657,7 @@
         "effect": {
           "kind": "ApplyStatus",
           "status": "WEAK",
-          "to": {
+          "target": {
             "kind": "All"
           }
         }
@@ -9671,7 +9671,7 @@
         "effect": {
           "kind": "ApplyStatus",
           "status": "WEAK",
-          "to": {
+          "target": {
             "kind": "All"
           }
         }
@@ -10660,7 +10660,7 @@
         "effect": {
           "kind": "ApplyStatus",
           "status": "COCONUT_SHIELD",
-          "to": {
+          "target": {
             "kind": "Self"
           }
         },
@@ -10675,7 +10675,7 @@
         "effect": {
           "kind": "ApplyStatus",
           "status": "COCONUT_SHIELD",
-          "to": {
+          "target": {
             "kind": "Self"
           }
         },
@@ -10690,7 +10690,7 @@
         "effect": {
           "kind": "ApplyStatus",
           "status": "COCONUT_SHIELD",
-          "to": {
+          "target": {
             "kind": "Self"
           }
         },
@@ -11747,7 +11747,7 @@
         "trigger": "Buy",
         "effect": {
           "kind": "ApplyStatus",
-          "to": {
+          "target": {
             "kind": "PurchaseTarget"
           },
           "status": "HONEY_BEE"
@@ -12049,7 +12049,7 @@
         "trigger": "Buy",
         "effect": {
           "kind": "ApplyStatus",
-          "to": {
+          "target": {
             "kind": "PurchaseTarget"
           },
           "status": "BONE_ATTACK"
@@ -12327,7 +12327,7 @@
         "trigger": "Buy",
         "effect": {
           "kind": "ApplyStatus",
-          "to": {
+          "target": {
             "kind": "PurchaseTarget"
           },
           "status": "GARLIC_ARMOR"
@@ -12743,7 +12743,7 @@
         "trigger": "Buy",
         "effect": {
           "kind": "ApplyStatus",
-          "to": {
+          "target": {
             "kind": "PurchaseTarget"
           },
           "status": "SPLASH_ATTACK"
@@ -12944,7 +12944,7 @@
         "trigger": "Buy",
         "effect": {
           "kind": "ApplyStatus",
-          "to": {
+          "target": {
             "kind": "PurchaseTarget"
           },
           "status": "MELON_ARMOR"
@@ -12986,7 +12986,7 @@
         "trigger": "Buy",
         "effect": {
           "kind": "ApplyStatus",
-          "to": {
+          "target": {
             "kind": "PurchaseTarget"
           },
           "status": "status-extra-life"
@@ -13073,7 +13073,7 @@
         "trigger": "Buy",
         "effect": {
           "kind": "ApplyStatus",
-          "to": {
+          "target": {
             "kind": "PurchaseTarget"
           },
           "status": "status-steak-attack"

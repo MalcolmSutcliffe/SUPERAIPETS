@@ -8,7 +8,7 @@ from enum import Enum
 
 class EFFECT_TYPE(Enum):
     AllOf = 1                                                   # implemented
-    ApplyStatus = 2
+    ApplyStatus = 2                                             # imple
     DealDamage = 3                                              # implemented
     FoodMultiplier = 4
     GainExperience = 5
@@ -76,23 +76,26 @@ class PetAbility:
 
     def execute(self):
 
-        print(str(self.pet) + " used their ability!")
-
         # if animal is fainted, then dont perform ability (unless the trigger is fainting itself)
         if self.pet.get_is_fainted():
             if not (self.trigger == TRIGGER.Faint and self.triggered_by == TRIGGERED_BY.Self):
                 return
 
-        if self.effect_type == EFFECT_TYPE.SummonPet:
-            self.summon(self.triggering_entity)
-            return
-
+        # AllOf
         if self.effect_type == EFFECT_TYPE.AllOf:
             self.all_of()
             return
 
+        # OneOf
         if self.effect_type == EFFECT_TYPE.OneOf:
             self.one_of()
+            return
+
+        print(str(self.pet) + " used their " + str(self.effect_type) + " ability!")
+
+        # SummonPet
+        if self.effect_type == EFFECT_TYPE.SummonPet:
+            self.summon(self.triggering_entity)
             return
 
         # targeted abilities
@@ -112,6 +115,13 @@ class PetAbility:
             for target in targets:
                 self.deal_damage(target)
                 print(str(self.pet) + " did damage to " + str(target))
+            return
+
+        # ApplyStatus
+        if self.effect_type == EFFECT_TYPE.ApplyStatus:
+            for target in targets:
+                self.apply_status(target)
+            return
 
     # generates the list of targets for the ability when it is triggered
 
@@ -146,7 +156,6 @@ class PetAbility:
         # RandomFriend
         if kind == TARGET.RandomFriend:
             n = target_info.get("n")
-            # pprint(friends)
             try:
                 team.remove(self.pet)
             except ValueError:
@@ -230,19 +239,22 @@ class PetAbility:
 
         # FriendAhead
         if kind == TARGET.FriendAhead:
-            for i in range(team.index(self.pet) + 1, 5):
-                if team[i] is not None:
-                    targets.append(team[i])
-                    return targets
+            n = target_info.get("n")
+            for i in range(n):
+                for j in range(team.index(self.pet) + 1 + i, 5):
+                    if j <= 4 and team[j] is not None:
+                        targets.append(team[j])
+                        break
+            return targets
 
         # FriendBehind
         if kind == TARGET.FriendBehind:
-            target = None
-            i = team.index(self.pet)-1
-            while i >= 0 and target is None:
-                target = team[i]
-                i -= 1
-            targets.append(target)
+            n = target_info.get("n")
+            for i in range(n):
+                for j in range(1+i, 5):
+                    if 4-j >= 0 and team[4-j] is not None:
+                        targets.append(team[4-j])
+                        break
             return targets
 
         # HighestHealthEnemy
@@ -341,7 +353,6 @@ class PetAbility:
         summon_health = self.effect.get("withHealth")
         try:
             status = STATUS[self.effect.get("withStatus")]
-            print(STATUS[self.effect.get("withStatus")])
         except KeyError:
             status = None
 
@@ -369,6 +380,10 @@ class PetAbility:
         ability_data = random.sample(self.effect.get("effects"), 1)
         to_run = PetAbility(self.pet, ability_data[0])
         to_run.execute()
+
+    def apply_status(self, target):
+        status = STATUS[self.effect.get("status")]
+        target.set_status(status)
 
     # def __eq__(self, other):
     #     return self.pet.get_attack() == other.pet.get_attack()
