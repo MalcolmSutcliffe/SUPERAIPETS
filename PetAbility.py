@@ -1,32 +1,43 @@
 import copy
 from functools import total_ordering
 from AbilityManager import *
-from SAP_Data import DATA, ANIMAL_TIERS
+from SAP_Data import DATA, ANIMAL_TIERS, DO_PRINTS
 from Status import STATUS
 import random
 from enum import Enum
 
+DEFAULT_ABILITY = {
+    "description": "",
+    "trigger": "NA",
+    "triggeredBy": {
+        "kind": "NA"
+    },
+    "effect": {
+        "kind": "NA"
+    }
+}
+
 
 class EFFECT_TYPE(Enum):
-    AllOf = 1                   # implemented
-    ApplyStatus = 2             # implemented
-    DealDamage = 3              # implemented
-    FoodMultiplier = 4          #
-    GainExperience = 5          #
-    GainGold = 6                #
-    ModifyStats = 7             # implemented
+    AllOf = 1  # implemented
+    ApplyStatus = 2  # implemented
+    DealDamage = 3  # implemented
+    FoodMultiplier = 4  #
+    GainExperience = 5  #
+    GainGold = 6  #
+    ModifyStats = 7  # implemented
     ModifyStatsNotInBattle = 8  #
-    OneOf = 9                   # implemented
-    ReduceHealth = 10           #
-    RefillShops = 11            #
-    RepeatAbility = 12          #
-    SummonPet = 13              # implemented
-    SummonRandomPet = 14        # implemented
-    Swallow = 15                #
-    TransferAbility = 16        #
-    TransferStats = 17          #
-    NA = 18                     #
-    Evolve = 19                 #
+    OneOf = 9  # implemented
+    ReduceHealth = 10  # implemented
+    RefillShops = 11  #
+    RepeatAbility = 12  # implemented
+    SummonPet = 13  # implemented
+    SummonRandomPet = 14  # implemented
+    Swallow = 15  # implemented
+    TransferAbility = 16  #
+    TransferStats = 17  # implemented
+    NA = 18  # implemented
+    Evolve = 19  # implemented
 
 
 class TARGET(Enum):
@@ -63,24 +74,33 @@ class PetAbility:
         self.level = self.pet.get_level()
         self.triggering_entity = None
         self.priority = 0
+        self.effect_type = None
 
         if self.ability_data is None:
             try:
                 self.ability_data = DATA.get("pets").get(self.name).get("level" + str(self.level) + "Ability")
             except AttributeError:
                 print("Error: the pet tag '" + self.name + "' does not exist!")
-            self.description = self.ability_data.get("description")
-            self.trigger = TRIGGER[self.ability_data.get("trigger")]
-            self.triggered_by = TRIGGERED_BY[self.ability_data.get("triggeredBy").get("kind")]
-            self.effect = self.ability_data.get("effect")
-            self.effect_type = EFFECT_TYPE[self.effect.get("kind")]
+            try:
+                self.description = self.ability_data.get("description")
+                self.trigger = TRIGGER[self.ability_data.get("trigger")]
+                self.triggered_by = TRIGGERED_BY[self.ability_data.get("triggeredBy").get("kind")]
+                self.effect = self.ability_data.get("effect")
+                self.effect_type = EFFECT_TYPE[self.effect.get("kind")]
+            except AttributeError:
+                self.description = DEFAULT_ABILITY.get("description")
+                self.trigger = TRIGGER[DEFAULT_ABILITY.get("trigger")]
+                self.triggered_by = TRIGGERED_BY[DEFAULT_ABILITY.get("triggeredBy").get("kind")]
+                self.effect = DEFAULT_ABILITY.get("effect")
 
         else:
             self.effect = ability_data
             self.effect_type = EFFECT_TYPE[self.ability_data.get("kind")]
 
-        if self.effect_type == EFFECT_TYPE.DealDamage:
+        if self.effect_type == EFFECT_TYPE.SummonPet:
             self.priority = 1
+        if self.effect_type == EFFECT_TYPE.DealDamage:
+            self.priority = 2
 
     def execute(self):
 
@@ -104,9 +124,8 @@ class PetAbility:
             self.repeat_ability(self.triggering_entity)
             return
 
-        print(str(self.pet) + " used their " + str(self.effect_type) + " ability!")
-
-        send_triggers(TRIGGER.CastsAbility, self.pet, self.pet.get_battleground())
+        if DO_PRINTS:
+            print(str(self.pet) + " used their " + str(self.effect_type) + " ability!")
 
         # SummonPet
         if self.effect_type == EFFECT_TYPE.SummonPet:
@@ -120,8 +139,18 @@ class PetAbility:
             self.summon(self.triggering_entity, True)
             return
 
+        # Evolve
+        if self.effect_type == EFFECT_TYPE.Evolve:
+            self.evolve()
+            return
+
+        # TransferStats
+        if self.effect_type == EFFECT_TYPE.TransferStats:
+            self.transfer_stats()
+            return
+
         # targeted abilities
-        targets = self.generate_targets()
+        targets = self.generate_targets(self.effect.get("target"))
 
         if targets is None or all(x is None for x in targets):
             return
@@ -137,7 +166,8 @@ class PetAbility:
         # DealDamage
         if self.effect_type == EFFECT_TYPE.DealDamage:
             for target in targets:
-                print(str(self.pet) + " did damage to " + str(target))
+                if DO_PRINTS:
+                    print(str(self.pet) + " did damage to " + str(target))
                 self.deal_damage(target)
             return
 
@@ -147,12 +177,18 @@ class PetAbility:
                 self.apply_status(target)
             return
 
-    # generates the list of targets for the ability when it is triggered
+        # ReduceHealth
+        if self.effect_type == EFFECT_TYPE.ReduceHealth:
+            for target in targets:
+                self.reduce_health(target)
 
-    def generate_targets(self):
-        target_info = None
+        # Swallow
+        if self.effect_type == EFFECT_TYPE.Swallow:
+            for target in targets:
+                self.swallow(target)
 
-        target_info = self.effect.get("target")
+    # generates the list of targets for the ability when it is triggered, based on the passed target info
+    def generate_targets(self, target_info):
 
         if target_info is None:
             return
@@ -241,7 +277,6 @@ class PetAbility:
                     break
                 target1_index += 1
 
-            print("adjacent enemies:")
             for x in targets:
                 print(x)
             return targets
@@ -274,7 +309,7 @@ class PetAbility:
         if kind == TARGET.FirstEnemy:
             targets = [i for i in enemy_team if i is not None and not i.get_is_fainted()]
             if len(targets) > 0:
-                return [targets[len(targets)-1]]
+                return [targets[len(targets) - 1]]
             return
 
         # FriendAhead
@@ -295,7 +330,7 @@ class PetAbility:
             for i in range(n):
                 index = team.index(self.pet)
                 for j in range(1, index):
-                    if index - j >= 0 and team[index - j] is not None and targets.count(team[index-j]) == 0:
+                    if index - j >= 0 and team[index - j] is not None and targets.count(team[index - j]) == 0:
                         targets.append(team[index - j])
                         break
             return targets
@@ -356,7 +391,7 @@ class PetAbility:
             for x in team:
                 if target is None:
                     target = x
-                elif x is not None and x.get_health() + x.get_attack < target.get_health() + target.get_attack():
+                elif x is not None and x.get_health() + x.get_attack() > target.get_health() + target.get_attack():
                     target = x
             targets.append(target)
             return targets
@@ -413,18 +448,25 @@ class PetAbility:
         summon_attack = self.effect.get("withAttack")
         summon_health = self.effect.get("withHealth")
 
-        if summon_attack == "this":
+        if summon_attack != "this":
+            pass
+        else:
             summon_attack = self.pet.get_attack()
 
         if summon_attack is None:
-            summon_attack = DATA.get("pets").get("pet-"+summon_tag).get("baseAttack")
+            summon_attack = DATA.get("pets").get("pet-" + summon_tag).get("baseAttack")
         if summon_health is None:
-            summon_health = DATA.get("pets").get("pet-"+summon_tag).get("baseHealth")
+            summon_health = DATA.get("pets").get("pet-" + summon_tag).get("baseHealth")
 
         try:
             status = STATUS[self.effect.get("withStatus")]
         except KeyError:
             status = None
+
+        level = self.effect.get("withLevel")
+
+        if level is None:
+            level = 1
 
         team = self.pet.get_battleground_team()
         if team is None:
@@ -449,7 +491,7 @@ class PetAbility:
             n = 1
 
         for i in range(n):
-            team.summon_pet(target_index, summon_tag, summon_attack, summon_health, 1, status)
+            team.summon_pet(target_index, summon_tag, summon_attack, summon_health, level, status)
 
     def all_of(self):
         for ability_data in self.effect.get("effects"):
@@ -469,6 +511,83 @@ class PetAbility:
         n = self.effect.get("n")
         for i in range(n):
             target.get_battleground().AM.add_to_queue(target.get_ability())
+
+    def reduce_health(self, target):
+        percent = self.effect.get("percentage")
+        if DO_PRINTS:
+            print(str(self.pet) + " reduced " + str(target) + "'s health by " + str(percent * 100) + "%")
+        new_health = int(target.get_health() * (1 - percent))
+        if new_health <= 0:
+            new_health = 1
+        target.set_health(new_health)
+
+    def swallow(self, target):
+        self.trigger = TRIGGER.Faint
+        self.triggered_by = TRIGGERED_BY.Self
+        self.effect_type = EFFECT_TYPE.SummonPet
+        self.effect = \
+            {"kind": "SummonPet",
+             "pet": target.get_name_tag(),
+             "team": "Friendly",
+             "withHealh": 1,
+             "withAttack": 1,
+             "withLevel": self.level}
+        target.faint()
+
+    def evolve(self):
+
+        summon_attack = self.effect.get("withAttack")
+        summon_health = self.effect.get("withHealth")
+        status = None
+        level = 1
+
+        summon_tag = self.effect.get("into")
+        summon_tag = summon_tag[4:]
+
+        if summon_attack == "this":
+            summon_attack = self.pet.get_attack()
+
+        if summon_attack is None:
+            summon_attack = DATA.get("pets").get("pet-" + summon_tag).get("baseAttack")
+        if summon_health is None:
+            summon_health = DATA.get("pets").get("pet-" + summon_tag).get("baseHealth")
+
+        team = self.pet.get_battleground_team()
+        if team is None:
+            team = self.pet.get_team()
+
+        if team is None:
+            return
+        try:
+            target_index = team.get_pets().index(self.pet)
+        except ValueError:
+            target_index = 4
+
+        self.pet.faint()
+
+        team.summon_pet(target_index, summon_tag, summon_attack, summon_health, level, None)
+
+    def transfer_stats(self):
+        copy_attack = self.effect.get("copyAttack")
+        copy_health = self.effect.get("copyHealth")
+        pet_from = self.generate_targets(self.effect.get("from"))[0]
+        pet_to = self.generate_targets(self.effect.get("to"))[0]
+        if DO_PRINTS:
+            print("transfering stats from :" + str(pet_from) + " to: " + str(pet_to))
+        if copy_attack:
+            pet_to.set_attack(pet_from.get_attack())
+        if copy_health:
+            pet_to.set_health(pet_from.get_health())
+        # "effect": {
+        #     "kind": "TransferStats",
+        #     "copyAttack": true,
+        #     "copyHealth": true,
+        #     "from": {
+        #         "kind": "StrongestFriend"
+        #     },
+        #     "to": {
+        #         "kind": "Self"
+        #     }
 
     def __eq__(self, other):
         return self.priority == other.priority and self.pet.get_attack() == other.pet.get_attack()

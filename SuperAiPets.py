@@ -6,7 +6,7 @@ from Battleground import *
 from Team import Team
 from Pet import Pet
 from Status import STATUS
-from SAP_Data import ANIMAL_TIERS
+from SAP_Data import ANIMAL_TIERS, DO_PRINTS
 
 # initialize the pygame module
 pygame.display.init()
@@ -27,11 +27,13 @@ def display_pet(pet, direction, xpos, ypos):
     name = myfont1.render(pet.name, False, (0, 0, 0))
     pet_attack = myfont.render("AD: " + str(pet.get_attack()), False, (0, 0, 0))
     pet_hp = myfont.render("HP: " + str(pet.get_health()), False, (0, 0, 0))
-    status = myfont.render(str(pet.status), False, (0, 0, 0))
-    window.blit(status, (xpos+32, ypos))
-    window.blit(name, (xpos+20, ypos -20))
-    window.blit(pet_attack, (xpos+32, ypos+120))
-    window.blit(pet_hp, (xpos+62, ypos+120))
+    status = myfont.render(str(pet.status)[7:], False, (0, 0, 0))
+    level = myfont.render("lvl: " + str(pet.get_level()), False, (0, 0, 0))
+    window.blit(status, (xpos + 20, ypos))
+    window.blit(name, (xpos + 20, ypos - 40))
+    window.blit(level, (xpos + 20, ypos - 20))
+    window.blit(pet_attack, (xpos + 32, ypos + 135))
+    window.blit(pet_hp, (xpos + 62, ypos + 135))
 
 
 def display_team_in_battle(is_friendly, team):
@@ -44,7 +46,7 @@ def display_team_in_battle(is_friendly, team):
         direction = 1
         for i, x in enumerate(team.get_pets()):
             if x is not None:
-                display_pet(x, direction, (150 + (94 * (9-i))), 300)
+                display_pet(x, direction, (150 + (94 * (9 - i))), 300)
 
 
 def display_battle(bg_object):
@@ -55,7 +57,6 @@ def display_battle(bg_object):
 
 
 def main():
-
     # for i in DATA.get("statuses"):
     #     print(i)
     # print(DATA.get("pets").get("pet-ant").get("level1Ability"))
@@ -67,6 +68,8 @@ def main():
     my_fish = Pet("fish")
     my_ant = Pet("ant")
     my_cow = Pet("cow")
+    my_caterpillar = Pet("caterpillar")
+    my_crab = Pet("crab")
     my_dog = Pet("dog")
     my_hippo = Pet("hippo")
     my_beetle = Pet("beetle")
@@ -84,35 +87,41 @@ def main():
     my_fly = Pet("fly")
     my_tiger = Pet("tiger")
     my_snake = Pet("snake")
+    my_whale = Pet("whale")
+    my_skunk = Pet("skunk")
+    my_eagle = Pet("eagle")
+    my_leopard = Pet("leopard")
     my_turtle.set_level(2)
     my_octopus = Pet("octopus")
     my_octopus.set_level(3)
+    my_eagle.set_level(2)
     my_dragon.set_status(STATUS.GARLIC_ARMOR)
+    my_caterpillar.set_level(3)
     # my_sheep.set_status(STATUS.MELON_ARMOR)
 
-    random.seed(9797693487634634)
+    random.seed(4579254245)
 
     random_pet = []
     for i in range(10):
         random_pet.append(Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:]))
         random_pet[i].set_level(3)
 
-    # for i in range(5):
-    #     team1.add_pet(random_pet[i], i)
-    #     team2.add_pet(random_pet[i+5], i)
-    #     print(random_pet[i])
-    #     print(random_pet[i+5])
+    for i in range(5):
+        team1.add_pet(random_pet[i], i)
+        team2.add_pet(random_pet[i + 5], i)
+        # print(random_pet[i])
+        # print(random_pet[i+5])
 
-    team1.add_pet(my_hippo, 0)
-    team1.add_pet(my_beetle, 1)
-    team1.add_pet(my_fish, 2)
-    team1.add_pet(my_ant, 3)
-    team1.add_pet(my_sheep, 4)
-    team2.add_pet(my_kangaroo, 0)
-    team2.add_pet(my_dog, 1)
-    team2.add_pet(my_tiger, 2)
-    team2.add_pet(my_snake, 3)
-    team2.add_pet(my_dragon, 4)
+    # team1.add_pet(my_hippo, 0)
+    # team1.add_pet(my_caterpillar, 1)
+    # team1.add_pet(my_fish, 2)
+    # team1.add_pet(my_crab, 3)
+    # team1.add_pet(my_dragon, 4)
+    # team2.add_pet(my_kangaroo, 0)
+    # team2.add_pet(my_dog, 1)
+    # team2.add_pet(my_deer, 2)
+    # team2.add_pet(my_whale, 3)
+    # team2.add_pet(my_eagle, 4)
 
     base_battleground = Battleground(team1, team2)
 

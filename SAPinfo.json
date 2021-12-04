@@ -5150,7 +5150,7 @@
       },
       "level3Ability": {
         "description": "Start of battle: Evolve into a Butterfly, then copy stats of the strongest friend.",
-        "trigger": "StartOfTurn",
+        "trigger": "StartOfBattle",
         "triggeredBy": {
           "kind": "Player"
         },
@@ -7581,7 +7581,8 @@
           "withHealth": 5,
           "withStatus": "SPLASH_ATTACK",
           "team": "Friendly",
-          "n": 1
+          "n": 1,
+          "withLevel": 1
         }
       },
       "level2Ability": {
@@ -7597,7 +7598,8 @@
           "withHealth": 10,
           "withStatus": "SPLASH_ATTACK",
           "team": "Friendly",
-          "n": 1
+          "n": 1,
+          "withLevel": 1
         }
       },
       "level3Ability": {
@@ -7613,7 +7615,8 @@
           "withHealth": 15,
           "withStatus": "SPLASH_ATTACK",
           "team": "Friendly",
-          "n": 1
+          "n": 1,
+          "withLevel": 1
         }
       },
       "probabilities": [
@@ -8757,7 +8760,7 @@
           "target": {
             "kind": "HighestHealthEnemy"
           },
-          "percentage": 33
+          "percentage": 0.33
         }
       },
       "level2Ability": {
@@ -8771,7 +8774,7 @@
           "target": {
             "kind": "HighestHealthEnemy"
           },
-          "percentage": 66
+          "percentage": 0.66
         }
       },
       "level3Ability": {
@@ -8785,7 +8788,7 @@
           "target": {
             "kind": "HighestHealthEnemy"
           },
-          "percentage": 100
+          "percentage": 1.00
         }
       },
       "probabilities": [
@@ -9483,7 +9486,8 @@
         "effect": {
           "kind": "SummonRandomPet",
           "tier": 6,
-          "level": 1
+          "level": 1,
+          "withLevel": 1
         }
       },
       "level2Ability": {
@@ -9495,7 +9499,7 @@
         "effect": {
           "kind": "SummonRandomPet",
           "tier": 6,
-          "level": 2
+          "withLevel": 2
         }
       },
       "level3Ability": {
@@ -9507,7 +9511,7 @@
         "effect": {
           "kind": "SummonRandomPet",
           "tier": 6,
-          "level": 3
+          "withLevel": 1
         }
       },
       "probabilities": [

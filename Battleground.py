@@ -4,7 +4,7 @@ import time
 import pygame
 from SuperAiPets import *
 from AbilityManager import *
-from SAP_Data import GAME_SPEED
+from SAP_Data import GAME_SPEED, DO_PRINTS
 
 
 class Battleground:
@@ -45,10 +45,11 @@ class Battleground:
         team1_fighter = self.team1.pets[4]
         team2_fighter = self.team2.pets[4]
 
-        print(str(team1_fighter) + " | HP: " + str(team1_fighter.get_health()) + " | Attack: " + str(
-            team1_fighter.get_attack()))
-        print(str(team2_fighter) + " | HP: " + str(team2_fighter.get_health()) + " | Attack: " + str(
-            team2_fighter.get_attack()))
+        if DO_PRINTS:
+            print(str(team1_fighter) + " | HP: " + str(team1_fighter.get_health()) + " | Attack: " + str(
+                team1_fighter.get_attack()))
+            print(str(team2_fighter) + " | HP: " + str(team2_fighter.get_health()) + " | Attack: " + str(
+                team2_fighter.get_attack()))
 
         send_triggers(TRIGGER.BeforeAttack, team1_fighter, self)
         send_triggers(TRIGGER.BeforeAttack, team2_fighter, self)
@@ -60,7 +61,8 @@ class Battleground:
         if self.team1.get_pets()[4] is None or self.team2.get_pets()[4] is None:
             return
 
-        print("Attack!")
+        if DO_PRINTS:
+            print("Attack!")
 
         team1_fighter.attack_enemy(team2_fighter)
         team2_fighter.attack_enemy(team1_fighter)
@@ -144,5 +146,5 @@ class Battleground:
         for i in range(5):
             all_pets.append(self.team1.get_pets()[i])
         for i in range(5):
-            all_pets.append(self.team2.get_pets()[4-i])
+            all_pets.append(self.team2.get_pets()[4 - i])
         return all_pets

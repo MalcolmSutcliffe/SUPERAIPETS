@@ -1,7 +1,7 @@
 import copy
 import json
 from Pet import Pet
-from SAP_Data import DATA
+from SAP_Data import DATA, DO_PRINTS
 from AbilityManager import *
 
 
@@ -25,6 +25,7 @@ class Team:
     def summon_pet(self, index, summon_tag, summon_attack=0, summon_health=0, level=1, status=None):
 
         summon_animal = Pet(summon_tag)
+        summon_animal.generate_ability()
 
         if self.battleground is not None:
             teams = [self.battleground.get_team1(), self.battleground.get_team2()]
@@ -38,7 +39,7 @@ class Team:
         summon_animal.set_base_attack(summon_attack)
         summon_animal.set_base_health(summon_health)
         summon_animal.set_status(status)
-        summon_animal.set_level(1)
+        summon_animal.set_level(level)
 
         self.remove_fainted()
         self.battleground.display()
@@ -51,7 +52,8 @@ class Team:
                 if x is None:
                     self.pets[index] = summon_animal
                     send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
-                    print(str(summon_animal) + " was summoned with status: " + str(status))
+                    if DO_PRINTS:
+                        print(str(summon_animal) + " was summoned with status: " + str(status))
                     has_summoned = True
                 else:
                     self.advance_team_from(index)
@@ -59,7 +61,8 @@ class Team:
                     if x is None:
                         self.pets[index] = summon_animal
                         send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
-                        print(str(summon_animal) + " was summoned with status: " + str(status))
+                        if DO_PRINTS:
+                            print(str(summon_animal) + " was summoned with status: " + str(status))
                         has_summoned = True
                     else:
                         self.retreat_team()

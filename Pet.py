@@ -1,6 +1,6 @@
 from PetAbility import PetAbility
 from AbilityManager import *
-from SAP_Data import DATA, default_texture
+from SAP_Data import DATA, default_texture, DO_PRINTS
 from Status import STATUS
 import os
 
@@ -40,7 +40,7 @@ class Pet:
             self.packs = pet_data.get("packs")
             self.tier = pet_data.get("tier")
         except AttributeError:
-            self.ability = None
+            pass
 
         self.temp_attack = 0
         self.temp_health = 0
@@ -64,6 +64,7 @@ class Pet:
             return
         if trigger[0] == self.ability.get_trigger() and trigger[1] == self.ability.get_triggered_by():
             self.ability.triggering_entity = triggering_entity
+            send_triggers(TRIGGER.CastsAbility, self, self.get_battleground())
             self.battleground.AM.add_to_queue(self.ability)
 
     def get_dmg(self):
@@ -85,8 +86,8 @@ class Pet:
 
         index = victim.get_index()
         if self.status == STATUS.SPLASH_ATTACK:
-            for i in range(index-1):
-                x = victim.get_battleground_team().get_pets()[index-1-i]
+            for i in range(index - 1):
+                x = victim.get_battleground_team().get_pets()[index - 1 - i]
                 if x is not None:
                     x.take_damage(self, 5)
                     break
@@ -132,7 +133,8 @@ class Pet:
         else:
             pass
         # self.battleground_team[self.battleground_team.index(self)] = None
-        print(self.name + " has fainted!")
+        if DO_PRINTS:
+            print(self.name + " has fainted!")
         self.is_fainted = True
 
         team = self.battleground_team
@@ -164,7 +166,8 @@ class Pet:
             self.temp_health += stats[1]
         self.attack += stats[0]
         self.health += stats[1]
-        print(str(self) + " gained " + str(stats[0]) + " attack and " + str(stats[1]) + " health.")
+        if DO_PRINTS:
+            print(str(self) + " gained " + str(stats[0]) + " attack and " + str(stats[1]) + " health.")
 
     def gain_exp(self, exp):
         self.experience += exp
@@ -177,6 +180,9 @@ class Pet:
         self.ability = PetAbility(self)
 
     # getters and setters
+    def get_name(self):
+        return self.name
+
     def get_name_tag(self):
         return self.name_tag
 
@@ -259,9 +265,15 @@ class Pet:
         self.base_attack = ba
         self.attack = self.base_attack + self.temp_attack
 
+    def set_attack(self, atck):
+        self.attack = atck
+
     def set_base_health(self, bh):
         self.base_health = bh
         self.health = self.base_health + self.temp_health
+
+    def set_health(self, health):
+        self.health = health
 
     def set_temp_attack(self, ta):
         self.temp_attack = ta

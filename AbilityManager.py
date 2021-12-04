@@ -7,8 +7,8 @@ from SuperAiPets import *
 
 
 class TRIGGER(Enum):
-    AfterAttack = 1                         # implemented
-    BeforeAttack = 2                        # implemented
+    AfterAttack = 1  # implemented
+    BeforeAttack = 2  # implemented
     Buy = 3
     BuyAfterLoss = 4
     BuyFood = 5
@@ -20,24 +20,25 @@ class TRIGGER(Enum):
     EndOfTurnWith3PlusGold = 11
     EndOfTurnWith4OrLessAnimals = 12
     EndOfTurnWithLvl3Friend = 13
-    Faint = 14                              # implemented
-    Hurt = 15                               # implemented
+    Faint = 14  # implemented
+    Hurt = 15  # implemented
     KnockOut = 16
     LevelUp = 17
     Sell = 18
-    StartOfBattle = 19                      # implemented
+    StartOfBattle = 19  # implemented
     StartOfTurn = 20
     Summoned = 21
     NA = 22
 
 
 class TRIGGERED_BY(Enum):
-    EachFriend = 1                          # implemented
+    EachFriend = 1  # implemented
     EachFriendInShop = 2
-    FriendAhead = 3                         # implemented
-    Player = 4                              # implemented
-    Self = 5                                # implemented
+    FriendAhead = 3  # implemented
+    Player = 4  # implemented
+    Self = 5  # implemented
     NA = 6
+
 
 # inputs: trigger_type = a TRIGGER, trigger_from = the pet object  causing the trigger, battleground: the
 # battleground that this trigger is happening on
@@ -52,7 +53,7 @@ def send_triggers(trigger_type, trigger_from, zone):
     if trigger_from is None:
         for x in zone.get_all_pets():
             x.receive_trigger([trigger_type, TRIGGERED_BY.Player], None)
-            return
+        return
 
     team = trigger_from.get_battleground_team()
     if team is None:
@@ -60,7 +61,7 @@ def send_triggers(trigger_type, trigger_from, zone):
 
     try:
         trigger_index = team.get_pets().index(trigger_from)
-    except Exception:
+    except AttributeError:
         pass
 
     # check if the index is in range
