@@ -3,8 +3,8 @@ from enum import Enum
 
 
 class TRIGGER(Enum):
-    AfterAttack = "AfterAttack"  # implemented
-    BeforeAttack = "BeforeAttack"  # implemented
+    AfterAttack = "AfterAttack"                                         # implemented
+    BeforeAttack = "BeforeAttack"                                       # implemented
     Buy = "Buy"
     BuyAfterLoss = "BuyAfterLoss"
     BuyFood = "BuyFood"
@@ -16,21 +16,22 @@ class TRIGGER(Enum):
     EndOfTurnWith3PlusGold = "EndOfTurnWith3PlusGold"
     EndOfTurnWith4OrLessAnimals = "EndOfTurnWith4OrLessAnimals"
     EndOfTurnWithLvl3Friend = "EndOfTurnWithLvl3Friend"
-    Faint = "Faint"  # implemented
-    Hurt = "Hurt"  # implemented
+    Faint = "Faint"                                                     # implemented
+    Hurt = "Hurt"                                                       # implemented
     KnockOut = "Knockout"
     LevelUp = "LevelUp"
     Sell = "Sell"
-    StartOfBattle = "StartOfBattle"  # implemented
+    StartOfBattle = "StartOfBattle"                                     # implemented
     StartOfTurn = "StartOfTurn"
     Summoned = "Summoned"
 
 
 class TRIGGERED_BY(Enum):
-    EachFriend = "EachFriend"
-    FriendAhead = "FriendAhead"
-    Player = "Player"
-    Self = "Self"
+    EachFriend = "EachFriend"                                           # implemented
+    EachFriendInShop = "EachFriendInShop"
+    FriendAhead = "FriendAhead"                                         # implemented
+    Player = "Player"                                                   # implemented
+    Self = "Self"                                                       # implemented
 
 
 # inputs: trigger_type = a TRIGGER, trigger_from = the pet object  causing the trigger, battleground: the

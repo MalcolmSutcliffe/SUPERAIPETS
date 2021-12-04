@@ -59,6 +59,7 @@ def main():
     my_ant = Pet("ant")
     my_cow = Pet("cow")
     my_dog = Pet("dog")
+    my_hippo = Pet("hippo")
     my_beetle = Pet("beetle")
     my_lobster = Pet("lobster")
     my_kangaroo = Pet("kangaroo")
@@ -70,12 +71,12 @@ def main():
     team1.add_pet(my_beetle, 1)
     team1.add_pet(my_cow, 2)
     team1.add_pet(my_dragon, 3)
-    team1.add_pet(my_ant, 4)
+    team1.add_pet(my_hippo, 4)
     team2.add_pet(my_lobster, 0)
     team2.add_pet(my_kangaroo, 1)
-    team2.add_pet(my_sheep, 2)
+    team2.add_pet(my_dog, 2)
     team2.add_pet(my_spider, 3)
-    team2.add_pet(my_camel, 4)
+    team2.add_pet(my_sheep, 4)
     base_battleground = Battleground(team1, team2)
 
     # 0 = main menu

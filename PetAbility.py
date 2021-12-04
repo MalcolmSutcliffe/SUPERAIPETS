@@ -13,6 +13,7 @@ class EFFECT_TYPE(Enum):
     GainExperience = "GainExperience"
     GainGold = "GainGold"
     ModifyStats = "ModifyStats"                                 # implemented
+    ModifyStatsNotInBattle = "ModifyStatsNotInBattle"
     OneOf = "OneOf"                                             # implemented
     ReduceHealth = "ReduceHealth"
     RefillShops = "RefillShops"
@@ -62,13 +63,19 @@ class PetAbility:
                 self.ability_data = DATA.get("pets").get(self.name).get("level" + str(self.level) + "Ability")
             except AttributeError:
                 print("Error: the pet tag '" + self.name + "' does not exist!")
+            self.description = self.ability_data.get("description")
+            self.trigger = TRIGGER[self.ability_data.get("trigger")]
+            self.triggered_by = TRIGGERED_BY[self.ability_data.get("triggeredBy").get("kind")]
+            self.effect = self.ability_data.get("effect")
+            self.effect_type = EFFECT_TYPE[self.effect.get("kind")]
 
-        self.description = self.ability_data.get("description")
-        self.trigger = TRIGGER[self.ability_data.get("trigger")]
-        self.triggered_by = TRIGGERED_BY[self.ability_data.get("triggeredBy").get("kind")]
-        self.effect_type = EFFECT_TYPE[self.ability_data.get("effect").get("kind")]
+        else:
+            self.effect = ability_data
+            self.effect_type = EFFECT_TYPE[self.ability_data.get("kind")]
 
     def execute(self):
+
+        print("executing " + str(self.pet) + "'s ability")
 
         # if animal is fainted, then dont perform ability (unless the trigger is fainting itself)
         if self.pet.get_is_fainted():
@@ -77,6 +84,14 @@ class PetAbility:
 
         if self.effect_type == EFFECT_TYPE.SummonPet:
             self.summon(self.triggering_entity)
+            return
+
+        if self.effect_type == EFFECT_TYPE.AllOf:
+            self.all_of()
+            return
+
+        if self.effect_type == EFFECT_TYPE.OneOf:
+            self.one_of()
             return
 
         # targeted abilities
@@ -103,7 +118,7 @@ class PetAbility:
     def generate_targets(self):
         target_info = None
 
-        target_info = self.ability_data.get("effect").get("target")
+        target_info = self.effect.get("target")
 
         if target_info is None:
             return
@@ -117,6 +132,16 @@ class PetAbility:
         targets = []
 
         kind = TARGET[target_info.get("kind")]
+
+        # Self
+        if kind == TARGET.Self:
+            targets.append(self.pet)
+            return targets
+
+        # TriggeringEntity
+        if kind == TARGET.TriggeringEntity:
+            targets.append(self.triggering_entity)
+            return targets
 
         # RandomFriend
         if kind == TARGET.RandomFriend:
@@ -281,38 +306,33 @@ class PetAbility:
             targets.append(target)
             return targets
 
-        if kind == TARGET.Self:
-            targets.append(self.pet)
-            return targets
-
-        if kind == TARGET.TriggeringEntity:
-            targets.append(self.triggering_entity)
-            return targets
-
     def modify_stats(self, target):
         stats = [0, 0]
         try:
-            stats[0] = self.ability_data.get("effect").get("attackAmount")
+            stats[0] = self.effect.get("attackAmount")
         except AttributeError:
             pass
         try:
-            stats[1] = self.ability_data.get("effect").get("healthAmount")
+            stats[1] = self.effect.get("healthAmount")
         except AttributeError:
             pass
+        if stats[0] is None:
+            stats[0] = 0
+        if stats[1] is None:
+            stats[1] = 0
         target.gain_stats(stats, 0)
 
     def deal_damage(self, target):
 
         damage = 0
         try:
-            damage = self.ability_data.get("effect").get("amount")
+            damage = self.effect.get("amount")
         except AttributeError:
             pass
         target.take_damage(self.pet, damage)
 
     def summon(self, target):
 
-        print("attempting to summon")
         n = self.ability_data.get("effect").get("n")
         summon_team = self.ability_data.get("effect").get("team")
         summon_tag = self.ability_data.get("effect").get("pet")
@@ -342,7 +362,7 @@ class PetAbility:
 
     def one_of(self):
         ability_data = random.sample(self.ability_data.get("effect").get("effects"), 1)
-        to_run = PetAbility(self.pet, ability_data)
+        to_run = PetAbility(self.pet, ability_data[0])
         to_run.execute()
 
     # def __eq__(self, other):

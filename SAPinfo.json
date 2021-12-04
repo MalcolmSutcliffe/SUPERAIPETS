@@ -8063,7 +8063,7 @@
         "description": "Friend summoned: Give it +2/+2 when not in battle.",
         "trigger": "Summoned",
         "triggeredBy": {
-          "kind": "EachFriend"
+          "kind": "EachFriendInShop"
         },
         "effect": {
           "kind": "ModifyStats",
@@ -8079,7 +8079,7 @@
         "description": "Friend summoned: Give it +4/+4 when not in battle.",
         "trigger": "Summoned",
         "triggeredBy": {
-          "kind": "EachFriend"
+          "kind": "EachFriendInShop"
         },
         "effect": {
           "kind": "ModifyStats",
@@ -8095,7 +8095,7 @@
         "description": "Friend summoned: Give it +6/+6 when not in battle.",
         "trigger": "Summoned",
         "triggeredBy": {
-          "kind": "EachFriend"
+          "kind": "EachFriendInShop"
         },
         "effect": {
           "kind": "ModifyStats",

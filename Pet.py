@@ -55,7 +55,7 @@ class Pet:
         if self.ability is None:
             return
         if trigger[0] == self.ability.get_trigger() and trigger[1] == self.ability.get_triggered_by():
-            # if the animal is fainted, and its ability is not triggered by "Self Faints" then dont perform ability.
+            print(str(self) + " has received ability trigger")
             self.ability.triggering_entity = triggering_entity
             self.battleground.AM.add_to_queue(self.ability)
 
@@ -91,11 +91,15 @@ class Pet:
 
         if self.health <= 0:
             self.faint()
+            send_triggers(TRIGGER.KnockOut, attacker, self.battleground)
 
         send_triggers(TRIGGER.Hurt, self, self.battleground)
 
     def faint(self):
-        send_triggers(TRIGGER.Faint, self, self.battleground)
+        if self.battleground is not None:
+            send_triggers(TRIGGER.Faint, self, self.battleground)
+        else:
+            pass
         # self.battleground_team[self.battleground_team.index(self)] = None
         print("animal '" + self.name_tag + "' has fainted!")
         self.is_fainted = True
@@ -180,6 +184,9 @@ class Pet:
     def get_is_fainted(self):
         return self.is_fainted
 
+    def set_team(self, team):
+        self.team = team
+
     def set_battleground(self, bg):
         self.battleground = bg
 
@@ -204,4 +211,4 @@ class Pet:
         self.temp_health = th
 
     def __str__(self):
-        return self.name_tag + " | HP: " + str(self.health) + " | Attack: " + str(self.attack)
+        return self.name_tag

@@ -2,6 +2,7 @@ import copy
 import json
 from Pet import Pet
 from SAP_Data import DATA
+from AbilityManager import *
 
 
 class Team:
@@ -22,10 +23,18 @@ class Team:
         return 0
 
     def summon_pet(self, index, summon_tag, summon_attack=0, summon_health=0):
-        print("attempting to summon")
-        summon_team = self
 
-        summon_animal = Pet(summon_tag, self, self.battleground)
+        summon_animal = Pet(summon_tag)
+
+        if self.battleground is not None:
+            teams = [self.battleground.get_team1(), self.battleground.get_team2()]
+            summon_animal.set_battleground_team(self)
+            teams.remove(self)
+            summon_animal.set_battleground_enemy_team(teams[0])
+            summon_animal.set_battleground(self.battleground)
+        else:
+            summon_animal.set_team(self)
+
         summon_animal.set_base_attack(summon_attack)
         summon_animal.set_base_health(summon_health)
 
@@ -35,12 +44,14 @@ class Team:
                 x = self.pets[index]
                 if x is None or x.get_is_fainted():
                     self.pets[index] = summon_animal
+                    send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
                     has_summoned = True
                 else:
                     self.advance_team_from(index)
                     x = self.pets[index]
                     if x is None or x.get_is_fainted():
                         self.pets[index] = summon_animal
+                        send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
                         has_summoned = True
                     else:
                         self.retreat_team()

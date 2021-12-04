@@ -51,8 +51,10 @@ class Battleground:
         team1_fighter = self.team1.pets[4]
         team2_fighter = self.team2.pets[4]
 
-        print(team1_fighter)
-        print(team2_fighter)
+        print(str(team1_fighter) + " | HP: " + str(team1_fighter.get_health()) + " | Attack: " + str(
+            team1_fighter.get_attack()))
+        print(str(team2_fighter) + " | HP: " + str(team2_fighter.get_health()) + " | Attack: " + str(
+            team2_fighter.get_attack()))
 
         send_triggers(TRIGGER.BeforeAttack, team1_fighter, self)
         send_triggers(TRIGGER.BeforeAttack, team2_fighter, self)
@@ -63,8 +65,10 @@ class Battleground:
         send_triggers(TRIGGER.AfterAttack, team1_fighter, self)
         send_triggers(TRIGGER.AfterAttack, team2_fighter, self)
 
-        print(team1_fighter)
-        print(team2_fighter)
+        print(str(team1_fighter) + " | HP: " + str(team1_fighter.get_health()) + " | Attack: " + str(
+            team1_fighter.get_attack()))
+        print(str(team2_fighter) + " | HP: " + str(team2_fighter.get_health()) + " | Attack: " + str(
+            team2_fighter.get_attack()))
 
         self.AM.perform_abilities()
 
