@@ -1,3 +1,5 @@
+import random
+
 import pygame
 import os
 from Battleground import *
@@ -79,16 +81,27 @@ def main():
     my_turtle.set_level(2)
     my_dragon.set_status(STATUS.GARLIC_ARMOR)
     # my_sheep.set_status(STATUS.MELON_ARMOR)
-    team1.add_pet(my_fish, 0)
-    team1.add_pet(my_beetle, 1)
-    team1.add_pet(my_turtle, 2)
-    team1.add_pet(my_sheep, 3)
-    team1.add_pet(my_ant, 4)
-    team2.add_pet(my_kangaroo, 0)
-    team2.add_pet(my_dog, 1)
-    team2.add_pet(my_camel, 2)
-    team2.add_pet(my_deer, 3)
-    team2.add_pet(my_rhino, 4)
+
+    random.seed(359871935)
+
+    random_pet = []
+    for i in range(10):
+        random_pet.append(Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:]))
+
+    for i in range(5):
+        team1.add_pet(random_pet[i], i)
+        team2.add_pet(random_pet[i+5], i)
+
+    # team1.add_pet(my_fish, 0)
+    # team1.add_pet(my_beetle, 1)
+    # team1.add_pet(my_turtle, 2)
+    # team1.add_pet(my_sheep, 3)
+    # team1.add_pet(my_ant, 4)
+    # team2.add_pet(my_kangaroo, 0)
+    # team2.add_pet(my_dog, 1)
+    # team2.add_pet(my_camel, 2)
+    # team2.add_pet(my_deer, 3)
+    # team2.add_pet(my_rhino, 4)
     base_battleground = Battleground(team1, team2)
 
     # 0 = main menu

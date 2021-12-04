@@ -79,14 +79,17 @@ class Pet:
 
         victim.take_damage(self, self.get_dmg())
 
+        index = victim.get_index()
         if self.status == STATUS.SPLASH_ATTACK:
-            for i in range(4):
-                x = victim.get_battleground_team().get_pets()[3-i]
+            for i in range(index-1):
+                x = victim.get_battleground_team().get_pets()[index-1-i]
                 if x is not None:
                     x.take_damage(self, 5)
                     break
 
     def take_damage(self, attacker, dmg):
+
+        send_hurt = True
 
         if self.status == STATUS.WEAK:
             dmg += 3
@@ -105,6 +108,7 @@ class Pet:
         if self.status == STATUS.COCONUT_SHIELD:
             dmg = 0
             self.status = None
+            send_hurt = False
 
         self.health = self.health - dmg
 
@@ -112,7 +116,8 @@ class Pet:
             self.faint()
             send_triggers(TRIGGER.KnockOut, attacker, self.battleground)
 
-        send_triggers(TRIGGER.Hurt, self, self.battleground)
+        if send_hurt:
+            send_triggers(TRIGGER.Hurt, self, self.battleground)
 
     def faint(self):
         if self.battleground is not None:

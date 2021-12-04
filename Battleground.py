@@ -80,20 +80,15 @@ class Battleground:
         display_battle(self)
         # time.sleep(GAME_SPEED)
         send_triggers(TRIGGER.StartOfBattle, None, self)
-
-        for k in range(4):
-            self.team1.advance_team()
-            self.team2.advance_team()
+        self.AM.perform_abilities()
 
         display_battle(self)
 
         while self.team1.has_units() and self.team2.has_units():
 
             # move teams up to the front
-            while self.team1.pets[4] is None:
+            for k in range(4):
                 self.team1.advance_team()
-
-            while self.team2.pets[4] is None:
                 self.team2.advance_team()
 
             display_battle(self)

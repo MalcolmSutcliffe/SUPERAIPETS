@@ -8,23 +8,23 @@ from enum import Enum
 
 
 class EFFECT_TYPE(Enum):
-    AllOf = 1  # implemented
-    ApplyStatus = 2  # implemented
-    DealDamage = 3  # implemented
+    AllOf = 1                   # implemented
+    ApplyStatus = 2             # implemented
+    DealDamage = 3              # implemented
     FoodMultiplier = 4
     GainExperience = 5
     GainGold = 6
-    ModifyStats = 7  # implemented
+    ModifyStats = 7             # implemented
     ModifyStatsNotInBattle = 8
-    OneOf = 9  # implemented
-    ReduceHealth = 10  #
+    OneOf = 9                   # implemented
+    ReduceHealth = 10           #
     RefillShops = 11
-    RepeatAbility = 12  #
-    SummonPet = 13  # implemented
-    SummonRandomPet = 14  #
-    Swallow = 15  #
+    RepeatAbility = 12          #
+    SummonPet = 13              # implemented
+    SummonRandomPet = 14        # implemented
+    Swallow = 15                #
     TransferAbility = 16
-    TransferStats = 17  #
+    TransferStats = 17          #
 
 
 class TARGET(Enum):
@@ -100,6 +100,8 @@ class PetAbility:
 
         # SummonPet
         if self.effect_type == EFFECT_TYPE.SummonPet:
+            if self.pet.name == "fly" and self.triggering_entity.name == "zombie-fly":
+                return
             self.summon(self.triggering_entity, False)
             return
 
@@ -170,6 +172,12 @@ class PetAbility:
                 team.remove(self.pet)
             except ValueError:
                 pass
+            targets = copy.copy(team)
+            for x in targets:
+                if x is None:
+                    targets.remove(x)
+                elif x.get_is_fainted():
+                    targets.remove(x)
             n = min(n, len(team))
             targets = random.sample(team, n)
             return targets
@@ -179,7 +187,9 @@ class PetAbility:
             n = target_info.get("n")
             targets = copy.copy(enemy_team)
             for x in targets:
-                if x.get_is_fainted():
+                if x is None:
+                    targets.remove(x)
+                elif x.get_is_fainted():
                     targets.remove(x)
             n = min(n, len(targets))
             targets = random.sample(targets, n)
@@ -187,9 +197,13 @@ class PetAbility:
 
         # All
         if kind == TARGET.All:
-            targets.append(team)
+            for x in team:
+                if x is not None:
+                    targets.append(x)
             if enemy_team is not None:
-                targets.append(enemy_team)
+                for x in enemy_team:
+                    if x is not None:
+                        targets.append(x)
             return targets
 
         # AdjacentAnimals only in battleground (for now)
@@ -253,8 +267,8 @@ class PetAbility:
             team = [i for i in team if i is not None]
             team = [i for i in team if not i.get_is_fainted()]
             for i in range(n):
-                for j in range(team.index(self.pet) + 1 + i, 5):
-                    if j <= 4 and team[j] is not None:
+                for j in range(team.index(self.pet) + 1, 5):
+                    if j <= 4 and team[j] is not None and targets.count(team[j]) == 0:
                         targets.append(team[j])
                         break
             return targets
@@ -284,7 +298,7 @@ class PetAbility:
         # LastEnemy
         if kind == TARGET.LastEnemy:
             for x in enemy_team:
-                if x is not None:
+                if x is not None and not x.get_is_fainted():
                     targets.append(x)
                     return targets
 
@@ -308,7 +322,7 @@ class PetAbility:
             for x in enemy_team:
                 if target is None:
                     target = x
-                elif x is not None and x.get_health() < target.get_health():
+                elif x is not None and x.get_health() < target.get_health() and not x.get_is_fainted():
                     target = x
             targets.append(target)
             return targets
@@ -380,9 +394,9 @@ class PetAbility:
         summon_health = self.effect.get("withHealth")
 
         if summon_attack is None:
-            summon_attack = DATA.get("pets").get(summon_tag).get("baseAttack")
+            summon_attack = DATA.get("pets").get("pet-"+summon_tag).get("baseAttack")
         if summon_health is None:
-            summon_health = DATA.get("pets").get(summon_tag).get("baseHealth")
+            summon_health = DATA.get("pets").get("pet-"+summon_tag).get("baseHealth")
 
         try:
             status = STATUS[self.effect.get("withStatus")]
