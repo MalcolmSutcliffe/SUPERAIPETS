@@ -6,18 +6,18 @@ from enum import Enum
 
 
 class EFFECT_TYPE(Enum):
-    AllOf = "AllOf"
+    AllOf = "AllOf"                                             # implemented
     ApplyStatus = "ApplyStatus"
-    DealDamage = "DealDamage"
+    DealDamage = "DealDamage"                                   # implemented
     FoodMultiplier = "FoodMultiplier"
     GainExperience = "GainExperience"
     GainGold = "GainGold"
-    ModifyStats = "ModifyStats"
-    OneOf = "OneOf"
+    ModifyStats = "ModifyStats"                                 # implemented
+    OneOf = "OneOf"                                             # implemented
     ReduceHealth = "ReduceHealth"
     RefillShops = "RefillShops"
     RepeatAbility = "RepeatAbility"
-    SummonPet = "SummonPet"
+    SummonPet = "SummonPet"                                     # implemented
     SummonRandomPet = "SummonRandomPet"
     Swallow = "Swallow"
     TransferAbility = "TransferAbility"
@@ -25,42 +25,43 @@ class EFFECT_TYPE(Enum):
 
 
 class TARGET(Enum):
-    AdjacentAnimals = "AdjacentAnimals"
-    All = "All"
-    DifferentTierAnimals = "DifferentTierAnimals"
-    EachFriend = "EachFriend"
-    EachShopAnimal = "EachShopAnimal"
-    FirstEnemy = "FirstEnemy"
-    FriendAhead = "FriendAhead"
-    FriendBehind = "FriendBehind"
-    HighestHealthEnemy = "HighestHealthEnemy"
-    LastEnemy = "LastEnemy"
-    LeftMostFriend = "LeftMostFriend"
-    Level2And3Friends = "Level2And3Friends"
-    LowestHealthEnemy = "LowestHealthEnemy"
-    RandomEnemy = "RandomEnemy"  # n needed
-    RandomFriend = "RandomFriend"  # n needed
-    RightMostFriend = "RightMostFriend"
-    Self = "Self"
-    StrongestFriend = "StrongestFriend"
-    TriggeringEntity = "TriggeringEntity"
+    AdjacentAnimals = "AdjacentAnimals"                         # implemented
+    All = "All"                                                 # implemented
+    DifferentTierAnimals = "DifferentTierAnimals"               # implemented
+    EachFriend = "EachFriend"                                   # implemented
+    EachShopAnimal = "EachShopAnimal"                           # implemented
+    FirstEnemy = "FirstEnemy"                                   # implemented
+    FriendAhead = "FriendAhead"                                 # implemented
+    FriendBehind = "FriendBehind"                               # implemented
+    HighestHealthEnemy = "HighestHealthEnemy"                   # implemented
+    LastEnemy = "LastEnemy"                                     # implemented
+    LeftMostFriend = "LeftMostFriend"                           # implemented
+    Level2And3Friends = "Level2And3Friends"                     # implemented
+    LowestHealthEnemy = "LowestHealthEnemy"                     # implemented
+    RandomEnemy = "RandomEnemy"                                 # implemented
+    RandomFriend = "RandomFriend"                               # implemented
+    RightMostFriend = "RightMostFriend"                         # implemented
+    Self = "Self"                                               # implemented
+    StrongestFriend = "StrongestFriend"                         # implemented
+    TriggeringEntity = "TriggeringEntity"                       # implemented
 
 
 # @total_ordering
 class PetAbility:
 
-    def __init__(self, pet):
+    def __init__(self, pet, ability_data=None):
 
         self.pet = pet
-        self.ability_data = None
+        self.ability_data = ability_data
         self.name = self.pet.get_name_tag()
         self.level = self.pet.get_level()
         self.triggering_entity = None
 
-        try:
-            self.ability_data = DATA.get("pets").get(self.name).get("level" + str(self.level) + "Ability")
-        except AttributeError:
-            print("Error: the pet tag '" + self.name + "' does not exist!")
+        if self.ability_data is None:
+            try:
+                self.ability_data = DATA.get("pets").get(self.name).get("level" + str(self.level) + "Ability")
+            except AttributeError:
+                print("Error: the pet tag '" + self.name + "' does not exist!")
 
         self.description = self.ability_data.get("description")
         self.trigger = TRIGGER[self.ability_data.get("trigger")]
@@ -78,17 +79,24 @@ class PetAbility:
             self.summon(self.triggering_entity)
             return
 
+        # targeted abilities
         targets = self.generate_targets()
 
         if targets is None or all(x is None for x in targets):
             return
 
-        # Modify Stats
+        # ModifyStats
         if self.effect_type == EFFECT_TYPE.ModifyStats:
             for target in targets:
                 self.modify_stats(target)
                 print(str(target) + " | gained stats!")
             return
+
+        # DealDamage
+        if self.effect_type == EFFECT_TYPE.DealDamage:
+            for target in targets:
+                self.deal_damage(target)
+                print (str(self.pet) + " did damage to " + str(target))
 
     # generates the list of targets for the ability when it is triggered
 
@@ -286,12 +294,21 @@ class PetAbility:
         try:
             stats[0] = self.ability_data.get("effect").get("attackAmount")
         except AttributeError:
-            stats[0] = 0
+            pass
         try:
             stats[1] = self.ability_data.get("effect").get("healthAmount")
         except AttributeError:
-            stats[1] = 0
+            pass
         target.gain_stats(stats, 0)
+
+    def deal_damage(self, target):
+
+        damage = 0
+        try:
+            damage = self.ability_data.get("effect").get("amount")
+        except AttributeError:
+            pass
+        target.take_damage(self.pet, damage)
 
     def summon(self, target):
 
@@ -317,6 +334,16 @@ class PetAbility:
 
         for i in range(n):
             team.summon_pet(target_index, summon_tag, summon_attack, summon_health)
+
+    def all_of(self):
+        for ability_data in self.ability_data.get("effect").get("effects"):
+            to_run = PetAbility(self.pet, ability_data)
+            to_run.execute()
+
+    def one_of(self):
+        ability_data = random.sample(self.ability_data.get("effect").get("effects"), 1)
+        to_run = PetAbility(self.pet, ability_data)
+        to_run.execute()
 
     # def __eq__(self, other):
     #     return self.pet.get_attack() == other.pet.get_attack()

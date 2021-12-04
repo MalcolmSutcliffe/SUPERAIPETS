@@ -8,8 +8,8 @@ class Pet:
 
     def __init__(self, name_tag="", team=None, battleground=None):
 
-        self.base_attack = 1
-        self.base_health = 1
+        self.base_attack = 0
+        self.base_health = 0
 
         self.level = 1
 
@@ -72,7 +72,7 @@ class Pet:
 
         return dmg
 
-    def take_damage(self, attacker):
+    def take_damage(self, attacker, dmg):
 
         # if self.item is GARLIC_ARMOR:
         #     if dmg <= 3:
@@ -87,17 +87,15 @@ class Pet:
         # if dmg < 0:
         #     dmg = 0
 
-        dmg = attacker.get_attack()
-
         self.health = self.health - dmg
 
         if self.health <= 0:
             self.faint()
 
-        send_triggers_battle(TRIGGER.Hurt, self, self.battleground)
+        send_triggers(TRIGGER.Hurt, self, self.battleground)
 
     def faint(self):
-        send_triggers_battle(TRIGGER.Faint, self, self.battleground)
+        send_triggers(TRIGGER.Faint, self, self.battleground)
         # self.battleground_team[self.battleground_team.index(self)] = None
         print("animal '" + self.name_tag + "' has fainted!")
         self.is_fainted = True
@@ -134,6 +132,14 @@ class Pet:
     # getters and setters
     def get_name_tag(self):
         return self.name_tag
+
+    def get_sprite(self, direction):
+        if direction == 0:
+            return self.leftSprite
+        elif direction == 1:
+            return self.rightSprite
+        else:
+            return default_texture
 
     def get_attack(self):
         return self.attack
@@ -185,7 +191,7 @@ class Pet:
 
     def set_base_attack(self, ba):
         self.base_attack = ba
-        self.attack = self.base_attack + self.base_attack
+        self.attack = self.base_attack + self.temp_attack
 
     def set_base_health(self, bh):
         self.base_health = bh

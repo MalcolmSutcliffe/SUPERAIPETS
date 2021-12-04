@@ -7,6 +7,7 @@ from Pet import Pet
 # initialize the pygame module
 pygame.display.init()
 pygame.font.init()
+myfont = pygame.font.SysFont('Comic Sans MS', 10)
 # load and set the logo
 pygame.display.set_caption("SUPERAIPETS")
 
@@ -15,20 +16,36 @@ window = pygame.display.set_mode((1280, 720))
 main_menu_bg = pygame.image.load(os.path.join('images', 'main_menu.png'))
 
 
+# direction: 0 = left, 1 = right
+def display_pet(pet, direction, xpos, ypos):
+    window.blit(pet.get_sprite(direction), (xpos, ypos))
+    pet_attack = myfont.render("AD: " + str(pet.get_attack()), False, (0, 0, 0))
+    pet_hp = myfont.render("HP: " + str(pet.get_health()), False, (0, 0, 0))
+    window.blit(pet_attack, (xpos+32, ypos+120))
+    window.blit(pet_hp, (xpos+62, ypos+120))
+
+
+def display_team_in_battle(is_friendly, team):
+    if is_friendly:
+        direction = 0
+        for i, x in enumerate(team.get_pets()):
+            if x is not None:
+                display_pet(x, direction, (150 + (94 * i)), 300)
+    else:
+        direction = 1
+        for i, x in enumerate(team.get_pets()):
+            if x is not None:
+                display_pet(x, direction, (150 + (94 * (9-i))), 300)
+
+
 def display_battle(bg_object):
     pygame.display.flip()
     window.fill((0, 255, 0))
-    for i, x in enumerate(bg_object.team1.get_pets()):
-        if x is not None:
-            window.blit(x.leftSprite, ((150 + (94 * i)), 300))
-
-    for i, x in enumerate(bg_object.team2.get_pets()):
-        if x is not None:
-            window.blit(x.rightSprite, ((150 + (94 * (9-i))), 300))
+    display_team_in_battle(True, bg_object.get_team1())
+    display_team_in_battle(False, bg_object.get_team2())
 
 
 def main():
-
     # f = open("SAPinfo.json")
     # data = json.load(f)
     # f.close()
