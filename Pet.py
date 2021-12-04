@@ -1,12 +1,13 @@
 from PetAbility import PetAbility
 from AbilityManager import *
 from SAP_Data import DATA, default_texture
+from Status import STATUS
 import os
 
 
 class Pet:
 
-    def __init__(self, name_tag="", team=None, battleground=None):
+    def __init__(self, name_tag="", team=None, battleground=None, status=None):
 
         self.base_attack = 0
         self.base_health = 0
@@ -15,11 +16,14 @@ class Pet:
 
         self.is_fainted = False
 
+        self.status = status
+
         self.team = team
         self.battleground = battleground
         self.battleground_team = None
         self.battleground_enemy_team = None
 
+        self.name = name_tag
         self.name_tag = "pet-" + name_tag
         pet_data = DATA.get("pets").get("bee")
 
@@ -55,7 +59,7 @@ class Pet:
         if self.ability is None:
             return
         if trigger[0] == self.ability.get_trigger() and trigger[1] == self.ability.get_triggered_by():
-            print(str(self) + " has received ability trigger")
+            # print(str(self) + " has received ability trigger")
             self.ability.triggering_entity = triggering_entity
             self.battleground.AM.add_to_queue(self.ability)
 
@@ -63,29 +67,45 @@ class Pet:
 
         dmg = self.attack
 
-        # if self.item is MEAT_BONE:
-        #     dmg += 5
-        #
-        # if self.item is STEAK:
-        #     dmg += 20
-        #     self.item.set_active(0)
+        if self.status == STATUS.STEAK_ATTACK:
+            dmg += 20
+            self.status = None
+
+        if self.status == STATUS.BONE_ATTACK:
+            dmg += 5
 
         return dmg
 
+    def attack_enemy(self, victim):
+
+        victim.take_damage(self, self.get_dmg())
+
+        if self.status == STATUS.SPLASH_ATTACK:
+            for i in range(4):
+                x = victim.get_battleground_team().get_pets()[3-i]
+                if x is not None:
+                    x.take_damage(self, 5)
+                    break
+
     def take_damage(self, attacker, dmg):
 
-        # if self.item is GARLIC_ARMOR:
-        #     if dmg <= 3:
-        #         dmg = 1
-        #     else:
-        #         dmg -= 2
-        #
-        # if self.item is MELON_ARMOR:
-        #     dmg -= 20
-        #     self.item.set_active(0)
+        if self.status == STATUS.WEAK:
+            dmg += 3
 
-        # if dmg < 0:
-        #     dmg = 0
+        if self.status == STATUS.GARLIC_ARMOR:
+            dmg -= 2
+            if dmg < 2:
+                dmg = 1
+
+        if self.status == STATUS.MELON_ARMOR:
+            dmg -= 20
+            if dmg < 0:
+                dmg = 0
+            self.status = None
+
+        if self.status == STATUS.COCONUT_SHIELD:
+            dmg = 0
+            self.status = None
 
         self.health = self.health - dmg
 
@@ -101,8 +121,18 @@ class Pet:
         else:
             pass
         # self.battleground_team[self.battleground_team.index(self)] = None
-        print("animal '" + self.name_tag + "' has fainted!")
+        print(self.name + " has fainted!")
         self.is_fainted = True
+
+        team = self.battleground_team
+        if team is None:
+            team = self.team
+
+        if self.status == STATUS.HONEY_BEE:
+            team.summon_pet(self.get_index(), "bee", 1, 1, None)
+
+        if self.status == STATUS.EXTRA_LIFE:
+            team.summon_pet(self.get_index(), self.name, 1, 1, None)
 
     def die(self):
         self.end_of_battle()
@@ -122,6 +152,7 @@ class Pet:
             self.temp_health += stats[1]
         self.attack += stats[0]
         self.health += stats[1]
+        print(str(self) + " gained " + str(stats[0]) + " attack and " + str(stats[1]) + " health.")
 
     def gain_exp(self, exp):
         self.experience += exp
@@ -184,6 +215,15 @@ class Pet:
     def get_is_fainted(self):
         return self.is_fainted
 
+    def get_status(self):
+        return self.status
+
+    def get_index(self):
+        team = self.battleground_team
+        if team is None:
+            team = self.team
+        return team.get_pets().index(self)
+
     def set_team(self, team):
         self.team = team
 
@@ -210,5 +250,8 @@ class Pet:
     def set_temp_health(self, th):
         self.temp_health = th
 
+    def set_status(self, status):
+        self.status = status
+
     def __str__(self):
-        return self.name_tag
+        return self.name

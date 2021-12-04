@@ -59,8 +59,8 @@ class Battleground:
         send_triggers(TRIGGER.BeforeAttack, team1_fighter, self)
         send_triggers(TRIGGER.BeforeAttack, team2_fighter, self)
 
-        team1_fighter.take_damage(team2_fighter, team2_fighter.get_dmg())
-        team2_fighter.take_damage(team1_fighter, team1_fighter.get_dmg())
+        team1_fighter.attack_enemy(team2_fighter)
+        team2_fighter.attack_enemy(team1_fighter)
 
         send_triggers(TRIGGER.AfterAttack, team1_fighter, self)
         send_triggers(TRIGGER.AfterAttack, team2_fighter, self)

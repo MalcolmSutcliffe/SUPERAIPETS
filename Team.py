@@ -20,9 +20,10 @@ class Team:
         if self.pets[pos] is None:
             self.pets[pos] = new_pet
             return 1
+        new_pet.set_team(self)
         return 0
 
-    def summon_pet(self, index, summon_tag, summon_attack=0, summon_health=0):
+    def summon_pet(self, index, summon_tag, summon_attack=0, summon_health=0, status=None):
 
         summon_animal = Pet(summon_tag)
 
@@ -37,6 +38,7 @@ class Team:
 
         summon_animal.set_base_attack(summon_attack)
         summon_animal.set_base_health(summon_health)
+        summon_animal.set_status(status)
 
         if self.has_space():
             has_summoned = False
@@ -45,6 +47,7 @@ class Team:
                 if x is None or x.get_is_fainted():
                     self.pets[index] = summon_animal
                     send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
+                    print(str(summon_animal) + " was summoned with status: " + str(status))
                     has_summoned = True
                 else:
                     self.advance_team_from(index)
@@ -52,6 +55,7 @@ class Team:
                     if x is None or x.get_is_fainted():
                         self.pets[index] = summon_animal
                         send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
+                        print(str(summon_animal) + " was summoned with status: " + str(status))
                         has_summoned = True
                     else:
                         self.retreat_team()
@@ -101,7 +105,7 @@ class Team:
     def remove_fainted(self):
         for x in self.pets:
             if x is not None and x.get_is_fainted():
-                self.pets[self.pets.index(x)] = None
+                self.pets[self.pets.index(x)].die()
 
     # def combine_pet(self, new_pet, pos):
     #     if self.pets[pos] is None:

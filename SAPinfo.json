@@ -2245,7 +2245,7 @@
         },
         "effect": {
           "kind": "ApplyStatus",
-          "status": "status-weak",
+          "status": "WEAK",
           "to": {
             "kind": "RandomEnemy",
             "n": 1
@@ -2260,7 +2260,7 @@
         },
         "effect": {
           "kind": "ApplyStatus",
-          "status": "status-weak",
+          "status": "WEAK",
           "to": {
             "kind": "RandomEnemy",
             "n": 2
@@ -2275,7 +2275,7 @@
         },
         "effect": {
           "kind": "ApplyStatus",
-          "status": "status-weak",
+          "status": "WEAK",
           "to": {
             "kind": "RandomEnemy",
             "n": 3
@@ -6002,7 +6002,7 @@
           "effects": [
             {
               "kind": "ApplyStatus",
-              "status": "status-melon-armor",
+              "status": "MELON_ARMOR",
               "to": {
                 "kind": "Self"
               }
@@ -6030,7 +6030,7 @@
           "effects": [
             {
               "kind": "ApplyStatus",
-              "status": "status-melon-armor",
+              "status": "MELON_ARMOR",
               "to": {
                 "kind": "Self"
               }
@@ -6058,7 +6058,7 @@
           "effects": [
             {
               "kind": "ApplyStatus",
-              "status": "status-melon-armor",
+              "status": "MELON_ARMOR",
               "to": {
                 "kind": "Self"
               }
@@ -6971,7 +6971,7 @@
         },
         "effect": {
           "kind": "ApplyStatus",
-          "status": "status-melon-armor",
+          "status": "MELON_ARMOR",
           "to": {
             "kind": "FriendBehind",
             "n": 1
@@ -6986,7 +6986,7 @@
         },
         "effect": {
           "kind": "ApplyStatus",
-          "status": "status-melon-armor",
+          "status": "MELON_ARMOR",
           "to": {
             "kind": "FriendBehind",
             "n": 2
@@ -7001,7 +7001,7 @@
         },
         "effect": {
           "kind": "ApplyStatus",
-          "status": "status-melon-armor",
+          "status": "MELON_ARMOR",
           "to": {
             "kind": "FriendBehind",
             "n": 3
@@ -7551,6 +7551,7 @@
           "pet": "pet-bus",
           "withAttack": 5,
           "withHealth": 5,
+          "withStatus": "SPLASH_ATTACK",
           "team": "Friendly",
           "n": 1
         }
@@ -7566,6 +7567,7 @@
           "pet": "pet-bus",
           "withAttack": 10,
           "withHealth": 10,
+          "withStatus": "SPLASH_ATTACK",
           "team": "Friendly",
           "n": 1
         }
@@ -7581,6 +7583,7 @@
           "pet": "pet-bus",
           "withAttack": 15,
           "withHealth": 15,
+          "withStatus": "SPLASH_ATTACK",
           "team": "Friendly",
           "n": 1
         }
@@ -9639,7 +9642,7 @@
         },
         "effect": {
           "kind": "ApplyStatus",
-          "status": "status-weak",
+          "status": "WEAK",
           "to": {
             "kind": "All"
           }
@@ -9653,7 +9656,7 @@
         },
         "effect": {
           "kind": "ApplyStatus",
-          "status": "status-weak",
+          "status": "WEAK",
           "to": {
             "kind": "All"
           }
@@ -9667,7 +9670,7 @@
         },
         "effect": {
           "kind": "ApplyStatus",
-          "status": "status-weak",
+          "status": "WEAK",
           "to": {
             "kind": "All"
           }
@@ -9962,7 +9965,7 @@
         "StandardPack",
         "ExpansionPack1"
       ],
-      "status": "status-poison-attack",
+      "status": "POISON_ATTACK",
       "probabilities": [
         {
           "kind": "shop",
@@ -10656,7 +10659,7 @@
         },
         "effect": {
           "kind": "ApplyStatus",
-          "status": "status-coconut-shield",
+          "status": "COCONUT_SHIELD",
           "to": {
             "kind": "Self"
           }
@@ -10671,7 +10674,7 @@
         },
         "effect": {
           "kind": "ApplyStatus",
-          "status": "status-coconut-shield",
+          "status": "COCONUT_SHIELD",
           "to": {
             "kind": "Self"
           }
@@ -10686,7 +10689,7 @@
         },
         "effect": {
           "kind": "ApplyStatus",
-          "status": "status-coconut-shield",
+          "status": "COCONUT_SHIELD",
           "to": {
             "kind": "Self"
           }
@@ -11442,7 +11445,7 @@
       "tier": "Summoned",
       "baseAttack": "?",
       "baseHealth": "?",
-      "status": "status-splash-attack"
+      "status": "SPLASH_ATTACK"
     },
     "pet-zombie-fly": {
       "name": "Zombie Fly",
@@ -11747,7 +11750,7 @@
           "to": {
             "kind": "PurchaseTarget"
           },
-          "status": "status-honey-bee"
+          "status": "HONEY_BEE"
         }
       },
       "probabilities": [
@@ -12049,7 +12052,7 @@
           "to": {
             "kind": "PurchaseTarget"
           },
-          "status": "status-bone-attack"
+          "status": "BONE_ATTACK"
         }
       },
       "probabilities": [
@@ -12327,7 +12330,7 @@
           "to": {
             "kind": "PurchaseTarget"
           },
-          "status": "status-garlic-armor"
+          "status": "GARLIC_ARMOR"
         }
       },
       "probabilities": [
@@ -12743,7 +12746,7 @@
           "to": {
             "kind": "PurchaseTarget"
           },
-          "status": "status-splash-attack"
+          "status": "SPLASH_ATTACK"
         }
       },
       "probabilities": [
@@ -12944,7 +12947,7 @@
           "to": {
             "kind": "PurchaseTarget"
           },
-          "status": "status-melon-armor"
+          "status": "MELON_ARMOR"
         }
       },
       "probabilities": [
@@ -13125,9 +13128,9 @@
     }
   },
   "statuses": {
-    "status-weak": {
+    "WEAK": {
       "name": "Weak",
-      "id": "status-weak",
+      "id": "WEAK",
       "image": {
         "source": "noto-emoji",
         "commit": "e022fd6573782431ac9a65b520376b57511c31cd",
@@ -13146,9 +13149,9 @@
         }
       }
     },
-    "status-coconut-shield": {
+    "COCONUT_SHIELD": {
       "name": "Coconut Shield",
-      "id": "status-coconut-shield",
+      "id": "COCONUT_SHIELD",
       "image": {
         "source": "twemoji",
         "commit": "793a6a93f303c08877dd6eb589b2fabb3d1c45ee",
@@ -13167,9 +13170,9 @@
         }
       }
     },
-    "status-honey-bee": {
+    "HONEY_BEE": {
       "name": "Honey Bee",
-      "id": "status-honey-bee",
+      "id": "HONEY_BEE",
       "image": {
         "source": "twemoji",
         "commit": "793a6a93f303c08877dd6eb589b2fabb3d1c45ee",
@@ -13189,9 +13192,9 @@
         }
       }
     },
-    "status-bone-attack": {
+    "BONE_ATTACK": {
       "name": "Bone Attack",
-      "id": "status-bone-attack",
+      "id": "BONE_ATTACK",
       "image": {
         "source": "twemoji",
         "commit": "793a6a93f303c08877dd6eb589b2fabb3d1c45ee",
@@ -13210,9 +13213,9 @@
         }
       }
     },
-    "status-garlic-armor": {
+    "GARLIC_ARMOR": {
       "name": "Garlic Armor",
-      "id": "status-garlic-armor",
+      "id": "GARLIC_ARMOR",
       "image": {
         "source": "twemoji",
         "commit": "793a6a93f303c08877dd6eb589b2fabb3d1c45ee",
@@ -13231,9 +13234,9 @@
         }
       }
     },
-    "status-splash-attack": {
+    "SPLASH_ATTACK": {
       "name": "Splash Attack",
-      "id": "status-splash-attack",
+      "id": "SPLASH_ATTACK",
       "image": {
         "source": "twemoji",
         "commit": "793a6a93f303c08877dd6eb589b2fabb3d1c45ee",
@@ -13251,9 +13254,9 @@
         }
       }
     },
-    "status-melon-armor": {
+    "MELON_ARMOR": {
       "name": "Melon Armor",
-      "id": "status-melon-armor",
+      "id": "MELON_ARMOR",
       "image": {
         "source": "twemoji",
         "commit": "793a6a93f303c08877dd6eb589b2fabb3d1c45ee",
@@ -13314,9 +13317,9 @@
         }
       }
     },
-    "status-poison-attack": {
+    "POISON_ATTACK": {
       "name": "Poison Attack",
-      "id": "status-poison-attack",
+      "id": "POISON_ATTACK",
       "image": {
         "source": "twemoji",
         "commit": "793a6a93f303c08877dd6eb589b2fabb3d1c45ee",

@@ -3,35 +3,35 @@ from enum import Enum
 
 
 class TRIGGER(Enum):
-    AfterAttack = "AfterAttack"                                         # implemented
-    BeforeAttack = "BeforeAttack"                                       # implemented
-    Buy = "Buy"
-    BuyAfterLoss = "BuyAfterLoss"
-    BuyFood = "BuyFood"
-    BuyTier1Animal = "BuyTier1Animal"
-    CastsAbility = "CastsAbility"
-    EatsShopFood = "EatsShopFood"
-    EndOfTurn = "EndOfTurn"
-    EndOfTurnWith2PlusGold = "EndOfTurnWith2PlusGold"
-    EndOfTurnWith3PlusGold = "EndOfTurnWith3PlusGold"
-    EndOfTurnWith4OrLessAnimals = "EndOfTurnWith4OrLessAnimals"
-    EndOfTurnWithLvl3Friend = "EndOfTurnWithLvl3Friend"
-    Faint = "Faint"                                                     # implemented
-    Hurt = "Hurt"                                                       # implemented
-    KnockOut = "Knockout"
-    LevelUp = "LevelUp"
-    Sell = "Sell"
-    StartOfBattle = "StartOfBattle"                                     # implemented
-    StartOfTurn = "StartOfTurn"
-    Summoned = "Summoned"
+    AfterAttack = 1                         # implemented
+    BeforeAttack = 2                        # implemented
+    Buy = 3
+    BuyAfterLoss = 4
+    BuyFood = 5
+    BuyTier1Animal = 6
+    CastsAbility = 7
+    EatsShopFood = 8
+    EndOfTurn = 9
+    EndOfTurnWith2PlusGold = 10
+    EndOfTurnWith3PlusGold = 11
+    EndOfTurnWith4OrLessAnimals = 12
+    EndOfTurnWithLvl3Friend = 13
+    Faint = 14                              # implemented
+    Hurt = 15                               # implemented
+    KnockOut = 16
+    LevelUp = 17
+    Sell = 18
+    StartOfBattle = 19                      # implemented
+    StartOfTurn = 20
+    Summoned = 21
 
 
 class TRIGGERED_BY(Enum):
-    EachFriend = "EachFriend"                                           # implemented
-    EachFriendInShop = "EachFriendInShop"
-    FriendAhead = "FriendAhead"                                         # implemented
-    Player = "Player"                                                   # implemented
-    Self = "Self"                                                       # implemented
+    EachFriend = 1                          # implemented
+    EachFriendInShop = 2
+    FriendAhead = 3                         # implemented
+    Player = 4                              # implemented
+    Self = 5                                # implemented
 
 
 # inputs: trigger_type = a TRIGGER, trigger_from = the pet object  causing the trigger, battleground: the

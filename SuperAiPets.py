@@ -3,6 +3,8 @@ import os
 from Battleground import *
 from Team import Team
 from Pet import Pet
+from Status import STATUS
+from SAP_Data import DATA
 
 # initialize the pygame module
 pygame.display.init()
@@ -21,6 +23,8 @@ def display_pet(pet, direction, xpos, ypos):
     window.blit(pet.get_sprite(direction), (xpos, ypos))
     pet_attack = myfont.render("AD: " + str(pet.get_attack()), False, (0, 0, 0))
     pet_hp = myfont.render("HP: " + str(pet.get_health()), False, (0, 0, 0))
+    status = myfont.render(str(pet.status), False, (0, 0, 0))
+    window.blit(status, (xpos+32, ypos))
     window.blit(pet_attack, (xpos+32, ypos+120))
     window.blit(pet_hp, (xpos+62, ypos+120))
 
@@ -46,12 +50,10 @@ def display_battle(bg_object):
 
 
 def main():
-    # f = open("SAPinfo.json")
-    # data = json.load(f)
-    # f.close()
-    # for i in data.get("pets"):
+
+    # for i in DATA.get("statuses"):
     #     print(i)
-    # print(data.get("pets").get("pet-ant").get("level1Ability"))
+    # print(DATA.get("pets").get("pet-ant").get("level1Ability"))
 
     team1 = Team()
     team2 = Team()
@@ -67,16 +69,18 @@ def main():
     my_spider = Pet("spider")
     my_sheep = Pet("sheep")
     my_dragon = Pet("dragon")
+    my_deer = Pet("deer")
+    my_dragon.set_status(STATUS.HONEY_BEE)
     team1.add_pet(my_fish, 0)
     team1.add_pet(my_beetle, 1)
     team1.add_pet(my_cow, 2)
     team1.add_pet(my_dragon, 3)
-    team1.add_pet(my_hippo, 4)
-    team2.add_pet(my_lobster, 0)
-    team2.add_pet(my_kangaroo, 1)
-    team2.add_pet(my_dog, 2)
-    team2.add_pet(my_spider, 3)
-    team2.add_pet(my_sheep, 4)
+    team1.add_pet(my_ant, 4)
+    team2.add_pet(my_camel, 0)
+    team2.add_pet(my_dog, 1)
+    team2.add_pet(my_kangaroo, 2)
+    team2.add_pet(my_sheep, 3)
+    team2.add_pet(my_deer, 4)
     base_battleground = Battleground(team1, team2)
 
     # 0 = main menu

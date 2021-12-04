@@ -1,50 +1,51 @@
 from functools import total_ordering
 from AbilityManager import *
 from SAP_Data import DATA
+from Status import STATUS
 import random
 from enum import Enum
 
 
 class EFFECT_TYPE(Enum):
-    AllOf = "AllOf"                                             # implemented
-    ApplyStatus = "ApplyStatus"
-    DealDamage = "DealDamage"                                   # implemented
-    FoodMultiplier = "FoodMultiplier"
-    GainExperience = "GainExperience"
-    GainGold = "GainGold"
-    ModifyStats = "ModifyStats"                                 # implemented
-    ModifyStatsNotInBattle = "ModifyStatsNotInBattle"
-    OneOf = "OneOf"                                             # implemented
-    ReduceHealth = "ReduceHealth"
-    RefillShops = "RefillShops"
-    RepeatAbility = "RepeatAbility"
-    SummonPet = "SummonPet"                                     # implemented
-    SummonRandomPet = "SummonRandomPet"
-    Swallow = "Swallow"
-    TransferAbility = "TransferAbility"
-    TransferStats = "TransferStats"
+    AllOf = 1                                                   # implemented
+    ApplyStatus = 2
+    DealDamage = 3                                              # implemented
+    FoodMultiplier = 4
+    GainExperience = 5
+    GainGold = 6
+    ModifyStats = 7                                             # implemented
+    ModifyStatsNotInBattle = 8
+    OneOf = 9                                                   # implemented
+    ReduceHealth = 10
+    RefillShops = 11
+    RepeatAbility = 12
+    SummonPet = 13                                              # implemented
+    SummonRandomPet = 14
+    Swallow = 15
+    TransferAbility = 16
+    TransferStats = 17
 
 
 class TARGET(Enum):
-    AdjacentAnimals = "AdjacentAnimals"                         # implemented
-    All = "All"                                                 # implemented
-    DifferentTierAnimals = "DifferentTierAnimals"               # implemented
-    EachFriend = "EachFriend"                                   # implemented
-    EachShopAnimal = "EachShopAnimal"                           # implemented
-    FirstEnemy = "FirstEnemy"                                   # implemented
-    FriendAhead = "FriendAhead"                                 # implemented
-    FriendBehind = "FriendBehind"                               # implemented
-    HighestHealthEnemy = "HighestHealthEnemy"                   # implemented
-    LastEnemy = "LastEnemy"                                     # implemented
-    LeftMostFriend = "LeftMostFriend"                           # implemented
-    Level2And3Friends = "Level2And3Friends"                     # implemented
-    LowestHealthEnemy = "LowestHealthEnemy"                     # implemented
-    RandomEnemy = "RandomEnemy"                                 # implemented
-    RandomFriend = "RandomFriend"                               # implemented
-    RightMostFriend = "RightMostFriend"                         # implemented
-    Self = "Self"                                               # implemented
-    StrongestFriend = "StrongestFriend"                         # implemented
-    TriggeringEntity = "TriggeringEntity"                       # implemented
+    AdjacentAnimals = 1                                         # implemented
+    All = 2                                                     # implemented
+    DifferentTierAnimals = 3                                    # implemented
+    EachFriend = 4                                              # implemented
+    EachShopAnimal = 5                                          # implemented
+    FirstEnemy = 6                                              # implemented
+    FriendAhead = 7                                             # implemented
+    FriendBehind = 8                                            # implemented
+    HighestHealthEnemy = 9                                      # implemented
+    LastEnemy = 10                                              # implemented
+    LeftMostFriend = 11                                         # implemented
+    Level2And3Friends = 12                                      # implemented
+    LowestHealthEnemy = 13                                      # implemented
+    RandomEnemy = 14                                            # implemented
+    RandomFriend = 15                                           # implemented
+    RightMostFriend = 16                                        # implemented
+    Self = 17                                                   # implemented
+    StrongestFriend = 18                                        # implemented
+    TriggeringEntity = 19                                       # implemented
 
 
 # @total_ordering
@@ -75,7 +76,7 @@ class PetAbility:
 
     def execute(self):
 
-        print("executing " + str(self.pet) + "'s ability")
+        print(str(self.pet) + " used their ability!")
 
         # if animal is fainted, then dont perform ability (unless the trigger is fainting itself)
         if self.pet.get_is_fainted():
@@ -104,14 +105,13 @@ class PetAbility:
         if self.effect_type == EFFECT_TYPE.ModifyStats:
             for target in targets:
                 self.modify_stats(target)
-                print(str(target) + " | gained stats!")
             return
 
         # DealDamage
         if self.effect_type == EFFECT_TYPE.DealDamage:
             for target in targets:
                 self.deal_damage(target)
-                print (str(self.pet) + " did damage to " + str(target))
+                print(str(self.pet) + " did damage to " + str(target))
 
     # generates the list of targets for the ability when it is triggered
 
@@ -333,12 +333,17 @@ class PetAbility:
 
     def summon(self, target):
 
-        n = self.ability_data.get("effect").get("n")
-        summon_team = self.ability_data.get("effect").get("team")
-        summon_tag = self.ability_data.get("effect").get("pet")
+        n = self.effect.get("n")
+        summon_team = self.effect.get("team")
+        summon_tag = self.effect.get("pet")
         summon_tag = summon_tag[4:]
-        summon_attack = self.ability_data.get("effect").get("withAttack")
-        summon_health = self.ability_data.get("effect").get("withHealth")
+        summon_attack = self.effect.get("withAttack")
+        summon_health = self.effect.get("withHealth")
+        try:
+            status = STATUS[self.effect.get("withStatus")]
+            print(STATUS[self.effect.get("withStatus")])
+        except KeyError:
+            status = None
 
         team = self.pet.get_battleground_team()
         if team is None:
@@ -353,15 +358,15 @@ class PetAbility:
         target_index = team.get_pets().index(target)
 
         for i in range(n):
-            team.summon_pet(target_index, summon_tag, summon_attack, summon_health)
+            team.summon_pet(target_index, summon_tag, summon_attack, summon_health, status)
 
     def all_of(self):
-        for ability_data in self.ability_data.get("effect").get("effects"):
+        for ability_data in self.effect.get("effects"):
             to_run = PetAbility(self.pet, ability_data)
             to_run.execute()
 
     def one_of(self):
-        ability_data = random.sample(self.ability_data.get("effect").get("effects"), 1)
+        ability_data = random.sample(self.effect.get("effects"), 1)
         to_run = PetAbility(self.pet, ability_data[0])
         to_run.execute()
 
