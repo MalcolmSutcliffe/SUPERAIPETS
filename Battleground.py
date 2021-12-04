@@ -39,12 +39,7 @@ class Battleground:
 
     def smack(self):
 
-        if self.team1.pets[4] is None:
-            print("Error, no fighter for team 1")
-            return
-
-        while self.team2.pets[4] is None:
-            print("Error, no fighter for team 1")
+        if self.team1.get_pets()[4] is None or self.team2.get_pets()[4] is None:
             return
 
         team1_fighter = self.team1.pets[4]
@@ -58,6 +53,14 @@ class Battleground:
         send_triggers(TRIGGER.BeforeAttack, team1_fighter, self)
         send_triggers(TRIGGER.BeforeAttack, team2_fighter, self)
         self.AM.perform_abilities()
+
+        self.team1.remove_fainted()
+        self.team2.remove_fainted()
+
+        if self.team1.get_pets()[4] is None or self.team2.get_pets()[4] is None:
+            return
+
+        print("Attack!")
 
         team1_fighter.attack_enemy(team2_fighter)
         team2_fighter.attack_enemy(team1_fighter)
@@ -95,7 +98,6 @@ class Battleground:
 
             time.sleep(GAME_SPEED)
 
-            print("Attack!")
             self.smack()
 
             display_battle(self)

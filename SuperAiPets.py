@@ -6,7 +6,7 @@ from Battleground import *
 from Team import Team
 from Pet import Pet
 from Status import STATUS
-from SAP_Data import DATA, ANIMAL_TIERS
+from SAP_Data import ANIMAL_TIERS
 
 # initialize the pygame module
 pygame.display.init()
@@ -79,10 +79,12 @@ def main():
     my_blowfish = Pet("blowfish")
     my_rhino = Pet("rhino")
     my_turtle.set_level(2)
+    my_octopus = Pet("octopus")
+    my_octopus.set_level(3)
     my_dragon.set_status(STATUS.GARLIC_ARMOR)
     # my_sheep.set_status(STATUS.MELON_ARMOR)
 
-    random.seed(359871935)
+    random.seed(56749586465)
 
     random_pet = []
     for i in range(10):
@@ -101,7 +103,8 @@ def main():
     # team2.add_pet(my_dog, 1)
     # team2.add_pet(my_camel, 2)
     # team2.add_pet(my_deer, 3)
-    # team2.add_pet(my_rhino, 4)
+    # team2.add_pet(my_octopus, 4)
+
     base_battleground = Battleground(team1, team2)
 
     # 0 = main menu

@@ -224,9 +224,13 @@ class Pet:
         return self.status
 
     def get_index(self):
+
         team = self.battleground_team
         if team is None:
             team = self.team
+        if team is None:
+            return -1
+
         return team.get_pets().index(self)
 
     def set_team(self, team):

@@ -47,6 +47,7 @@ class TARGET(Enum):
     Self = 17  # implemented
     StrongestFriend = 18  # implemented
     TriggeringEntity = 19  # implemented
+    EachEnemy = 20
 
 
 @total_ordering
@@ -116,6 +117,8 @@ class PetAbility:
         if targets is None or all(x is None for x in targets):
             return
 
+        targets = [i for i in targets if i is not None]
+
         # ModifyStats
         if self.effect_type == EFFECT_TYPE.ModifyStats:
             for target in targets:
@@ -144,10 +147,16 @@ class PetAbility:
 
         if target_info is None:
             return
+        try:
+            team = copy.copy(self.pet.get_battleground_team().get_pets())
+        except AttributeError:
+            return
 
-        team = copy.copy(self.pet.get_battleground_team().get_pets())
         if team is None:
             team = copy.copy(self.pet.get_team().get_pets())
+
+        if team is None:
+            return
 
         enemy_team = copy.copy(self.pet.get_battleground_enemy_team().get_pets())
 
@@ -248,6 +257,10 @@ class PetAbility:
             except ValueError:
                 pass
             return team
+
+        # EachFriend
+        if kind == TARGET.EachEnemy:
+            return enemy_team
 
         # EachShopAnimal
         if kind == TARGET.EachShopAnimal:
