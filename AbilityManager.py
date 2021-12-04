@@ -102,6 +102,5 @@ class AbilityManager:
         while len(self.ability_queue) > 0:
             self.ability_queue.sort()
             self.ability_queue.pop(0).execute()
-            self.ability_queue.sort()
             self.battleground.display()
             time.sleep(GAME_SPEED)

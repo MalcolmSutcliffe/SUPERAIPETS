@@ -2231,7 +2231,37 @@
         "StandardPack",
         "ExpansionPack1",
         "EasterEgg"
-      ]
+      ],
+      "level1Ability": {
+        "description": "",
+        "trigger": "NA",
+        "triggeredBy": {
+          "kind": "NA"
+        },
+        "effect": {
+          "kind": "NA"
+        }
+      },
+      "level2Ability": {
+        "description": "",
+        "trigger": "NA",
+        "triggeredBy": {
+          "kind": "NA"
+        },
+        "effect": {
+          "kind": "NA"
+        }
+      },
+      "level3Ability": {
+        "description": "",
+        "trigger": "NA",
+        "triggeredBy": {
+          "kind": "NA"
+        },
+        "effect": {
+          "kind": "NA"
+        }
+      }
     },
     "pet-bat": {
       "name": "Bat",
@@ -11279,42 +11309,42 @@
         "description": "The friend ahead casts their ability twice in battle.",
         "trigger": "CastsAbility",
         "triggeredBy": {
-          "kind": "FriendAhead",
-          "n": 1
+          "kind": "FriendAhead"
         },
         "effect": {
           "kind": "RepeatAbility",
           "target": {
             "kind": "TriggeringEntity"
-          }
+          },
+          "n": 1
         }
       },
       "level2Ability": {
         "description": "The friend ahead casts their ability twice in battle.",
         "trigger": "CastsAbility",
         "triggeredBy": {
-          "kind": "FriendAhead",
-          "n": 1
+          "kind": "FriendAhead"
         },
         "effect": {
           "kind": "RepeatAbility",
           "target": {
             "kind": "TriggeringEntity"
-          }
+          },
+          "n": 1
         }
       },
       "level3Ability": {
         "description": "The friend ahead casts their ability twice in battle.",
         "trigger": "CastsAbility",
         "triggeredBy": {
-          "kind": "FriendAhead",
-          "n": 1
+          "kind": "FriendAhead"
         },
         "effect": {
           "kind": "RepeatAbility",
           "target": {
             "kind": "TriggeringEntity"
-          }
+          },
+          "n": 1
         }
       },
       "probabilities": [

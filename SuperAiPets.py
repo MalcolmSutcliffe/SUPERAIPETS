@@ -81,35 +81,38 @@ def main():
     my_badger = Pet("badger")
     my_blowfish = Pet("blowfish")
     my_rhino = Pet("rhino")
+    my_fly = Pet("fly")
+    my_tiger = Pet("tiger")
+    my_snake = Pet("snake")
     my_turtle.set_level(2)
     my_octopus = Pet("octopus")
     my_octopus.set_level(3)
     my_dragon.set_status(STATUS.GARLIC_ARMOR)
     # my_sheep.set_status(STATUS.MELON_ARMOR)
 
-    random.seed(46398039462)
+    random.seed(9797693487634634)
 
     random_pet = []
     for i in range(10):
         random_pet.append(Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:]))
         random_pet[i].set_level(3)
 
-    for i in range(5):
-        team1.add_pet(random_pet[i], i)
-        team2.add_pet(random_pet[i+5], i)
-        # print(random_pet[i])
-        # print(random_pet[i+5])
+    # for i in range(5):
+    #     team1.add_pet(random_pet[i], i)
+    #     team2.add_pet(random_pet[i+5], i)
+    #     print(random_pet[i])
+    #     print(random_pet[i+5])
 
-    # team1.add_pet(my_fish, 0)
-    # team1.add_pet(my_beetle, 1)
-    # team1.add_pet(my_turtle, 2)
-    # team1.add_pet(my_sheep, 3)
-    # team1.add_pet(my_ant, 4)
-    # team2.add_pet(my_kangaroo, 0)
-    # team2.add_pet(my_dog, 1)
-    # team2.add_pet(my_camel, 2)
-    # team2.add_pet(my_deer, 3)
-    # team2.add_pet(my_octopus, 4)
+    team1.add_pet(my_hippo, 0)
+    team1.add_pet(my_beetle, 1)
+    team1.add_pet(my_fish, 2)
+    team1.add_pet(my_ant, 3)
+    team1.add_pet(my_sheep, 4)
+    team2.add_pet(my_kangaroo, 0)
+    team2.add_pet(my_dog, 1)
+    team2.add_pet(my_tiger, 2)
+    team2.add_pet(my_snake, 3)
+    team2.add_pet(my_dragon, 4)
 
     base_battleground = Battleground(team1, team2)
 

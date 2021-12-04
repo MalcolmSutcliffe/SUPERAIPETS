@@ -11,21 +11,22 @@ class EFFECT_TYPE(Enum):
     AllOf = 1                   # implemented
     ApplyStatus = 2             # implemented
     DealDamage = 3              # implemented
-    FoodMultiplier = 4
-    GainExperience = 5
-    GainGold = 6
+    FoodMultiplier = 4          #
+    GainExperience = 5          #
+    GainGold = 6                #
     ModifyStats = 7             # implemented
-    ModifyStatsNotInBattle = 8
+    ModifyStatsNotInBattle = 8  #
     OneOf = 9                   # implemented
     ReduceHealth = 10           #
-    RefillShops = 11
+    RefillShops = 11            #
     RepeatAbility = 12          #
     SummonPet = 13              # implemented
     SummonRandomPet = 14        # implemented
     Swallow = 15                #
-    TransferAbility = 16
+    TransferAbility = 16        #
     TransferStats = 17          #
-    NA = 18
+    NA = 18                     #
+    Evolve = 19                 #
 
 
 class TARGET(Enum):
@@ -98,7 +99,14 @@ class PetAbility:
             self.one_of()
             return
 
+        # RepeatAbility
+        if self.effect_type == EFFECT_TYPE.RepeatAbility:
+            self.repeat_ability(self.triggering_entity)
+            return
+
         print(str(self.pet) + " used their " + str(self.effect_type) + " ability!")
+
+        send_triggers(TRIGGER.CastsAbility, self.pet, self.pet.get_battleground())
 
         # SummonPet
         if self.effect_type == EFFECT_TYPE.SummonPet:
@@ -183,24 +191,18 @@ class PetAbility:
             except ValueError:
                 pass
             targets = copy.copy(team)
-            for x in targets:
-                if x is None:
-                    targets.remove(x)
-                elif x.get_is_fainted():
-                    targets.remove(x)
-            n = min(n, len(team))
-            targets = random.sample(team, n)
+            targets = [x for x in targets if x is not None]
+            targets = [x for x in targets if not x.get_is_fainted()]
+            n = min(n, len(targets))
+            targets = random.sample(targets, n)
             return targets
 
         # RandomEnemy
         if kind == TARGET.RandomEnemy:
             n = target_info.get("n")
             targets = copy.copy(enemy_team)
-            for x in targets:
-                if x is None:
-                    targets.remove(x)
-                elif x.get_is_fainted():
-                    targets.remove(x)
+            targets = [x for x in targets if x is not None]
+            targets = [x for x in targets if not x.get_is_fainted()]
             n = min(n, len(targets))
             targets = random.sample(targets, n)
             return targets
@@ -462,6 +464,11 @@ class PetAbility:
     def apply_status(self, target):
         status = STATUS[self.effect.get("status")]
         target.set_status(status)
+
+    def repeat_ability(self, target):
+        n = self.effect.get("n")
+        for i in range(n):
+            target.get_battleground().AM.add_to_queue(target.get_ability())
 
     def __eq__(self, other):
         return self.priority == other.priority and self.pet.get_attack() == other.pet.get_attack()

@@ -230,6 +230,9 @@ class Pet:
     def get_status(self):
         return self.status
 
+    def get_ability(self):
+        return self.ability
+
     def get_index(self):
 
         team = self.battleground_team
