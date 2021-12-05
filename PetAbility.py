@@ -575,6 +575,8 @@ class PetAbility:
         copy_health = self.effect.get("copyHealth")
         pet_from = self.generate_targets(self.effect.get("from"))[0]
         pet_to = self.generate_targets(self.effect.get("to"))[0]
+        if pet_from is None or pet_to is None:
+            return
         if debug_mode():
             print("transfering stats from :" + str(pet_from) + " to: " + str(pet_to))
         if copy_attack:
