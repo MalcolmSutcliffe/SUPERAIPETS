@@ -4,7 +4,7 @@ import time
 import pygame
 from SuperAiPets import *
 from AbilityManager import *
-from SAP_Data import GAME_SPEED, DO_PRINTS
+from SAP_Data import GAME_SPEED, debug_mode
 
 
 class Battleground:
@@ -45,7 +45,7 @@ class Battleground:
         team1_fighter = self.team1.pets[4]
         team2_fighter = self.team2.pets[4]
 
-        if DO_PRINTS:
+        if debug_mode():
             print(str(team1_fighter) + " | HP: " + str(team1_fighter.get_health()) + " | Attack: " + str(
                 team1_fighter.get_attack()))
             print(str(team2_fighter) + " | HP: " + str(team2_fighter.get_health()) + " | Attack: " + str(
@@ -61,7 +61,7 @@ class Battleground:
         if self.team1.get_pets()[4] is None or self.team2.get_pets()[4] is None:
             return
 
-        if DO_PRINTS:
+        if debug_mode():
             print("Attack!")
 
         team1_fighter.attack_enemy(team2_fighter)

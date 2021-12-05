@@ -6,7 +6,8 @@ from Battleground import *
 from Team import Team
 from Pet import Pet
 from Status import STATUS
-from SAP_Data import ANIMAL_TIERS, DO_PRINTS
+from SAP_Data import *
+
 
 # initialize the pygame module
 pygame.display.init()
@@ -56,6 +57,13 @@ def display_battle(bg_object):
     display_team_in_battle(False, bg_object.get_team2())
 
 
+def generate_random_team():
+    random_pet = []
+    for i in range(10):
+        random_pet.append(Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:]))
+        random_pet[i].set_level(3)
+    return random_pet
+
 def main():
     # for i in DATA.get("statuses"):
     #     print(i)
@@ -63,8 +71,7 @@ def main():
 
     # print(ANIMAL_TIERS)
 
-    team1 = Team()
-    team2 = Team()
+    
     my_fish = Pet("fish")
     my_ant = Pet("ant")
     my_cow = Pet("cow")
@@ -99,18 +106,16 @@ def main():
     my_caterpillar.set_level(3)
     # my_sheep.set_status(STATUS.MELON_ARMOR)
 
-    random.seed(4579254245)
 
-    random_pet = []
-    for i in range(10):
-        random_pet.append(Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:]))
-        random_pet[i].set_level(3)
-
+    team1 = Team()
+    team2 = Team()
+    random_pet_list = generate_random_team()
     for i in range(5):
-        team1.add_pet(random_pet[i], i)
-        team2.add_pet(random_pet[i + 5], i)
-        # print(random_pet[i])
-        # print(random_pet[i+5])
+        team1.add_pet(random_pet_list[i], i)
+        team2.add_pet(random_pet_list[i + 5], i)
+
+    # print(random_pet[i])
+    # print(random_pet[i+5])
 
     # team1.add_pet(my_hippo, 0)
     # team1.add_pet(my_caterpillar, 1)
@@ -151,8 +156,14 @@ def main():
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
                     if screen == 2:
-                        # print("what up")
-                        base_battleground.battle()
+                        if team1.has_units() and team2.has_units():
+                            base_battleground.battle()
+                
+                        
+                if event.key == pygame.K_d:
+                    toggle_debug()
+                    print
+                        
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
                 x = pos[0]
@@ -162,6 +173,13 @@ def main():
                 # print("\n")
                 screen += 1
                 if screen == 3:
+                    random_pet_list = generate_random_team()
+                    team1 = Team()
+                    team2 = Team()
+                    for i in range(5):
+                        team1.add_pet(random_pet_list[i], i)
+                        team2.add_pet(random_pet_list[i + 5], i)
+                    base_battleground = Battleground(team1, team2)
                     screen = 0
             # only do something if the event is of type QUIT
             if event.type == pygame.QUIT:

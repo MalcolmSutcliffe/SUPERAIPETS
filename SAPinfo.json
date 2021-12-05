@@ -10831,7 +10831,7 @@
             "n": 1
           },
           "amount": {
-            "multiplier": 50
+            "multiplier": 0.5
           }
         }
       },
@@ -10848,7 +10848,7 @@
             "n": 2
           },
           "amount": {
-            "multiplier": 50
+            "multiplier": 0.5
           }
         }
       },
@@ -10865,7 +10865,7 @@
             "n": 3
           },
           "amount": {
-            "multiplier": 50
+            "multiplier": 0.5
           }
         }
       },

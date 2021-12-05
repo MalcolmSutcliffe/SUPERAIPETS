@@ -1,6 +1,6 @@
 from PetAbility import PetAbility
 from AbilityManager import *
-from SAP_Data import DATA, default_texture, DO_PRINTS
+from SAP_Data import DATA, default_texture, debug_mode
 from Status import STATUS
 import os
 
@@ -133,7 +133,7 @@ class Pet:
         else:
             pass
         # self.battleground_team[self.battleground_team.index(self)] = None
-        if DO_PRINTS:
+        if debug_mode():
             print(self.name + " has fainted!")
         self.is_fainted = True
 
@@ -166,7 +166,7 @@ class Pet:
             self.temp_health += stats[1]
         self.attack += stats[0]
         self.health += stats[1]
-        if DO_PRINTS:
+        if debug_mode():
             print(str(self) + " gained " + str(stats[0]) + " attack and " + str(stats[1]) + " health.")
 
     def gain_exp(self, exp):

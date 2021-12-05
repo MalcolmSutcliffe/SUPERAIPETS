@@ -1,7 +1,7 @@
 import copy
 from functools import total_ordering
 from AbilityManager import *
-from SAP_Data import DATA, ANIMAL_TIERS, DO_PRINTS
+from SAP_Data import DATA, ANIMAL_TIERS, debug_mode
 from Status import STATUS
 import random
 from enum import Enum
@@ -104,6 +104,9 @@ class PetAbility:
 
     def execute(self):
 
+        if self.pet is None or self.pet.get_battleground() is None:
+            return
+
         # if animal is fainted, then dont perform ability (unless the trigger is fainting itself)
         if self.pet.get_is_fainted():
             if not (self.trigger == TRIGGER.Faint and self.triggered_by == TRIGGERED_BY.Self):
@@ -124,7 +127,7 @@ class PetAbility:
             self.repeat_ability(self.triggering_entity)
             return
 
-        if DO_PRINTS:
+        if debug_mode():
             print(str(self.pet) + " used their " + str(self.effect_type) + " ability!")
 
         # SummonPet
@@ -166,7 +169,7 @@ class PetAbility:
         # DealDamage
         if self.effect_type == EFFECT_TYPE.DealDamage:
             for target in targets:
-                if DO_PRINTS:
+                if debug_mode():
                     print(str(self.pet) + " did damage to " + str(target))
                 self.deal_damage(target)
             return
@@ -514,7 +517,7 @@ class PetAbility:
 
     def reduce_health(self, target):
         percent = self.effect.get("percentage")
-        if DO_PRINTS:
+        if debug_mode():
             print(str(self.pet) + " reduced " + str(target) + "'s health by " + str(percent * 100) + "%")
         new_health = int(target.get_health() * (1 - percent))
         if new_health <= 0:
@@ -572,7 +575,7 @@ class PetAbility:
         copy_health = self.effect.get("copyHealth")
         pet_from = self.generate_targets(self.effect.get("from"))[0]
         pet_to = self.generate_targets(self.effect.get("to"))[0]
-        if DO_PRINTS:
+        if debug_mode():
             print("transfering stats from :" + str(pet_from) + " to: " + str(pet_to))
         if copy_attack:
             pet_to.set_attack(pet_from.get_attack())

@@ -1,7 +1,7 @@
 import copy
 import json
 from Pet import Pet
-from SAP_Data import DATA, DO_PRINTS
+from SAP_Data import DATA, debug_mode
 from AbilityManager import *
 
 
@@ -52,7 +52,7 @@ class Team:
                 if x is None:
                     self.pets[index] = summon_animal
                     send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
-                    if DO_PRINTS:
+                    if debug_mode():
                         print(str(summon_animal) + " was summoned with status: " + str(status))
                     has_summoned = True
                 else:
@@ -61,7 +61,7 @@ class Team:
                     if x is None:
                         self.pets[index] = summon_animal
                         send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
-                        if DO_PRINTS:
+                        if debug_mode():
                             print(str(summon_animal) + " was summoned with status: " + str(status))
                         has_summoned = True
                     else:
