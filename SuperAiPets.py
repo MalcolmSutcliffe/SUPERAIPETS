@@ -19,8 +19,7 @@ pygame.display.set_caption("SUPERAIPETS")
 
 # create window
 window = pygame.display.set_mode((1280, 720))
-main_menu_bg = pygame.image.load(os.path.join('images', 'main_menu.png'))
-
+battle_bg = pygame.image.load(os.path.join('images', 'battle_bg.png'))
 
 # direction: 0 = left, 1 = right
 def display_pet(pet, direction, xpos, ypos):
@@ -42,17 +41,17 @@ def display_team_in_battle(is_friendly, team):
         direction = 0
         for i, x in enumerate(team.get_pets()):
             if x is not None:
-                display_pet(x, direction, (150 + (94 * i)), 300)
+                display_pet(x, direction, (125 + (94 * i)), 400)
     else:
         direction = 1
         for i, x in enumerate(team.get_pets()):
             if x is not None:
-                display_pet(x, direction, (150 + (94 * (9 - i))), 300)
+                display_pet(x, direction, (175 + (94 * (9 - i))), 400)
 
 
 def display_battle(bg_object):
     pygame.display.flip()
-    window.fill((0, 255, 0))
+    window.blit(battle_bg, (0, 0))
     display_team_in_battle(True, bg_object.get_team1())
     display_team_in_battle(False, bg_object.get_team2())
 
@@ -65,6 +64,11 @@ def generate_random_team():
     return random_pet
 
 def main():
+
+    main_menu_normal = pygame.image.load(os.path.join('images', 'main_menu.png'))
+    main_menu_pressed = pygame.image.load(os.path.join('images', 'main_menu_pressed.png'))
+    main_menu_bg = main_menu_normal
+
     # for i in DATA.get("statuses"):
     #     print(i)
     # print(DATA.get("pets").get("pet-ant").get("level1Ability"))
@@ -158,21 +162,28 @@ def main():
                     if screen == 2:
                         if team1.has_units() and team2.has_units():
                             base_battleground.battle()
-                
-                        
                 if event.key == pygame.K_d:
                     toggle_debug()
                     print
-                        
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                mouseX = pos[0]
+                mouseY = pos[1]
+                if screen == 0 and mouseX >= 266 and mouseX <= 1017 and mouseY >= 159 and mouseY <= 368:
+                    main_menu_bg = main_menu_pressed
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
-                x = pos[0]
-                y = pos[1]
-                # print(x)
-                # print(y)
-                # print("\n")
-                screen += 1
-                if screen == 3:
+                mouseX = pos[0]
+                mouseY = pos[1]
+##                print(mouseX)
+##                print(mouseY)
+##                print("\n")
+                if screen == 0 and mouseX >= 266 and mouseX <= 1017 and mouseY >= 159 and mouseY <= 368:
+                    screen = 1
+                    main_menu_bg = main_menu_normal
+                elif screen == 1:
+                    screen = 2
+                elif screen == 2:
                     random_pet_list = generate_random_team()
                     team1 = Team()
                     team2 = Team()
