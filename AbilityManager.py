@@ -61,7 +61,7 @@ def send_triggers(trigger_type, trigger_from, zone):
 
     try:
         trigger_index = team.get_pets().index(trigger_from)
-    except AttributeError:
+    except ValueError:
         pass
 
     # check if the index is in range

@@ -6,6 +6,17 @@ from SuperAiPets import *
 from AbilityManager import *
 from SAP_Data import GAME_SPEED, debug_mode
 
+# ANIMATION TYPES : {required info}
+
+# Attack : {} (makes the front two pets attack each other)
+# ModifyStats/TransferStats/TransferAbility : {stats: STATS, from: INDEX, to: INDEX} (sends a burger then performs the action)
+# DealDamage/Swallow : {damage: DAMAGE, from: INDEX, to: INDEX} (sends a rock and performs the action)
+# ApplyStatus : {status: STATUS, from: INDEX, to: INDEX}
+# Summon : {pet_to_summon: PET_OBJECT, index: INDEX} (usually preceded by a MovePets)
+# Faint : {index_of: INDEX}
+# MovePets : {[0,0,0,0,0,0,0,0,0,0]} (a list of 10 integers that represent the change in position for each of the pets)
+# AllOf : A list of animation types to perform all at once
+
 
 class Battleground:
 
@@ -15,6 +26,7 @@ class Battleground:
         self.team2 = copy.copy(team2)
         self.team1.set_battleground(self)
         self.team2.set_battleground(self)
+        self.battle_history = []
 
         self.AM = AbilityManager(self)
 

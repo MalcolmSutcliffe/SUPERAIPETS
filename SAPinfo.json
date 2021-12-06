@@ -3926,7 +3926,8 @@
           "kind": "SummonPet",
           "pet": "pet-dirty-rat",
           "team": "Enemy",
-          "n": 1
+          "n": 1,
+          "withLevel": 1
         }
       },
       "level2Ability": {
@@ -3939,7 +3940,8 @@
           "kind": "SummonPet",
           "pet": "pet-dirty-rat",
           "team": "Enemy",
-          "n": 1
+          "n": 1,
+          "withLevel": 1
         }
       },
       "level3Ability": {
@@ -3952,7 +3954,8 @@
           "kind": "SummonPet",
           "pet": "pet-dirty-rat",
           "team": "Enemy",
-          "n": 1
+          "n": 1,
+          "withLevel": 1
         }
       },
       "probabilities": [
@@ -11541,6 +11544,54 @@
         "StandardPack",
         "ExpansionPack1"
       ],
+      "level1Ability": {
+        "description": "Friend ahead attacks: Deal 1 Damage",
+        "trigger": "AfterAttack",
+        "triggeredBy": {
+          "kind": "FriendAhead",
+          "n": 1
+        },
+        "effect": {
+          "kind": "DealDamage",
+          "target": {
+            "kind": "FriendAhead",
+            "n": 1
+          },
+          "amount": 1
+        }
+      },
+      "level2Ability": {
+        "description": "Friend ahead attacks: Deal 1 Damage",
+        "trigger": "AfterAttack",
+        "triggeredBy": {
+          "kind": "FriendAhead",
+          "n": 1
+        },
+        "effect": {
+          "kind": "DealDamage",
+          "target": {
+            "kind": "FriendAhead",
+            "n": 1
+          },
+          "amount": 2
+        }
+      },
+      "level3Ability": {
+        "description": "Friend ahead attacks: Deal 1 Damage",
+        "trigger": "AfterAttack",
+        "triggeredBy": {
+          "kind": "FriendAhead",
+          "n": 1
+        },
+        "effect": {
+          "kind": "DealDamage",
+          "target": {
+            "kind": "FriendAhead",
+            "n": 1
+          },
+          "amount": 3
+        }
+      },
       "tier": "Summoned",
       "baseAttack": 1,
       "baseHealth": 1

@@ -7,7 +7,7 @@ import os
 
 class Pet:
 
-    def __init__(self, name_tag="", team=None, battleground=None, status=None):
+    def __init__(self, name_tag="", team=None, shop=None, battleground=None, status=None):
 
         self.base_attack = 0
         self.base_health = 0
@@ -21,6 +21,8 @@ class Pet:
         self.ability = None
 
         self.team = team
+        self.shop = shop
+        self.is_frozen = False
         self.battleground = battleground
         self.battleground_team = None
         self.battleground_enemy_team = None
@@ -135,7 +137,9 @@ class Pet:
         # self.battleground_team[self.battleground_team.index(self)] = None
         if debug_mode():
             print(self.name + " has fainted!")
+
         self.is_fainted = True
+        self.ability.set_priority(0)
 
         team = self.battleground_team
         if team is None:
@@ -249,6 +253,9 @@ class Pet:
 
         return team.get_pets().index(self)
 
+    def get_is_frozen(self):
+        return self.is_frozen
+
     def set_team(self, team):
         self.team = team
 
@@ -286,6 +293,9 @@ class Pet:
 
     def set_level(self, lvl):
         self.level = lvl
+
+    def set_is_frozen(self, f):
+        self.is_frozen = f
 
     def __str__(self):
         return self.name

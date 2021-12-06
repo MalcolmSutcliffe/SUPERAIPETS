@@ -73,7 +73,7 @@ class PetAbility:
         self.name = self.pet.get_name_tag()
         self.level = self.pet.get_level()
         self.triggering_entity = None
-        self.priority = 0
+        self.priority = 1
         self.effect_type = None
 
         if self.ability_data is None:
@@ -96,11 +96,6 @@ class PetAbility:
         else:
             self.effect = ability_data
             self.effect_type = EFFECT_TYPE[self.ability_data.get("kind")]
-
-        if self.effect_type == EFFECT_TYPE.SummonPet:
-            self.priority = 1
-        if self.effect_type == EFFECT_TYPE.DealDamage:
-            self.priority = 2
 
     def execute(self):
 
@@ -310,7 +305,7 @@ class PetAbility:
 
         # FirstEnemy
         if kind == TARGET.FirstEnemy:
-            targets = [i for i in enemy_team if i is not None and not i.get_is_fainted()]
+            targets = [j for j in enemy_team if j is not None and not j.get_is_fainted()]
             if len(targets) > 0:
                 return [targets[len(targets) - 1]]
             return
@@ -318,11 +313,11 @@ class PetAbility:
         # FriendAhead
         if kind == TARGET.FriendAhead:
             n = target_info.get("n")
-            team = [i for i in team if i is not None]
-            team = [i for i in team if not i.get_is_fainted()]
-            for i in range(n):
+            team = [j for j in team if j is not None]
+            team = [j for j in team if not j.get_is_fainted()]
+            for k in range(n):
                 for j in range(team.index(self.pet) + 1, 5):
-                    if j <= 4 and team[j] is not None and targets.count(team[j]) == 0:
+                    if j < len(team) and team[j] is not None and targets.count(team[j]) == 0:
                         targets.append(team[j])
                         break
             return targets
@@ -330,7 +325,7 @@ class PetAbility:
         # FriendBehind
         if kind == TARGET.FriendBehind:
             n = target_info.get("n")
-            for i in range(n):
+            for k in range(n):
                 index = team.index(self.pet)
                 for j in range(1, index):
                     if index - j >= 0 and team[index - j] is not None and targets.count(team[index - j]) == 0:
@@ -358,9 +353,9 @@ class PetAbility:
 
         # LeftMostFriend
         if kind == TARGET.LeftMostFriend:
-            for i in range(5):
-                if team[i] is not None:
-                    targets.append(team[i])
+            for k in range(5):
+                if team[k] is not None:
+                    targets.append(team[k])
                     return targets
 
         # Level2And3Friends
@@ -383,9 +378,9 @@ class PetAbility:
 
         # RightMostFriend
         if kind == TARGET.RightMostFriend:
-            for i in range(5):
-                if team[4 - i] is not None:
-                    targets.append(team[4 - i])
+            for k in range(5):
+                if team[4 - k] is not None:
+                    targets.append(team[4 - k])
                     return targets
 
         # StrongestFriend
@@ -610,5 +605,8 @@ class PetAbility:
     def get_triggered_by(self):
         return self.triggered_by
 
+    def set_priority(self, prio):
+        self.priority = prio
+
     def __str__(self):
-        return str(self.pet) + " " + str(self.effect_type) + " " + str(self.trigger)
+        return str(self.pet) + " " + str(self.effect_type) # + " " + str(self.trigger)

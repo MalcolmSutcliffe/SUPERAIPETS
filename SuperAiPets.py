@@ -60,8 +60,9 @@ def generate_random_team():
     random_pet = []
     for i in range(10):
         random_pet.append(Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:]))
-        random_pet[i].set_level(random.sample([1,2,3],1)[0])
+        random_pet[i].set_level(random.randint(1, 3))
     return random_pet
+
 
 def main():
 
