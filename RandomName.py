@@ -3,7 +3,7 @@ import random
 
 #wins
 def generateRandomNameSingular():
-    list = ["Arcade Fire","Team 10","VSauce","[Team Name Here]","Boonk Gang","Joe Rogan","Chaos Incarnate","Team Rocket","The Mongol Horde","A Mormon Family","Racist Mario","Papito","The Locust Swarm","The NAACP","North Korean National SAP Team"]
+    list = ["Arcade Fire","Team 10","VSauce","Pizza Time","Boonk Gang","Joe Rogan","Chaos Incarnate","Team Rocket","The Mongol Horde","A Mormon Family","Racist Mario","Papito","The Locust Swarm","The NAACP","North Korean National SAP Team"]
     return random.choice(list)
 
 #win

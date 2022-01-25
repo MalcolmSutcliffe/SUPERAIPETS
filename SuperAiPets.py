@@ -1,8 +1,7 @@
 import random
-
+import ptext
 import pygame
 import os
-from Fonts import *
 from Battleground import *
 from Team import Team
 from Pet import Pet
@@ -14,12 +13,21 @@ from RandomName import *
 # initialize the pygame module
 pygame.display.init()
 pygame.font.init()
-tie_render = mc75.render("It's a Draw!", False, (255, 255, 255))
-tie_rect = tie_render.get_rect(center=(SCREEN_WIDTH/2, 200))
+##tie_render = sn_75.render("It's a Draw!", False, (255, 255, 255))
+##tie_rect = tie_render.get_rect(center=(SCREEN_WIDTH/2, 200))
 # load and set the logo
 pygame.display.set_caption("SUPERAIPETS")
 tflist = [0,1]
+ptext.FONT_NAME_TEMPLATE = "fonts/%s.otf"
 
+bottom_offset = SCREEN_HEIGHT-20
+right_offset = SCREEN_WIDTH-20
+
+
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLACK = (0,0,0)
 # create window
 window = pygame.display.set_mode((1280, 720))
 battle_bg = pygame.image.load(os.path.join('images', 'battle_bg.png'))
@@ -27,14 +35,10 @@ battle_bg = pygame.image.load(os.path.join('images', 'battle_bg.png'))
 # direction: 0 = left, 1 = right
 def display_pet(pet, direction, xpos, ypos):
     window.blit(pet.get_sprite(direction), (xpos, ypos))
-    name = mc15.render(pet.name, False, (255, 255, 255))
-    pet_attack_hp = mc10.render("AD: " + str(pet.get_attack()) + "   HP: " + str(pet.get_health()), False, (255, 255, 255))
-    status = mc10.render(str(pet.status)[7:], False, (255, 255, 255))
-    level = mc10.render("lvl: " + str(pet.get_level()), False, (255, 255, 255))
-    window.blit(status, (xpos + 20, ypos))
-    window.blit(name, (xpos + 20, ypos - 40))
-    window.blit(level, (xpos + 20, ypos - 20))
-    window.blit(pet_attack_hp, (xpos + 32, ypos + 135))
+    ptext.draw(str(pet.status)[7:], (xpos + 20, ypos), fontname ="Minecraftia", fontsize=15, owidth=1.5, ocolor=(0,0,0), color=(255,255,255))
+    ptext.draw(pet.name, (xpos + 20, ypos - 40), fontname ="Minecraftia", fontsize=18, owidth=1.5, ocolor=(0,0,0), color=(255,255,255))
+    ptext.draw("lvl: " + str(pet.get_level()), (xpos + 20, ypos - 20), fontname ="Minecraftia", fontsize=15, owidth=1.5, ocolor=(0,0,0), color=(255,255,255))
+    ptext.draw("AD: " + str(pet.get_attack()) + "   HP: " + str(pet.get_health()), (xpos + 32, ypos + 135), fontname ="Minecraftia", fontsize=15, owidth=1.5, ocolor=(0,0,0), color=(255,255,255))
 
 
 def display_team_in_battle(is_friendly, team):
@@ -56,12 +60,20 @@ def display_battle(bg_object):
     display_team_in_battle(True, bg_object.get_team1())
     display_team_in_battle(False, bg_object.get_team2())
     winner = bg_object.get_winner()
+    ptext.draw(bg_object.get_team1().get_name(), left=20, bottom=bottom_offset, fontname ="Lapsus", fontsize=40, owidth=1.5, ocolor=(0,0,0), color=(255,255,255))
+    ptext.draw(bg_object.get_team2().get_name(), right=right_offset, bottom=bottom_offset, fontname ="Lapsus", fontsize=40, owidth=1.5, ocolor=(0,0,0), color=(255,255,255))
     if winner == 1:
-        window.blit(bg_object.get_team1().get_name_render(), bg_object.get_team1().get_name_render_rect())
+        if bg_object.get_team1().is_plural():
+            ptext.draw(bg_object.get_team1().get_name() + " Win!", centerx=640, top=150, fontname ="Lapsus", fontsize=80, owidth=1.5, ocolor=(0,0,0), color=(255,255,255))
+        else:
+            ptext.draw(bg_object.get_team1().get_name() + " Wins!", centerx=640, top=150, fontname ="Lapsus", fontsize=80, owidth=1.5, ocolor=(0,0,0), color=(255,255,255))
     elif winner == 2:
-        window.blit(bg_object.get_team2().get_name_render(), bg_object.get_team2().get_name_render_rect())
+        if bg_object.get_team2().is_plural():
+            ptext.draw(bg_object.get_team2().get_name() + " Win!", centerx=640, top=150, fontname ="Lapsus", fontsize=80, owidth=1.5, ocolor=(0,0,0), color=(255,255,255))
+        else:
+            ptext.draw(bg_object.get_team2().get_name() + " Wins!", centerx=640, top=150, fontname ="Lapsus", fontsize=80, owidth=1.5, ocolor=(0,0,0), color=(255,255,255))
     elif winner == 3:
-        window.blit(tie_render, tie_rect)
+        ptext.draw("It's a draw!", centerx=640, top=150, fontname ="Lapsus", fontsize=80, owidth=1.5, ocolor=(0,0,0), color=(255,255,255))
     else:
         return
 
@@ -80,6 +92,8 @@ def generate_random_team():
 
 
 def main():
+
+    global CURRENT_TEAM_1_NAME, CURRENT_TEAM_2_NAME, CURRENT_TEAM_1_VICTORY, CURRENT_TEAM_2_VICTORY
 
     main_menu_normal = pygame.image.load(os.path.join('images', 'main_menu.png'))
     main_menu_pressed = pygame.image.load(os.path.join('images', 'main_menu_pressed.png'))
@@ -152,9 +166,6 @@ def main():
     screen = 0
 
     running = True
-    white = (255, 255, 255)
-    red = (255, 0, 0)
-    green = (0, 255, 0)
 
     while running:
         pygame.event.get()
@@ -163,7 +174,7 @@ def main():
             window.blit(main_menu_bg, (0, 0))
 
         elif screen == 1:
-            window.fill(red)
+            window.fill(RED)
         else:
             display_battle(base_battleground)
 
@@ -172,7 +183,7 @@ def main():
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
                     if screen == 2:
-                        if team1.has_units() and team2.has_units():
+                        if base_battleground.get_team1().has_units() and base_battleground.get_team2().has_units():            
                             base_battleground.battle()
                 if event.key == pygame.K_d:
                     toggle_debug()
