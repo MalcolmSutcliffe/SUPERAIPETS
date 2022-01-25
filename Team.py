@@ -1,19 +1,27 @@
 import copy
+import pygame
 import json
 from Pet import Pet
-from SAP_Data import DATA, debug_mode
+from SAP_Data import *
+from Fonts import *
 from AbilityManager import *
-
 
 class Team:
 
-    def __init__(self):
+    def __init__(self,input_name,plural):
 
         self.pets = [None] * 5  # Type : Pets
         self.lives = 10
         self.wins = 0
         self.turn = DATA.get("turns").get("turn-1")
         self.battleground = None
+        self.name = input_name
+        if plural:
+            self.name_render = mc75.render(self.name+" Win!", False, (255, 255, 255))
+        else:
+            self.name_render = mc75.render(self.name+" Wins!", False, (255, 255, 255))
+        self.name_render_rect = self.name_render.get_rect(center=(SCREEN_WIDTH/2, 200))
+        
 
     def add_pet(self, new_pet, pos):
         if self.pets[pos] is None:
@@ -130,8 +138,20 @@ class Team:
     def get_pets(self):
         return self.pets
 
+    def get_name_render(self):
+        return self.name_render
+
+    def get_name_render_rect(self):
+        return self.name_render_rect
+    
     def set_battleground(self, bg):
         self.battleground = bg
+
+    def set_name(self, nameString):
+        self.name = nameString
+        self.name_render = mc32.render(self.name+" Wins!", False, (255, 255, 255))
+        self.name_render_rect = self.name_render.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+
 
     # def __str__(self):
     #     team_string = []

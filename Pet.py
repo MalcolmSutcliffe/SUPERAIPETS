@@ -7,7 +7,7 @@ import os
 
 class Pet:
 
-    def __init__(self, name_tag="", team=None, shop=None, battleground=None, status=None):
+    def __init__(self, input_name="", team=None, shop=None, battleground=None, status=None):
 
         self.base_attack = 0
         self.base_health = 0
@@ -27,9 +27,11 @@ class Pet:
         self.battleground_team = None
         self.battleground_enemy_team = None
 
-        self.name = name_tag
-        self.name_tag = "pet-" + name_tag
+        
+        self.name_tag = "pet-" + input_name
+        self.name = DATA.get("pets").get(self.name_tag).get("name")
         pet_data = DATA.get("pets").get("bee")
+
 
         try:
             pet_data = DATA.get("pets").get(self.name_tag)
@@ -58,7 +60,7 @@ class Pet:
                 pygame.image.load(os.path.join('images/pet-images', self.name_tag + ".png")), (128, 128))
         except FileNotFoundError:
             self.rightSprite = default_texture
-            print("image for '" + name_tag + "' not found")
+            print("image for '" + input_name + "' not found")
         self.leftSprite = pygame.transform.flip(self.rightSprite, True, False)
 
     def receive_trigger(self, trigger, triggering_entity):

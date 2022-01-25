@@ -2,20 +2,23 @@ import random
 
 import pygame
 import os
+from Fonts import *
 from Battleground import *
 from Team import Team
 from Pet import Pet
 from Status import STATUS
 from SAP_Data import *
+from RandomName import *
 
 
 # initialize the pygame module
 pygame.display.init()
 pygame.font.init()
-myfont = pygame.font.SysFont('Comic Sans MS', 10)
-myfont1 = pygame.font.SysFont('Comic Sans MS', 15)
+tie_render = mc75.render("It's a Draw!", False, (255, 255, 255))
+tie_rect = tie_render.get_rect(center=(SCREEN_WIDTH/2, 200))
 # load and set the logo
 pygame.display.set_caption("SUPERAIPETS")
+tflist = [0,1]
 
 # create window
 window = pygame.display.set_mode((1280, 720))
@@ -24,16 +27,14 @@ battle_bg = pygame.image.load(os.path.join('images', 'battle_bg.png'))
 # direction: 0 = left, 1 = right
 def display_pet(pet, direction, xpos, ypos):
     window.blit(pet.get_sprite(direction), (xpos, ypos))
-    name = myfont1.render(pet.name, False, (0, 0, 0))
-    pet_attack = myfont.render("AD: " + str(pet.get_attack()), False, (0, 0, 0))
-    pet_hp = myfont.render("HP: " + str(pet.get_health()), False, (0, 0, 0))
-    status = myfont.render(str(pet.status)[7:], False, (0, 0, 0))
-    level = myfont.render("lvl: " + str(pet.get_level()), False, (0, 0, 0))
+    name = mc15.render(pet.name, False, (255, 255, 255))
+    pet_attack_hp = mc10.render("AD: " + str(pet.get_attack()) + "   HP: " + str(pet.get_health()), False, (255, 255, 255))
+    status = mc10.render(str(pet.status)[7:], False, (255, 255, 255))
+    level = mc10.render("lvl: " + str(pet.get_level()), False, (255, 255, 255))
     window.blit(status, (xpos + 20, ypos))
     window.blit(name, (xpos + 20, ypos - 40))
     window.blit(level, (xpos + 20, ypos - 20))
-    window.blit(pet_attack, (xpos + 32, ypos + 135))
-    window.blit(pet_hp, (xpos + 62, ypos + 135))
+    window.blit(pet_attack_hp, (xpos + 32, ypos + 135))
 
 
 def display_team_in_battle(is_friendly, team):
@@ -41,12 +42,12 @@ def display_team_in_battle(is_friendly, team):
         direction = 0
         for i, x in enumerate(team.get_pets()):
             if x is not None:
-                display_pet(x, direction, (125 + (94 * i)), 400)
+                display_pet(x, direction, (25 + (120 * i)), 400)
     else:
         direction = 1
         for i, x in enumerate(team.get_pets()):
             if x is not None:
-                display_pet(x, direction, (175 + (94 * (9 - i))), 400)
+                display_pet(x, direction, (50 + (120 * (9 - i))), 400)
 
 
 def display_battle(bg_object):
@@ -54,14 +55,28 @@ def display_battle(bg_object):
     window.blit(battle_bg, (0, 0))
     display_team_in_battle(True, bg_object.get_team1())
     display_team_in_battle(False, bg_object.get_team2())
+    winner = bg_object.get_winner()
+    if winner == 1:
+        window.blit(bg_object.get_team1().get_name_render(), bg_object.get_team1().get_name_render_rect())
+    elif winner == 2:
+        window.blit(bg_object.get_team2().get_name_render(), bg_object.get_team2().get_name_render_rect())
+    elif winner == 3:
+        window.blit(tie_render, tie_rect)
+    else:
+        return
 
 
-def generate_random_team():
-    random_pet = []
-    for i in range(10):
-        random_pet.append(Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:]))
-        random_pet[i].set_level(random.randint(1, 3))
-    return random_pet
+def generate_random_team():    
+    plural = random.choice(tflist)
+    if plural == 0:
+        return_team = Team(generateRandomNameSingular(),False)
+    else:
+        return_team = Team(generateRandomNamePlural(),True)
+    for i in range(5):
+        new_pet = Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:])
+        new_pet.set_level(random.randint(1, 3))
+        return_team.add_pet(new_pet,i)
+    return return_team
 
 
 def main():
@@ -111,13 +126,9 @@ def main():
 ##    my_caterpillar.set_level(3)
     # my_sheep.set_status(STATUS.MELON_ARMOR)
 
-
-    team1 = Team()
-    team2 = Team()
-    random_pet_list = generate_random_team()
-    for i in range(5):
-        team1.add_pet(random_pet_list[i], i)
-        team2.add_pet(random_pet_list[i + 5], i)
+    team1 = generate_random_team()
+    team2 = generate_random_team()
+  
 
     # print(random_pet[i])
     # print(random_pet[i+5])
@@ -185,12 +196,8 @@ def main():
                 elif screen == 1:
                     screen = 2
                 elif screen == 2:
-                    random_pet_list = generate_random_team()
-                    team1 = Team()
-                    team2 = Team()
-                    for i in range(5):
-                        team1.add_pet(random_pet_list[i], i)
-                        team2.add_pet(random_pet_list[i + 5], i)
+                    team1 = generate_random_team()
+                    team2 = generate_random_team()
                     base_battleground = Battleground(team1, team2)
                     screen = 0
             # only do something if the event is of type QUIT

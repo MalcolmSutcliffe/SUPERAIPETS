@@ -8,7 +8,11 @@ f.close()
 
 default_texture = pygame.image.load(os.path.join('images/pet-images', 'none.png'))
 
-GAME_SPEED = 0.5
+GAME_SPEED = 0.25
+
+SCREEN_WIDTH = 1280
+
+SCREEN_HEIGHT = 720
 
 DEBUG_MODE = 0
 

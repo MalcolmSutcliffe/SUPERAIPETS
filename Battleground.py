@@ -27,6 +27,8 @@ class Battleground:
         self.team1.set_battleground(self)
         self.team2.set_battleground(self)
         self.battle_history = []
+        #0=in progress, 1=team1, 2=team2, 3=draw
+        self.winner = 0
 
         self.AM = AbilityManager(self)
 
@@ -135,15 +137,11 @@ class Battleground:
         # time.sleep(GAME_SPEED)
 
         if self.team1.has_units():
-            # winner = team1
-            print("team 1 wins")
-
+            self.winner = 1
         elif self.team2.has_units():
-            # winner = team2
-            print("team 2 wins")
-
+            self.winner = 2
         else:
-            print("Draw")
+            self.winner = 3
 
         # time.sleep(2)
 
@@ -152,6 +150,9 @@ class Battleground:
 
     def get_team2(self):
         return self.team2
+
+    def get_winner(self):
+        return self.winner
 
     def get_all_pets(self):
         all_pets = []
