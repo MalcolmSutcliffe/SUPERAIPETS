@@ -5,6 +5,7 @@ import os
 from Battleground import *
 from Team import Team
 from Pet import Pet
+from Shop import Shop
 from Status import STATUS
 from SAP_Data import *
 from RandomName import *
@@ -78,6 +79,8 @@ def display_battle(bg_object):
     else:
         return
 
+def generate_random_pet():
+    return Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:])
 
 def generate_random_team():    
     plural = random.choice(tflist)
@@ -86,7 +89,7 @@ def generate_random_team():
     else:
         return_team = Team(generateRandomNamePlural(),True)
     for i in range(5):
-        new_pet = Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:])
+        new_pet = generate_random_pet()
         new_pet.set_level(random.randint(1, 3))
         return_team.add_pet(new_pet,i)
     return return_team
@@ -115,6 +118,10 @@ def main():
     back_button_graphic = settings_back_off
     game_speed_graphic = game_speed_3
     debug_mode_graphic = debug_mode_off
+
+
+    shop_menu_normal = pygame.image.load(os.path.join('images','shop_menu','shop_menu.png'))
+    shop_menu_bg = shop_menu_normal
 
     
     
@@ -160,7 +167,7 @@ def main():
 ##    my_caterpillar.set_level(3)
     # my_sheep.set_status(STATUS.MELON_ARMOR)
 
-    team1 = generate_random_team()
+    team1 = Team("Team Name",False)
     team2 = generate_random_team()
   
 
@@ -178,12 +185,16 @@ def main():
     # team2.add_pet(my_whale, 3)
     # team2.add_pet(my_eagle, 4)
 
+    
+    #base_shop = Shop()
+
     base_battleground = Battleground(team1, team2)
 
     # 0 = main menu
     # 1 = shop
     # 2 = battle screen
     # 3 = settings
+    # 4 = pet selection screen
     screen = 0
 
     running = True
@@ -194,7 +205,7 @@ def main():
         if screen == 0:
             window.blit(main_menu_bg, (0, 0))
         elif screen == 1:
-            window.fill(RED)
+            window.blit(shop_menu_bg, (0, 0))
         elif screen == 2:
             display_battle(base_battleground)
         elif screen == 3:
