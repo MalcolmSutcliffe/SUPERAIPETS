@@ -57,7 +57,7 @@ class Team:
                 if x is None:
                     self.pets[index] = summon_animal
                     send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
-                    if debug_mode():
+                    if get_debug_mode():
                         print(str(summon_animal) + " was summoned with status: " + str(status))
                     has_summoned = True
                 else:
@@ -66,7 +66,7 @@ class Team:
                     if x is None:
                         self.pets[index] = summon_animal
                         send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
-                        if debug_mode():
+                        if get_debug_mode():
                             print(str(summon_animal) + " was summoned with status: " + str(status))
                         has_summoned = True
                     else:

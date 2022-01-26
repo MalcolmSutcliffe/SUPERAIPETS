@@ -1,6 +1,7 @@
 import json
 import os
 import pygame
+import math
 
 f = open("SAPinfo.json")
 DATA = json.load(f)
@@ -8,13 +9,14 @@ f.close()
 
 default_texture = pygame.image.load(os.path.join('images/pet-images', 'none.png'))
 
+#delay, in seconds
 GAME_SPEED = 0.25
 
 SCREEN_WIDTH = 1280
 
 SCREEN_HEIGHT = 720
 
-DEBUG_MODE = 0
+DEBUG_MODE = False
 
 ANIMAL_TIERS = [[], [], [], [], [], []]
 
@@ -33,13 +35,21 @@ for name in DATA.get("foods"):
             continue
 
 
-def toggle_debug():
+def set_debug_mode(boolean):
     global DEBUG_MODE
-    if DEBUG_MODE == 0:
-        DEBUG_MODE = 1
-    else:
-        DEBUG_MODE = 0
-    print(DEBUG_MODE)
+    DEBUG_MODE = boolean
 
-def debug_mode():
+def get_debug_mode():
     return DEBUG_MODE
+
+def change_game_speed(speed):
+    global GAME_SPEED
+    if speed == 0:
+        GAME_SPEED = 0
+    else:
+        GAME_SPEED = 1/(2**(speed-1))
+
+def get_game_speed():
+    global GAME_SPEED
+    return GAME_SPEED
+

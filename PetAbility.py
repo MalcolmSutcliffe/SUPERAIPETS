@@ -1,7 +1,7 @@
 import copy
 from functools import total_ordering
 from AbilityManager import *
-from SAP_Data import DATA, ANIMAL_TIERS, debug_mode
+from SAP_Data import DATA, ANIMAL_TIERS, get_debug_mode
 from Status import STATUS
 import random
 from enum import Enum
@@ -122,7 +122,7 @@ class PetAbility:
             self.repeat_ability(self.triggering_entity)
             return
 
-        if debug_mode():
+        if get_debug_mode():
             print(str(self.pet) + " used their " + str(self.effect_type) + " ability!")
 
         # SummonPet
@@ -164,7 +164,7 @@ class PetAbility:
         # DealDamage
         if self.effect_type == EFFECT_TYPE.DealDamage:
             for target in targets:
-                if debug_mode():
+                if get_debug_mode():
                     print(str(self.pet) + " did damage to " + str(target))
                 self.deal_damage(target)
             return
@@ -512,7 +512,7 @@ class PetAbility:
 
     def reduce_health(self, target):
         percent = self.effect.get("percentage")
-        if debug_mode():
+        if get_debug_mode():
             print(str(self.pet) + " reduced " + str(target) + "'s health by " + str(percent * 100) + "%")
         new_health = int(target.get_health() * (1 - percent))
         if new_health <= 0:
@@ -572,7 +572,7 @@ class PetAbility:
         pet_to = self.generate_targets(self.effect.get("to"))[0]
         if pet_from is None or pet_to is None:
             return
-        if debug_mode():
+        if get_debug_mode():
             print("transfering stats from :" + str(pet_from) + " to: " + str(pet_to))
         if copy_attack:
             pet_to.set_attack(pet_from.get_attack())

@@ -94,12 +94,30 @@ def generate_random_team():
 
 def main():
 
-    global CURRENT_TEAM_1_NAME, CURRENT_TEAM_2_NAME, CURRENT_TEAM_1_VICTORY, CURRENT_TEAM_2_VICTORY
-
-    main_menu_normal = pygame.image.load(os.path.join('images', 'main_menu.png'))
-    main_menu_play_pressed = pygame.image.load(os.path.join('images', 'main_menu_play_pressed.png'))
-    main_menu_settings_pressed = pygame.image.load(os.path.join('images', 'main_menu_settings_pressed.png'))
+    #init main menu images
+    main_menu_normal = pygame.image.load(os.path.join('images','main_menu','main_menu.png'))
+    main_menu_play_pressed = pygame.image.load(os.path.join('images','main_menu','main_menu_play_pressed.png'))
+    main_menu_settings_pressed = pygame.image.load(os.path.join('images','main_menu','main_menu_settings_pressed.png'))
+    main_menu_reddit_pressed = pygame.image.load(os.path.join('images','main_menu','main_menu_reddit_pressed.png'))
+    main_menu_twitter_pressed = pygame.image.load(os.path.join('images','main_menu','main_menu_twitter_pressed.png'))
     main_menu_bg = main_menu_normal
+
+    settings_menu_bg = pygame.image.load(os.path.join('images','settings_menu','settings_menu.png'))
+    settings_back_off = pygame.image.load(os.path.join('images','settings_menu','settings_back_off.png'))
+    settings_back_on = pygame.image.load(os.path.join('images','settings_menu','settings_back_on.png'))
+    game_speed_1 = pygame.image.load(os.path.join('images','settings_menu','game_speed_1.png'))
+    game_speed_2 = pygame.image.load(os.path.join('images','settings_menu','game_speed_2.png'))
+    game_speed_3 = pygame.image.load(os.path.join('images','settings_menu','game_speed_3.png'))
+    game_speed_4 = pygame.image.load(os.path.join('images','settings_menu','game_speed_4.png'))
+    game_speed_inf = pygame.image.load(os.path.join('images','settings_menu','game_speed_inf.png'))
+    debug_mode_off = pygame.image.load(os.path.join('images','settings_menu','debug_mode_off.png'))
+    debug_mode_on = pygame.image.load(os.path.join('images','settings_menu','debug_mode_on.png'))
+    back_button_graphic = settings_back_off
+    game_speed_graphic = game_speed_3
+    debug_mode_graphic = debug_mode_off
+
+    
+    
 
     # for i in DATA.get("statuses"):
     #     print(i)
@@ -180,7 +198,10 @@ def main():
         elif screen == 2:
             display_battle(base_battleground)
         elif screen == 3:
-            window.fill(GREEN)
+            window.blit(settings_menu_bg, (0,0))
+            window.blit(back_button_graphic, (0,0))
+            window.blit(game_speed_graphic, (0,0))
+            window.blit(debug_mode_graphic, (0,0))
         else:
             window.fill(BLACK)
 
@@ -193,24 +214,56 @@ def main():
                             base_battleground.battle()
                 if event.key == pygame.K_d:
                     toggle_debug()
-                    print
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 mouseX = pos[0]
                 mouseY = pos[1]
-                #play
-                if screen == 0 and mouseX >= 266 and mouseX <= 1017 and mouseY >= 159 and mouseY <= 368:
-                    main_menu_bg = main_menu_play_pressed
-                #settings
-                elif screen == 0 and mouseX >=1040 and mouseX <= 1109 and mouseY >= 168 and mouseY <=234:
-                    main_menu_bg = main_menu_settings_pressed
+                if screen == 0:
+                    #play
+                    if mouseX >= 266 and mouseX <= 1017 and mouseY >= 159 and mouseY <= 368:
+                        main_menu_bg = main_menu_play_pressed
+                    #settings
+                    elif mouseX >=1040 and mouseX <= 1109 and mouseY >= 168 and mouseY <=234:
+                        main_menu_bg = main_menu_settings_pressed
+                    #reddit
+                    elif mouseX >=1201 and mouseX <= 1268 and mouseY >= 551 and mouseY <=615:
+                        main_menu_bg = main_menu_reddit_pressed
+                    #twitter
+                    elif mouseX >=1201 and mouseX <= 1268 and mouseY >= 641 and mouseY <=705:
+                        main_menu_bg = main_menu_twitter_pressed
+                elif screen == 3:
+                    #back
+                    if mouseX >= 42 and mouseX <= 108 and mouseY >= 37 and mouseY <= 102:
+                        back_button_graphic = settings_back_on
+                    #game speed
+                    elif mouseX >= 490 and mouseX <= 559 and mouseY >= 193 and mouseY <= 260:
+                        game_speed_graphic = game_speed_1
+                        change_game_speed(1)
+                    elif mouseX >= 647 and mouseX <= 715 and mouseY >= 193 and mouseY <= 260:
+                        game_speed_graphic = game_speed_2
+                        change_game_speed(2)
+                    elif mouseX >= 803 and mouseX <= 872 and mouseY >= 193 and mouseY <= 260:
+                        game_speed_graphic = game_speed_3
+                        change_game_speed(3)
+                    elif mouseX >= 959 and mouseX <= 1029 and mouseY >= 193 and mouseY <= 260:
+                        game_speed_graphic = game_speed_4
+                        change_game_speed(4)
+                    elif mouseX >= 1115 and mouseX <= 1185 and mouseY >= 193 and mouseY <= 260:
+                        game_speed_graphic = game_speed_inf
+                        change_game_speed(0)
+                    #debug mode
+                    elif mouseX >= 494 and mouseX <= 711 and mouseY >= 334 and mouseY <= 426:
+                        debug_mode_graphic = debug_mode_on
+                        set_debug_mode(True)
+                    elif mouseX >= 755 and mouseX <= 973 and mouseY >= 334 and mouseY <= 426:
+                        debug_mode_graphic = debug_mode_off
+                        set_debug_mode(False)
+                    
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
                 mouseX = pos[0]
                 mouseY = pos[1]
-                #print(mouseX)
-                #print(mouseY)
-                #print("\n")
+                #print("("+str(mouseX) + " , " + str(mouseY) + ") \n")
                 if screen == 0:
                     #play
                     if mouseX >= 266 and mouseX <= 1017 and mouseY >= 159 and mouseY <= 368:
@@ -218,7 +271,12 @@ def main():
                     #settings
                     elif mouseX >=1040 and mouseX <= 1109 and mouseY >= 168 and mouseY <=234:
                         screen = 3
-                        webbrowser.open('http://reddit.com/r/funko') 
+                    #reddit
+                    elif mouseX >=1201 and mouseX <= 1268 and mouseY >= 551 and mouseY <=615:
+                        webbrowser.open('http://reddit.com/r/funko')
+                    #twitter
+                    elif mouseX >=1201 and mouseX <= 1268 and mouseY >= 641 and mouseY <=705:
+                        webbrowser.open('https://twitter.com/JohnHinckley20')
                     main_menu_bg = main_menu_normal
                 elif screen == 1:
                     screen = 2
@@ -228,7 +286,10 @@ def main():
                     base_battleground = Battleground(team1, team2)
                     screen = 0
                 elif screen == 3:
-                    screen = 0
+                    if mouseX >= 42 and mouseX <= 108 and mouseY >= 37 and mouseY <= 102:
+                        screen = 0
+                    back_button_graphic = settings_back_off
+                    
             # only do something if the event is of type QUIT
             if event.type == pygame.QUIT:
                 # change the value to False, to exit the main loop

@@ -4,7 +4,7 @@ import time
 import pygame
 from SuperAiPets import *
 from AbilityManager import *
-from SAP_Data import GAME_SPEED, debug_mode
+from SAP_Data import get_game_speed, get_debug_mode
 
 # ANIMATION TYPES : {required info}
 
@@ -59,7 +59,7 @@ class Battleground:
         team1_fighter = self.team1.pets[4]
         team2_fighter = self.team2.pets[4]
 
-        if debug_mode():
+        if get_debug_mode():
             print(str(team1_fighter) + " | HP: " + str(team1_fighter.get_health()) + " | Attack: " + str(
                 team1_fighter.get_attack()))
             print(str(team2_fighter) + " | HP: " + str(team2_fighter.get_health()) + " | Attack: " + str(
@@ -75,7 +75,7 @@ class Battleground:
         if self.team1.get_pets()[4] is None or self.team2.get_pets()[4] is None:
             return
 
-        if debug_mode():
+        if get_debug_mode():
             print("Attack!")
 
         team1_fighter.attack_enemy(team2_fighter)
@@ -86,7 +86,7 @@ class Battleground:
 
         display_battle(self)
 
-        time.sleep(GAME_SPEED)
+        time.sleep(get_game_speed())
 
         self.AM.perform_abilities()
 
@@ -95,6 +95,8 @@ class Battleground:
         self.team2.remove_fainted()
 
     def battle(self):
+
+        GAME_SPEED = get_game_speed()
 
         display_battle(self)
         # time.sleep(GAME_SPEED)

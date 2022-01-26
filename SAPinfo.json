@@ -5402,7 +5402,7 @@
       ]
     },
     "pet-hatching-chick": {
-      "name": "Hatching Chick",
+      "name": "Baby Chick",
       "id": "pet-hatching-chick",
       "image": {
         "source": "noto-emoji",
@@ -11389,7 +11389,7 @@
       ]
     },
     "pet-tyrannosaurus": {
-      "name": "Tyrannosaurus",
+      "name": "T-Rex",
       "id": "pet-tyrannosaurus",
       "image": {
         "source": "noto-emoji",
