@@ -8,6 +8,7 @@ from Pet import Pet
 from Status import STATUS
 from SAP_Data import *
 from RandomName import *
+import webbrowser
 
 
 # initialize the pygame module
@@ -96,7 +97,8 @@ def main():
     global CURRENT_TEAM_1_NAME, CURRENT_TEAM_2_NAME, CURRENT_TEAM_1_VICTORY, CURRENT_TEAM_2_VICTORY
 
     main_menu_normal = pygame.image.load(os.path.join('images', 'main_menu.png'))
-    main_menu_pressed = pygame.image.load(os.path.join('images', 'main_menu_pressed.png'))
+    main_menu_play_pressed = pygame.image.load(os.path.join('images', 'main_menu_play_pressed.png'))
+    main_menu_settings_pressed = pygame.image.load(os.path.join('images', 'main_menu_settings_pressed.png'))
     main_menu_bg = main_menu_normal
 
     # for i in DATA.get("statuses"):
@@ -163,6 +165,7 @@ def main():
     # 0 = main menu
     # 1 = shop
     # 2 = battle screen
+    # 3 = settings
     screen = 0
 
     running = True
@@ -172,11 +175,14 @@ def main():
         pygame.display.flip()
         if screen == 0:
             window.blit(main_menu_bg, (0, 0))
-
         elif screen == 1:
             window.fill(RED)
-        else:
+        elif screen == 2:
             display_battle(base_battleground)
+        elif screen == 3:
+            window.fill(GREEN)
+        else:
+            window.fill(BLACK)
 
         # event handling here
         for event in pygame.event.get():
@@ -192,17 +198,27 @@ def main():
                 pos = pygame.mouse.get_pos()
                 mouseX = pos[0]
                 mouseY = pos[1]
+                #play
                 if screen == 0 and mouseX >= 266 and mouseX <= 1017 and mouseY >= 159 and mouseY <= 368:
-                    main_menu_bg = main_menu_pressed
+                    main_menu_bg = main_menu_play_pressed
+                #settings
+                elif screen == 0 and mouseX >=1040 and mouseX <= 1109 and mouseY >= 168 and mouseY <=234:
+                    main_menu_bg = main_menu_settings_pressed
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
                 mouseX = pos[0]
                 mouseY = pos[1]
-##                print(mouseX)
-##                print(mouseY)
-##                print("\n")
-                if screen == 0 and mouseX >= 266 and mouseX <= 1017 and mouseY >= 159 and mouseY <= 368:
-                    screen = 1
+                #print(mouseX)
+                #print(mouseY)
+                #print("\n")
+                if screen == 0:
+                    #play
+                    if mouseX >= 266 and mouseX <= 1017 and mouseY >= 159 and mouseY <= 368:
+                        screen = 1
+                    #settings
+                    elif mouseX >=1040 and mouseX <= 1109 and mouseY >= 168 and mouseY <=234:
+                        screen = 3
+                        webbrowser.open('http://reddit.com/r/funko') 
                     main_menu_bg = main_menu_normal
                 elif screen == 1:
                     screen = 2
@@ -210,6 +226,8 @@ def main():
                     team1 = generate_random_team()
                     team2 = generate_random_team()
                     base_battleground = Battleground(team1, team2)
+                    screen = 0
+                elif screen == 3:
                     screen = 0
             # only do something if the event is of type QUIT
             if event.type == pygame.QUIT:
