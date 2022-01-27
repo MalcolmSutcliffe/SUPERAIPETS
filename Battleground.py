@@ -2,6 +2,8 @@ import copy
 import time
 
 import pygame
+
+from AbilityManager import send_triggers
 from SuperAiPets import *
 from AbilityManager import *
 from SAP_Data import get_game_speed, get_debug_mode
@@ -22,8 +24,8 @@ class Battleground:
 
     def __init__(self, team1, team2):
 
-        self.team1 = copy.copy(team1)
-        self.team2 = copy.copy(team2)
+        self.team1 = team1
+        self.team2 = team2
         self.team1.set_battleground(self)
         self.team2.set_battleground(self)
         self.battle_history = []
@@ -146,6 +148,12 @@ class Battleground:
             self.winner = 3
 
         # time.sleep(2)
+
+    def set_team1(self, team1):
+        self.team1 = team1
+
+    def set_team2(self, team2):
+        self.team2 = team2
 
     def get_team1(self):
         return self.team1

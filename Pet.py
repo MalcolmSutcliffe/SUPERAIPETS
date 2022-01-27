@@ -1,8 +1,15 @@
+import pygame
+import random
+
 from PetAbility import PetAbility
 from AbilityManager import *
-from SAP_Data import DATA, default_texture, get_debug_mode
+from SAP_Data import *
 from Status import STATUS
 import os
+
+
+def generate_random_pet():
+    return Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:])
 
 
 class Pet:
@@ -22,16 +29,13 @@ class Pet:
 
         self.team = team
         self.shop = shop
-        self.is_frozen = False
         self.battleground = battleground
         self.battleground_team = None
         self.battleground_enemy_team = None
 
-        
         self.name_tag = "pet-" + input_name
         self.name = DATA.get("pets").get(self.name_tag).get("name")
         pet_data = DATA.get("pets").get("bee")
-
 
         try:
             pet_data = DATA.get("pets").get(self.name_tag)
@@ -56,8 +60,7 @@ class Pet:
             self.status = STATUS.POISON_ATTACK
 
         try:
-            self.rightSprite = pygame.transform.scale(
-                pygame.image.load(os.path.join('images/pet-images', self.name_tag + ".png")), (128, 128))
+            self.rightSprite = pygame.transform.scale(pygame.image.load(os.path.join('images/pet-images', self.name_tag + ".png")), (128, 128))
         except FileNotFoundError:
             self.rightSprite = default_texture
             print("image for '" + input_name + "' not found")
@@ -255,9 +258,6 @@ class Pet:
 
         return team.get_pets().index(self)
 
-    def get_is_frozen(self):
-        return self.is_frozen
-
     def set_team(self, team):
         self.team = team
 
@@ -296,8 +296,46 @@ class Pet:
     def set_level(self, lvl):
         self.level = lvl
 
-    def set_is_frozen(self, f):
-        self.is_frozen = f
+    def copy_pet(self, pet_to_copy):
+        self.base_attack = pet_to_copy.base_attack
+        self.base_health = pet_to_copy.base_health
+        self.level = pet_to_copy.level
+        self.is_fainted = pet_to_copy.is_fainted
+        self.status = pet_to_copy.status
+        self.ability = pet_to_copy.Ability
+        self.team = None
+        self.shop = None
+        self.battleground = None
+        self.battleground_team = None
+        self.battleground_enemy_team = None
+        self.name_tag = pet_to_copy.name_tag
+        self.name = pet_to_copy.name
+        pet_data = DATA.get("pets").get("bee")
+        try:
+            pet_data = DATA.get("pets").get(self.name_tag)
+        except AttributeError:
+            print("Error: the pet tag '" + self.name_tag + "' does not exist!")
+        try:
+            self.base_attack = pet_data.get("baseAttack")
+            self.base_health = pet_data.get("baseHealth")
+            self.packs = pet_data.get("packs")
+            self.tier = pet_data.get("tier")
+        except AttributeError:
+            pass
+        self.temp_attack = 0
+        self.temp_health = 0
+        self.attack = self.base_attack
+        self.health = self.base_health
+        self.experience = 0
+        if self.name == "scorpion":
+            self.status = STATUS.POISON_ATTACK
+        try:
+            self.rightSprite = pygame.transform.scale(
+                pygame.image.load(os.path.join('images/pet-images', self.name_tag + ".png")), (128, 128))
+        except FileNotFoundError:
+            self.rightSprite = default_texture
+            print("image for '" + self.name_tag + "' not found")
+        self.leftSprite = pygame.transform.flip(self.rightSprite, True, False)
 
     def __str__(self):
         return self.name

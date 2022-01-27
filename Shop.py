@@ -7,26 +7,27 @@ import random
 
 class Shop:
 
-    def __init__(self, team, turn=1):
+    def __init__(self, team):
         self.team = team
-        self.turn = turn
+        self.turn = 1
         self.turn_info = DATA.get("turns").get("turn-" + str(self.turn))
         self.animal_shop_slots = self.turn_info.get("animalShopSlots")
-        self.food_shop_slots = self.turn_info.get("foodShopSlots")
+        # self.food_shop_slots = self.turn_info.get("foodShopSlots")
         self.tiers_available = self.turn_info.get("tiersAvailable")
         self.can_bonus = 0
-        self.shop_animals = []
-        self.shop_food = []
+        self.shop_animals = [None, None, None]
+        self.frozen_slots = [False, False, False, False, False]
+        # self.shop_food = []
 
     def roll_shop(self):
-        shop_animals = self.clear_non_frozen_animals()
-        shop_food =  self.clear_non_frozen_food()
+        # shop_food = self.clear_non_frozen_food()
         # animals
-        for i in range(len(shop_animals), self.animal_shop_slots):
-            self.shop_animals.append(self.random_shop_animal())
+        for i in range(0, self.animal_shop_slots):
+            if not self.frozen_slots[i]:
+                self.shop_animals[i] = self.random_shop_animal()
         # food
-        for i in range(len(shop_food), self.food_shop_slots):
-            self.shop_food.append(self.random_shop_food())
+        # for i in range(len(shop_food), self.food_shop_slots):
+        #     self.shop_food.append(self.random_shop_food())
 
     def random_shop_animal(self):
         possible_animals = []
@@ -38,23 +39,43 @@ class Shop:
         pet.set_base_health(pet.get_base_health() + self.get_health_bonus())
         return pet
 
-    def random_shop_food(self):
-        possible_foods = []
-        for i in range(self.tiers_available):
-            possible_foods = possible_foods + ANIMAL_TIERS[i]
-        food_tag = random.choice(possible_foods)
-        # food = Food(food_tag[4:])
-        return
+    # def random_shop_food(self):
+    #     possible_foods = []
+    #     for i in range(self.tiers_available):
+    #         possible_foods = possible_foods + ANIMAL_TIERS[i]
+    #     food_tag = random.choice(possible_foods)
+    #     food = Food(food_tag[4:])
+    #     return food
 
     def clear_non_frozen_animals(self):
         return [x for x in self.shop_animals if not x.get_is_frozen()]
 
-    def clear_non_frozen_food(self):
-        return [x for x in self.shop_food if not x.get_is_frozen()]
+    # def clear_non_frozen_food(self):
+    #     return [x for x in self.shop_food if not x.get_is_frozen()]
 
     def get_attack_bonus(self):
         return self.can_bonus
 
     def get_health_bonus(self):
         return self.can_bonus
+
+    def reset(self):
+        self.turn = 1
+        self.turn_info = DATA.get("turns").get("turn-" + str(self.turn))
+        self.animal_shop_slots = self.turn_info.get("animalShopSlots")
+        self.tiers_available = self.turn_info.get("tiersAvailable")
+        self.shop_animals = [None, None, None]
+
+    def next_turn(self):
+        self.turn += 1
+        if self.turn <= 11:
+            self.turn_info = DATA.get("turns").get("turn-" + str(self.turn))
+            self.tiers_available = self.turn_info.get("tiersAvailable")
+            if self.turn == 5 or self.turn == 9:
+                self.animal_shop_slots += 1
+                self.shop_animals.append(None)
+
+    def get_turn(self):
+        return self.turn
+
 

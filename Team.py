@@ -2,14 +2,16 @@ import copy
 import pygame
 import json
 import ptext
-from Pet import Pet
+from Pet import Pet, generate_random_pet
 from SAP_Data import *
+from RandomName import *
 from AbilityManager import *
 
+t_f_list = [0, 1]
 
 class Team:
 
-    def __init__(self,input_name,plural):
+    def __init__(self, input_name, plural):
 
         self.pets = [None] * 5  # Type : Pets
         self.lives = 10
@@ -18,7 +20,6 @@ class Team:
         self.battleground = None
         self.name = input_name
         self.plural = plural
-        
 
     def add_pet(self, new_pet, pos):
         if self.pets[pos] is None:
@@ -103,16 +104,16 @@ class Team:
                 self.pets[3 - j] = None
 
     def advance_team_from(self, index):
-        for j in range(4-index):
-            if self.pets[4-j] is None:
-                self.pets[4-j] = self.pets[3-j]
-                self.pets[3-j] = None
+        for j in range(4 - index):
+            if self.pets[4 - j] is None:
+                self.pets[4 - j] = self.pets[3 - j]
+                self.pets[3 - j] = None
 
     def retreat_team(self):
         for j in range(4):
             if self.pets[j] is None:
-                self.pets[j] = self.pets[j+1]
-                self.pets[j+1] = None
+                self.pets[j] = self.pets[j + 1]
+                self.pets[j + 1] = None
 
     def remove_fainted(self):
         for (i, x) in enumerate(self.pets):
@@ -140,13 +141,40 @@ class Team:
 
     def is_plural(self):
         return self.plural
-    
+
     def set_battleground(self, bg):
         self.battleground = bg
 
-    def set_name(self, nameString,plural):
-        self.name = nameString
+    def set_name(self, name_string, plural):
+        self.name = name_string
 
+    def reset(self, input_name, plural):
+        self.pets = [None] * 5  # Type : Pets
+        self.lives = 10
+        self.wins = 0
+        self.turn = DATA.get("turns").get("turn-1")
+        self.name = input_name
+        self.plural = plural
+
+    def randomize_team(self):
+        plural = random.choice(t_f_list)
+        if plural == 0:
+            self.reset(generateRandomNameSingular(), False)
+        else:
+            self.reset(generateRandomNamePlural(), True)
+        for j in range(5):
+            new_pet = generate_random_pet()
+            new_pet.set_level(random.randint(1, 3))
+            self.add_pet(new_pet, j)
+
+    def copy_team(self, team_to_copy):
+        self.pets = team_to_copy.pets # Type : Pets
+        self.lives = team_to_copy.lives
+        self.wins = team_to_copy.wins
+        self.turn = DATA.get("turns").get("turn-1")
+        self.battleground = None
+        self.name = team_to_copy.name
+        self.plural = team_to_copy.plural
 
     # def __str__(self):
     #     team_string = []
