@@ -18,6 +18,8 @@ SCREEN_HEIGHT = 720
 
 DEBUG_MODE = False
 
+SFX_ON = True
+
 ANIMAL_TIERS = [[], [], [], [], [], []]
 
 FOOD_TIERS = [[], [], [], [], [], []]
@@ -52,4 +54,8 @@ def change_game_speed(speed):
 def get_game_speed():
     global GAME_SPEED
     return GAME_SPEED
+
+def sfx_on():
+    return SFX_ON
+
 

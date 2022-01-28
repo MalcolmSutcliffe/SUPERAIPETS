@@ -4,7 +4,6 @@ import ptext
 import pygame
 import os
 from Status import STATUS
-from Pet import Pet, generate_random_pet
 from Battleground import *
 from Team import Team
 from Shop import Shop
@@ -27,7 +26,6 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
 
-SFX_ON = True
 
 # create window
 game_icon = pygame.image.load(os.path.join('images', 'game_icon.png'))
@@ -35,10 +33,6 @@ battle_bg = pygame.image.load(os.path.join('images', 'battle_bg.png'))
 window = pygame.display.set_mode((1280, 720))
 pygame.display.set_icon(game_icon)
 pygame.display.set_caption("SUPER AI PETS")
-
-
-def sfx_on():
-    return SFX_ON
 
 # direction: 0 = left, 1 = right
 def display_pet(pet, direction, xpos, ypos):
@@ -243,14 +237,13 @@ def main():
             if y_offset == -843:
                 y_offset = 0
             else:
-                y_offset -= 0.5
+                y_offset -= 0.75
         # shop
         elif screen == 1:
             window.blit(shop_menu_bg, (0, 0))
             window.blit(exit_button, (0, 0))
             window.blit(fight_button, (0, 0))
-            ptext.draw(str(base_shop.get_turn()), centerx=456, centery=40, fontname="Lapsus", fontsize=40, owidth=1.5,
-                       ocolor=(0, 0, 0), color=(255, 255, 255))
+            ptext.draw(str(base_shop.get_turn()), centerx=456, centery=40, fontname="Lapsus", fontsize=40, owidth=1.5, ocolor=(0, 0, 0), color=(255, 255, 255))
             display_shop(base_shop)
             if not base_shop.get_slot_selected() == -1:
                 window.blit(slot_selection_icon, (120 * base_shop.get_slot_selected(), 0))
@@ -260,17 +253,13 @@ def main():
             display_battle(base_battleground)
         # settings
         elif screen == 3:
-            window.blit(scrolling_background, (0, y_offset))
+            window.blit(scrolling_background, (0,0))
             window.blit(settings_menu_bg, (0, 0))
             window.blit(back_button_graphic, (0, 0))
             window.blit(game_speed_graphic, (0, 0))
             window.blit(debug_mode_graphic, (0, 0))
             window.blit(sfx_graphic, (0, 0))
             window.blit(music_graphic, (0, 0))
-            if y_offset == -843:
-                y_offset = 0
-            else:
-                y_offset -= 0.5
         else:
             window.fill(BLACK)
 

@@ -3,7 +3,9 @@ from SAP_Data import *
 from RandomName import *
 from AbilityManager import *
 
+
 t_f_list = [0, 1]
+
 
 class Team:
 

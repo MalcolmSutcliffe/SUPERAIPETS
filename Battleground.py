@@ -2,10 +2,9 @@ import copy
 import time
 
 import pygame
-
-from SuperAiPets import *
+from SuperAiPets import display_battle
 from AbilityManager import *
-from SAP_Data import get_game_speed, get_debug_mode
+from SAP_Data import get_game_speed, get_debug_mode, sfx_on
 
 pygame.mixer.init()
 smack = pygame.mixer.Sound("audio/sfx/smack.wav")

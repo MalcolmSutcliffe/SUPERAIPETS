@@ -7,6 +7,8 @@ from SAP_Data import *
 from Status import STATUS
 import os
 
+pygame.mixer.init()
+fuck = pygame.mixer.Sound("audio/sfx/fuck.wav")
 
 def generate_random_pet():
     new_pet = Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:])
@@ -141,6 +143,8 @@ class Pet:
         else:
             pass
         # self.battleground_team[self.battleground_team.index(self)] = None
+        if sfx_on():
+            pygame.mixer.Sound.play(fuck)
         if get_debug_mode():
             print(self.name + " has fainted!")
 
