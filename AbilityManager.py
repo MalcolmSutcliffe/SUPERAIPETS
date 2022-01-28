@@ -1,8 +1,8 @@
 from pprint import pprint
 
-from Battleground import *
 from enum import Enum
 from SAP_Data import GAME_SPEED
+import time
 
 
 class TRIGGER(Enum):

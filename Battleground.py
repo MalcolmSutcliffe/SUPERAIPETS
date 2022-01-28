@@ -2,8 +2,6 @@ import copy
 import time
 
 import pygame
-
-from AbilityManager import send_triggers
 from SuperAiPets import *
 from AbilityManager import *
 from SAP_Data import get_game_speed, get_debug_mode
@@ -163,6 +161,9 @@ class Battleground:
 
     def get_winner(self):
         return self.winner
+
+    def reset_winner(self):
+        self.winner = 0
 
     def get_all_pets(self):
         all_pets = []

@@ -1,7 +1,3 @@
-import copy
-import pygame
-import json
-import ptext
 from Pet import Pet, generate_random_pet
 from SAP_Data import *
 from RandomName import *
@@ -24,9 +20,11 @@ class Team:
     def add_pet(self, new_pet, pos):
         if self.pets[pos] is None:
             self.pets[pos] = new_pet
-            return 1
+        else:
+            print("that position is taken")
+            return -1
         new_pet.set_team(self)
-        return 0
+        print("added "+new_pet.get_name()+" to team \""+new_pet.team.get_name()+"\"\n")
 
     def summon_pet(self, index, summon_tag, summon_attack=0, summon_health=0, level=1, status=None):
 
@@ -166,6 +164,7 @@ class Team:
             new_pet = generate_random_pet()
             new_pet.set_level(random.randint(1, 3))
             self.add_pet(new_pet, j)
+            print("2. added " + new_pet.get_name() + " to team \"" + "\"\n")
 
     def copy_team(self, team_to_copy):
         self.pets = team_to_copy.pets # Type : Pets

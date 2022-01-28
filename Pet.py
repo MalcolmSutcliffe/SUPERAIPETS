@@ -9,7 +9,9 @@ import os
 
 
 def generate_random_pet():
-    return Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:])
+    new_pet = Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:])
+    print("generated a new "+new_pet.get_name())
+    return new_pet
 
 
 class Pet:
@@ -144,7 +146,8 @@ class Pet:
             print(self.name + " has fainted!")
 
         self.is_fainted = True
-        self.ability.set_priority(0)
+        if self.ability is not None:
+            self.ability.set_priority(0)
 
         team = self.battleground_team
         if team is None:

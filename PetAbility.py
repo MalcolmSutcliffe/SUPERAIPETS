@@ -1,9 +1,9 @@
 import copy
+import random
 from functools import total_ordering
 from AbilityManager import *
 from SAP_Data import DATA, ANIMAL_TIERS, get_debug_mode
 from Status import STATUS
-import random
 from enum import Enum
 
 DEFAULT_ABILITY = {
