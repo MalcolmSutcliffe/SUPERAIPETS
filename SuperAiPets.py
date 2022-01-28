@@ -3,20 +3,21 @@ import random
 import ptext
 import pygame
 import os
+from Status import STATUS
+from Pet import Pet, generate_random_pet
 from Battleground import *
 from Team import Team
-from Pet import Pet, generate_random_pet
 from Shop import Shop
-from Status import STATUS
 from SAP_Data import *
 import webbrowser
 
 # initialize the pygame module
 pygame.display.init()
 pygame.font.init()
-# load and set the logo
-pygame.display.set_caption("SUPERAIPETS")
 ptext.FONT_NAME_TEMPLATE = "fonts/%s.otf"
+pygame.mixer.init()
+
+button = pygame.mixer.Sound("audio/sfx/microwave_button.wav")
 
 bottom_offset = SCREEN_HEIGHT - 20
 right_offset = SCREEN_WIDTH - 20
@@ -25,10 +26,19 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
-# create window
-window = pygame.display.set_mode((1280, 720))
-battle_bg = pygame.image.load(os.path.join('images', 'battle_bg.png'))
 
+SFX_ON = True
+
+# create window
+game_icon = pygame.image.load(os.path.join('images', 'game_icon.png'))
+battle_bg = pygame.image.load(os.path.join('images', 'battle_bg.png'))
+window = pygame.display.set_mode((1280, 720))
+pygame.display.set_icon(game_icon)
+pygame.display.set_caption("SUPER AI PETS")
+
+
+def sfx_on():
+    return SFX_ON
 
 # direction: 0 = left, 1 = right
 def display_pet(pet, direction, xpos, ypos):
@@ -97,6 +107,7 @@ def display_battle(bg_object):
     else:
         return
 
+
 def main():
     # init main menu images
     main_menu_normal = pygame.image.load(os.path.join('images', 'main_menu', 'main_menu.png'))
@@ -105,7 +116,9 @@ def main():
         os.path.join('images', 'main_menu', 'main_menu_settings_pressed.png'))
     main_menu_reddit_pressed = pygame.image.load(os.path.join('images', 'main_menu', 'main_menu_reddit_pressed.png'))
     main_menu_twitter_pressed = pygame.image.load(os.path.join('images', 'main_menu', 'main_menu_twitter_pressed.png'))
+    scrolling_background = pygame.image.load(os.path.join('images', 'main_menu', 'scrolling_background.png'))
     main_menu_bg = main_menu_normal
+    y_offset = 0
 
     settings_menu_bg = pygame.image.load(os.path.join('images', 'settings_menu', 'settings_menu.png'))
     settings_back_off = pygame.image.load(os.path.join('images', 'settings_menu', 'settings_back_off.png'))
@@ -117,9 +130,21 @@ def main():
     game_speed_inf = pygame.image.load(os.path.join('images', 'settings_menu', 'game_speed_inf.png'))
     debug_mode_off = pygame.image.load(os.path.join('images', 'settings_menu', 'debug_mode_off.png'))
     debug_mode_on = pygame.image.load(os.path.join('images', 'settings_menu', 'debug_mode_on.png'))
+    sfx_on = pygame.image.load(os.path.join('images', 'settings_menu', 'sfx_on.png'))
+    sfx_on_pressed = pygame.image.load(os.path.join('images', 'settings_menu', 'sfx_on_pressed.png'))
+    sfx_off = pygame.image.load(os.path.join('images', 'settings_menu', 'sfx_off.png'))
+    sfx_off_pressed = pygame.image.load(os.path.join('images', 'settings_menu', 'sfx_off_pressed.png'))
+    music_on = pygame.image.load(os.path.join('images', 'settings_menu', 'music_on.png'))
+    music_on_pressed = pygame.image.load(os.path.join('images', 'settings_menu', 'music_on_pressed.png'))
+    music_off = pygame.image.load(os.path.join('images', 'settings_menu', 'music_off.png'))
+    music_off_pressed = pygame.image.load(os.path.join('images', 'settings_menu', 'music_off_pressed.png'))
     back_button_graphic = settings_back_off
     game_speed_graphic = game_speed_3
     debug_mode_graphic = debug_mode_off
+    sfx_graphic = sfx_on
+    music_graphic = music_on
+    global SFX_ON
+    music = True
 
     shop_menu_3_slots = pygame.image.load(os.path.join('images', 'shop_menu', 'shop_menu_3_slots.png'))
     shop_menu_4_slots = pygame.image.load(os.path.join('images', 'shop_menu', 'shop_menu_4_slots.png'))
@@ -128,6 +153,7 @@ def main():
     exit_unpressed = pygame.image.load(os.path.join('images', 'shop_menu', 'exit_unpressed.png'))
     fight_pressed = pygame.image.load(os.path.join('images', 'shop_menu', 'fight_pressed.png'))
     fight_unpressed = pygame.image.load(os.path.join('images', 'shop_menu', 'fight_unpressed.png'))
+    slot_selection_icon = pygame.image.load(os.path.join('images', 'shop_menu', 'selection_icon.png'))
     exit_button = exit_unpressed
     fight_button = fight_unpressed
     shop_menu_bg = shop_menu_3_slots
@@ -202,7 +228,9 @@ def main():
     # 3 = settings
     # 4 = pet selection screen
     screen = 0
-
+    pygame.mixer.music.load(os.path.join('audio', 'music', 'random_firl.mp3'))
+    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.play(-1)
     running = True
 
     while running:
@@ -210,7 +238,12 @@ def main():
         pygame.display.flip()
         # main menu
         if screen == 0:
+            window.blit(scrolling_background, (0, y_offset))
             window.blit(main_menu_bg, (0, 0))
+            if y_offset == -843:
+                y_offset = 0
+            else:
+                y_offset -= 0.5
         # shop
         elif screen == 1:
             window.blit(shop_menu_bg, (0, 0))
@@ -219,19 +252,31 @@ def main():
             ptext.draw(str(base_shop.get_turn()), centerx=456, centery=40, fontname="Lapsus", fontsize=40, owidth=1.5,
                        ocolor=(0, 0, 0), color=(255, 255, 255))
             display_shop(base_shop)
+            if not base_shop.get_slot_selected() == -1:
+                window.blit(slot_selection_icon, (120 * base_shop.get_slot_selected(), 0))
+
         # battle
         elif screen == 2:
             display_battle(base_battleground)
         # settings
         elif screen == 3:
+            window.blit(scrolling_background, (0, y_offset))
             window.blit(settings_menu_bg, (0, 0))
             window.blit(back_button_graphic, (0, 0))
             window.blit(game_speed_graphic, (0, 0))
             window.blit(debug_mode_graphic, (0, 0))
+            window.blit(sfx_graphic, (0, 0))
+            window.blit(music_graphic, (0, 0))
+            if y_offset == -843:
+                y_offset = 0
+            else:
+                y_offset -= 0.5
         else:
             window.fill(BLACK)
 
         # event handling here
+        # --------------------------------------------------------------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------------------
         for event in pygame.event.get():
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
@@ -242,51 +287,111 @@ def main():
                 pos = pygame.mouse.get_pos()
                 mouseX = pos[0]
                 mouseY = pos[1]
+                # main menu
                 if screen == 0:
                     # play
                     if 266 <= mouseX <= 1017 and 159 <= mouseY <= 368:
+                        if SFX_ON:
+                            pygame.mixer.Sound.play(button)
                         main_menu_bg = main_menu_play_pressed
                     # settings
                     elif 1040 <= mouseX <= 1109 and 168 <= mouseY <= 234:
+                        if SFX_ON:
+                            pygame.mixer.Sound.play(button)
                         main_menu_bg = main_menu_settings_pressed
                     # reddit
                     elif 1201 <= mouseX <= 1268 and 551 <= mouseY <= 615:
+                        if SFX_ON:
+                            pygame.mixer.Sound.play(button)
                         main_menu_bg = main_menu_reddit_pressed
                     # twitter
                     elif 1201 <= mouseX <= 1268 and 641 <= mouseY <= 705:
+                        if SFX_ON:
+                            pygame.mixer.Sound.play(button)
                         main_menu_bg = main_menu_twitter_pressed
+                # shop
                 elif screen == 1:
                     if 1060 <= mouseX <= 1263 and 16 <= mouseY <= 89:
+                        if SFX_ON:
+                            pygame.mixer.Sound.play(button)
                         exit_button = exit_pressed
                     elif 921 <= mouseX <= 1255 and 622 <= mouseY <= 694:
+                        if SFX_ON:
+                            pygame.mixer.Sound.play(button)
                         fight_button = fight_pressed
+                    elif 371 <= mouseY <= 542:
+                        if 290 <= mouseX <= 410:
+                            base_shop.slot_selected = 0
+                        elif 411 <= mouseX <= 531:
+                            base_shop.slot_selected = 1
+                        elif 532 <= mouseX <= 652:
+                            base_shop.slot_selected = 2
+                        elif 653 <= mouseX <= 773 and base_shop.get_turn() >= 5:
+                            base_shop.slot_selected = 3
+                        elif 774 <= mouseX <= 894 and base_shop.get_turn() >= 9:
+                            base_shop.slot_selected = 4
+                # settings
                 elif screen == 3:
                     # back
                     if 42 <= mouseX <= 108 and 37 <= mouseY <= 102:
+                        if SFX_ON:
+                            pygame.mixer.Sound.play(button)
                         back_button_graphic = settings_back_on
                     # game speed
-                    elif 490 <= mouseX <= 559 and 193 <= mouseY <= 260:
-                        game_speed_graphic = game_speed_1
-                        change_game_speed(1)
-                    elif 647 <= mouseX <= 715 and 193 <= mouseY <= 260:
-                        game_speed_graphic = game_speed_2
-                        change_game_speed(2)
-                    elif 803 <= mouseX <= 872 and 193 <= mouseY <= 260:
-                        game_speed_graphic = game_speed_3
-                        change_game_speed(3)
-                    elif 959 <= mouseX <= 1029 and 193 <= mouseY <= 260:
-                        game_speed_graphic = game_speed_4
-                        change_game_speed(4)
-                    elif 1115 <= mouseX <= 1185 and 193 <= mouseY <= 260:
-                        game_speed_graphic = game_speed_inf
-                        change_game_speed(0)
+                    elif 193 <= mouseY <= 260:
+                        if 490 <= mouseX <= 559:
+                            if SFX_ON:
+                                pygame.mixer.Sound.play(button)
+                            game_speed_graphic = game_speed_1
+                            change_game_speed(1)
+                        elif 647 <= mouseX <= 715:
+                            if SFX_ON:
+                                pygame.mixer.Sound.play(button)
+                            game_speed_graphic = game_speed_2
+                            change_game_speed(2)
+                        elif 803 <= mouseX <= 872:
+                            if SFX_ON:
+                                pygame.mixer.Sound.play(button)
+                            game_speed_graphic = game_speed_3
+                            change_game_speed(3)
+                        elif 959 <= mouseX <= 1029:
+                            if SFX_ON:
+                                pygame.mixer.Sound.play(button)
+                            game_speed_graphic = game_speed_4
+                            change_game_speed(4)
+                        elif 1115 <= mouseX <= 1185:
+                            if SFX_ON:
+                                pygame.mixer.Sound.play(button)
+                            game_speed_graphic = game_speed_inf
+                            change_game_speed(0)
                     # debug mode
-                    elif 494 <= mouseX <= 711 and 334 <= mouseY <= 426:
-                        debug_mode_graphic = debug_mode_on
-                        set_debug_mode(True)
-                    elif 755 <= mouseX <= 973 and 334 <= mouseY <= 426:
-                        debug_mode_graphic = debug_mode_off
-                        set_debug_mode(False)
+                    elif 334 <= mouseY <= 426:
+                        if 494 <= mouseX <= 711:
+                            if SFX_ON:
+                                pygame.mixer.Sound.play(button)
+                            debug_mode_graphic = debug_mode_on
+                            set_debug_mode(True)
+                        elif 755 <= mouseX <= 973:
+                            if SFX_ON:
+                                pygame.mixer.Sound.play(button)
+                            debug_mode_graphic = debug_mode_off
+                            set_debug_mode(False)
+                    elif 492 <= mouseY <= 554:
+                        # sfx
+                        if 492 <= mouseX <= 555:
+                            if SFX_ON:
+                                pygame.mixer.Sound.play(button)
+                                sfx_graphic = sfx_on_pressed
+                            else:
+                                sfx_graphic = sfx_off_pressed
+                        # music
+                        elif 619 <= mouseX <= 683:
+                            if SFX_ON:
+                                pygame.mixer.Sound.play(button)
+                            if music:
+                                music_graphic = music_on_pressed
+                            else:
+                                music_graphic = music_off_pressed
 
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
@@ -306,7 +411,7 @@ def main():
                         screen = 3
                     # reddit
                     elif 1201 <= mouseX <= 1268 and 551 <= mouseY <= 615:
-                        webbrowser.open('https://reddit.com/r/funko')
+                        webbrowser.open('https://youtu.be/3yUMIFYBMnc')
                     # twitter
                     elif 1201 <= mouseX <= 1268 and 641 <= mouseY <= 705:
                         webbrowser.open('https://twitter.com/JohnHinckley20')
@@ -316,6 +421,7 @@ def main():
                     # exit
                     if 1060 <= mouseX <= 1263 and 16 <= mouseY <= 89:
                         screen = 0
+                        base_shop.slot_selected = -1
                     # fight
                     elif 921 <= mouseX <= 1255 and 622 <= mouseY <= 694:
                         screen = 2
@@ -337,7 +443,26 @@ def main():
                 elif screen == 3:
                     if 42 <= mouseX <= 108 and 37 <= mouseY <= 102:
                         screen = 0
+                    elif 492 <= mouseY <= 554:
+                        # sfx
+                        if 492 <= mouseX <= 555:
+                            SFX_ON = not SFX_ON
+                        # music
+                        elif 619 <= mouseX <= 683:
+                            music = not music
+                            if music:
+                                pygame.mixer.music.unpause()
+                            else:
+                                pygame.mixer.music.pause()
                     back_button_graphic = settings_back_off
+                    if SFX_ON:
+                        sfx_graphic = sfx_on
+                    else:
+                        sfx_graphic = sfx_off
+                    if music:
+                        music_graphic = music_on
+                    else:
+                        music_graphic = music_off
 
             # only do something if the event is of type QUIT
             if event.type == pygame.QUIT:

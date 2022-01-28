@@ -2,9 +2,13 @@ import copy
 import time
 
 import pygame
+
 from SuperAiPets import *
 from AbilityManager import *
 from SAP_Data import get_game_speed, get_debug_mode
+
+pygame.mixer.init()
+smack = pygame.mixer.Sound("audio/sfx/smack.wav")
 
 # ANIMATION TYPES : {required info}
 
@@ -80,6 +84,9 @@ class Battleground:
 
         team1_fighter.attack_enemy(team2_fighter)
         team2_fighter.attack_enemy(team1_fighter)
+        if sfx_on():
+            pygame.mixer.Sound.play(smack)
+
 
         send_triggers(TRIGGER.AfterAttack, team1_fighter, self)
         send_triggers(TRIGGER.AfterAttack, team2_fighter, self)
@@ -91,7 +98,6 @@ class Battleground:
         self.AM.perform_abilities()
 
         self.team1.remove_fainted()
-
         self.team2.remove_fainted()
 
     def battle(self):

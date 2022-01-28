@@ -10,7 +10,6 @@ import os
 
 def generate_random_pet():
     new_pet = Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:])
-    print("generated a new "+new_pet.get_name())
     return new_pet
 
 

@@ -24,7 +24,6 @@ class Team:
             print("that position is taken")
             return -1
         new_pet.set_team(self)
-        print("added "+new_pet.get_name()+" to team \""+new_pet.team.get_name()+"\"\n")
 
     def summon_pet(self, index, summon_tag, summon_attack=0, summon_health=0, level=1, status=None):
 
@@ -164,7 +163,6 @@ class Team:
             new_pet = generate_random_pet()
             new_pet.set_level(random.randint(1, 3))
             self.add_pet(new_pet, j)
-            print("2. added " + new_pet.get_name() + " to team \"" + "\"\n")
 
     def copy_team(self, team_to_copy):
         self.pets = team_to_copy.pets # Type : Pets

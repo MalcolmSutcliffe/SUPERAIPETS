@@ -17,6 +17,7 @@ class Shop:
         self.can_bonus = 0
         self.shop_animals = [None, None, None]
         self.frozen_slots = [False, False, False, False, False]
+        self.slot_selected = -1
         # self.shop_food = []
 
     def roll_shop(self):
@@ -77,5 +78,8 @@ class Shop:
 
     def get_turn(self):
         return self.turn
+
+    def get_slot_selected(self):
+        return self.slot_selected
 
 
