@@ -10,6 +10,7 @@ import os
 pygame.mixer.init()
 fuck = pygame.mixer.Sound("audio/sfx/fuck.wav")
 
+
 def generate_random_pet():
     new_pet = Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:])
     return new_pet
@@ -63,7 +64,9 @@ class Pet:
             self.status = STATUS.POISON_ATTACK
 
         try:
-            self.rightSprite = pygame.transform.scale(pygame.image.load(os.path.join('images/pet-images', self.name_tag + ".png")), (128, 128))
+            self.rightSprite = pygame.transform.scale(
+                pygame.image.load(os.path.join('images/pet-images', self.name_tag + ".png")).convert_alpha(),
+                (128, 128))
         except FileNotFoundError:
             self.rightSprite = default_texture
             print("image for '" + input_name + "' not found")

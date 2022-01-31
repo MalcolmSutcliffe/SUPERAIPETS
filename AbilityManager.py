@@ -51,7 +51,8 @@ def send_triggers(trigger_type, trigger_from, zone):
     # Player Trigger
     if trigger_from is None:
         for x in zone.get_all_pets():
-            x.receive_trigger([trigger_type, TRIGGERED_BY.Player], None)
+            if x is not None:
+                x.receive_trigger([trigger_type, TRIGGERED_BY.Player], None)
         return
 
     team = trigger_from.get_battleground_team()

@@ -15,6 +15,7 @@ pygame.display.init()
 pygame.font.init()
 ptext.FONT_NAME_TEMPLATE = "fonts/%s.otf"
 pygame.mixer.init()
+clock = pygame.time.Clock()
 
 button = pygame.mixer.Sound("audio/sfx/microwave_button.wav")
 
@@ -26,26 +27,26 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
 
-
 # create window
-game_icon = pygame.image.load(os.path.join('images', 'game_icon.png'))
-battle_bg = pygame.image.load(os.path.join('images', 'battle_bg.png'))
 window = pygame.display.set_mode((1280, 720))
+game_icon = pygame.image.load(os.path.join('images', 'game_icon.png')).convert_alpha()
+battle_bg = pygame.image.load(os.path.join('images', 'battle_bg.png')).convert()
 pygame.display.set_icon(game_icon)
 pygame.display.set_caption("SUPER AI PETS")
+
+pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, pygame.KEYUP, pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP])
+
+
+def display_fps():
+    ptext.draw(str(int(clock.get_fps())), centerx=50, top=30, fontname="Minecraftia", fontsize=28, owidth=1.5, ocolor=BLACK, color=WHITE)
 
 # direction: 0 = left, 1 = right
 def display_pet(pet, direction, xpos, ypos):
     window.blit(pet.get_sprite(direction), (xpos, ypos))
-    ptext.draw(str(pet.status)[7:], centerx=(xpos + 64), top=ypos, fontname="Minecraftia", fontsize=15, owidth=1.5,
-               ocolor=(0, 0, 0), color=(255, 255, 255))
-    ptext.draw(pet.name, centerx=(xpos + 64), top=(ypos - 40), fontname="Minecraftia", fontsize=18, owidth=1.5,
-               ocolor=(0, 0, 0), color=(255, 255, 255))
-    ptext.draw("lvl: " + str(pet.get_level()), centerx=(xpos + 64), top=(ypos - 20), fontname="Minecraftia",
-               fontsize=15, owidth=1.5, ocolor=(0, 0, 0), color=(255, 255, 255))
-    ptext.draw("AD: " + str(pet.get_attack()) + "   HP: " + str(pet.get_health()), centerx=(xpos + 64),
-               top=(ypos + 128), fontname="Minecraftia", fontsize=15, owidth=1.5, ocolor=(0, 0, 0),
-               color=(255, 255, 255))
+    ptext.draw(str(pet.status)[7:], centerx=(xpos + 64), top=ypos, fontname="Minecraftia", fontsize=15, owidth=1.5, ocolor=BLACK, color=WHITE)
+    ptext.draw(pet.name, centerx=(xpos + 64), top=(ypos - 40), fontname="Minecraftia", fontsize=18, owidth=1.5, ocolor=BLACK, color=WHITE)
+    ptext.draw("lvl: " + str(pet.get_level()), centerx=(xpos + 64), top=(ypos - 20), fontname="Minecraftia", fontsize=15, owidth=1.5, ocolor=BLACK, color=WHITE)
+    ptext.draw("AD: " + str(pet.get_attack()) + "   HP: " + str(pet.get_health()), centerx=(xpos + 64),top=(ypos + 128), fontname="Minecraftia", fontsize=15, owidth=1.5, ocolor=BLACK, color=WHITE)
 
 
 def display_shop(shop):
@@ -103,35 +104,49 @@ def display_battle(bg_object):
 
 
 def main():
+    KONAMI_CODE = [pygame.K_UP, pygame.K_UP, pygame.K_DOWN, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_LEFT,
+                   pygame.K_RIGHT, pygame.K_b, pygame.K_a]
+    input_code = []
+    konami_index = 0
+    soyboys = pygame.image.load(os.path.join('images', 'soyboys.png')).convert_alpha()
+    soy_mode = False
+
     # init main menu images
-    main_menu_normal = pygame.image.load(os.path.join('images', 'main_menu', 'main_menu.png'))
-    main_menu_play_pressed = pygame.image.load(os.path.join('images', 'main_menu', 'main_menu_play_pressed.png'))
+    main_menu_normal = pygame.image.load(os.path.join('images', 'main_menu', 'main_menu.png')).convert_alpha()
+    main_menu_play_pressed = pygame.image.load(
+        os.path.join('images', 'main_menu', 'main_menu_play_pressed.png')).convert_alpha()
     main_menu_settings_pressed = pygame.image.load(
-        os.path.join('images', 'main_menu', 'main_menu_settings_pressed.png'))
-    main_menu_reddit_pressed = pygame.image.load(os.path.join('images', 'main_menu', 'main_menu_reddit_pressed.png'))
-    main_menu_twitter_pressed = pygame.image.load(os.path.join('images', 'main_menu', 'main_menu_twitter_pressed.png'))
-    scrolling_background = pygame.image.load(os.path.join('images', 'main_menu', 'scrolling_background.png'))
+        os.path.join('images', 'main_menu', 'main_menu_settings_pressed.png')).convert_alpha()
+    main_menu_reddit_pressed = pygame.image.load(
+        os.path.join('images', 'main_menu', 'main_menu_reddit_pressed.png')).convert_alpha()
+    main_menu_twitter_pressed = pygame.image.load(
+        os.path.join('images', 'main_menu', 'main_menu_twitter_pressed.png')).convert_alpha()
+    scrolling_background = pygame.image.load(os.path.join('images', 'main_menu', 'scrolling_background.png')).convert()
     main_menu_bg = main_menu_normal
     y_offset = 0
 
-    settings_menu_bg = pygame.image.load(os.path.join('images', 'settings_menu', 'settings_menu.png'))
-    settings_back_off = pygame.image.load(os.path.join('images', 'settings_menu', 'settings_back_off.png'))
-    settings_back_on = pygame.image.load(os.path.join('images', 'settings_menu', 'settings_back_on.png'))
-    game_speed_1 = pygame.image.load(os.path.join('images', 'settings_menu', 'game_speed_1.png'))
-    game_speed_2 = pygame.image.load(os.path.join('images', 'settings_menu', 'game_speed_2.png'))
-    game_speed_3 = pygame.image.load(os.path.join('images', 'settings_menu', 'game_speed_3.png'))
-    game_speed_4 = pygame.image.load(os.path.join('images', 'settings_menu', 'game_speed_4.png'))
-    game_speed_inf = pygame.image.load(os.path.join('images', 'settings_menu', 'game_speed_inf.png'))
-    debug_mode_off = pygame.image.load(os.path.join('images', 'settings_menu', 'debug_mode_off.png'))
-    debug_mode_on = pygame.image.load(os.path.join('images', 'settings_menu', 'debug_mode_on.png'))
-    sfx_on = pygame.image.load(os.path.join('images', 'settings_menu', 'sfx_on.png'))
-    sfx_on_pressed = pygame.image.load(os.path.join('images', 'settings_menu', 'sfx_on_pressed.png'))
-    sfx_off = pygame.image.load(os.path.join('images', 'settings_menu', 'sfx_off.png'))
-    sfx_off_pressed = pygame.image.load(os.path.join('images', 'settings_menu', 'sfx_off_pressed.png'))
-    music_on = pygame.image.load(os.path.join('images', 'settings_menu', 'music_on.png'))
-    music_on_pressed = pygame.image.load(os.path.join('images', 'settings_menu', 'music_on_pressed.png'))
-    music_off = pygame.image.load(os.path.join('images', 'settings_menu', 'music_off.png'))
-    music_off_pressed = pygame.image.load(os.path.join('images', 'settings_menu', 'music_off_pressed.png'))
+    settings_menu_bg = pygame.image.load(os.path.join('images', 'settings_menu', 'settings_menu.png')).convert_alpha()
+    settings_back_off = pygame.image.load(
+        os.path.join('images', 'settings_menu', 'settings_back_off.png')).convert_alpha()
+    settings_back_on = pygame.image.load(
+        os.path.join('images', 'settings_menu', 'settings_back_on.png')).convert_alpha()
+    game_speed_1 = pygame.image.load(os.path.join('images', 'settings_menu', 'game_speed_1.png')).convert_alpha()
+    game_speed_2 = pygame.image.load(os.path.join('images', 'settings_menu', 'game_speed_2.png')).convert_alpha()
+    game_speed_3 = pygame.image.load(os.path.join('images', 'settings_menu', 'game_speed_3.png')).convert_alpha()
+    game_speed_4 = pygame.image.load(os.path.join('images', 'settings_menu', 'game_speed_4.png')).convert_alpha()
+    game_speed_inf = pygame.image.load(os.path.join('images', 'settings_menu', 'game_speed_inf.png')).convert_alpha()
+    debug_mode_off = pygame.image.load(os.path.join('images', 'settings_menu', 'debug_mode_off.png')).convert_alpha()
+    debug_mode_on = pygame.image.load(os.path.join('images', 'settings_menu', 'debug_mode_on.png')).convert_alpha()
+    sfx_on = pygame.image.load(os.path.join('images', 'settings_menu', 'sfx_on.png')).convert_alpha()
+    sfx_on_pressed = pygame.image.load(os.path.join('images', 'settings_menu', 'sfx_on_pressed.png')).convert_alpha()
+    sfx_off = pygame.image.load(os.path.join('images', 'settings_menu', 'sfx_off.png')).convert_alpha()
+    sfx_off_pressed = pygame.image.load(os.path.join('images', 'settings_menu', 'sfx_off_pressed.png')).convert_alpha()
+    music_on = pygame.image.load(os.path.join('images', 'settings_menu', 'music_on.png')).convert_alpha()
+    music_on_pressed = pygame.image.load(
+        os.path.join('images', 'settings_menu', 'music_on_pressed.png')).convert_alpha()
+    music_off = pygame.image.load(os.path.join('images', 'settings_menu', 'music_off.png')).convert_alpha()
+    music_off_pressed = pygame.image.load(
+        os.path.join('images', 'settings_menu', 'music_off_pressed.png')).convert_alpha()
     back_button_graphic = settings_back_off
     game_speed_graphic = game_speed_3
     debug_mode_graphic = debug_mode_off
@@ -140,17 +155,21 @@ def main():
     global SFX_ON
     music = True
 
-    shop_menu_3_slots = pygame.image.load(os.path.join('images', 'shop_menu', 'shop_menu_3_slots.png'))
-    shop_menu_4_slots = pygame.image.load(os.path.join('images', 'shop_menu', 'shop_menu_4_slots.png'))
-    shop_menu_5_slots = pygame.image.load(os.path.join('images', 'shop_menu', 'shop_menu_5_slots.png'))
-    exit_pressed = pygame.image.load(os.path.join('images', 'shop_menu', 'exit_pressed.png'))
-    exit_unpressed = pygame.image.load(os.path.join('images', 'shop_menu', 'exit_unpressed.png'))
-    fight_pressed = pygame.image.load(os.path.join('images', 'shop_menu', 'fight_pressed.png'))
-    fight_unpressed = pygame.image.load(os.path.join('images', 'shop_menu', 'fight_unpressed.png'))
-    slot_selection_icon = pygame.image.load(os.path.join('images', 'shop_menu', 'selection_icon.png'))
+    shop_menu_3_slots = pygame.image.load(os.path.join('images', 'shop_menu', 'shop_menu_3_slots.png')).convert()
+    shop_menu_4_slots = pygame.image.load(os.path.join('images', 'shop_menu', 'shop_menu_4_slots.png')).convert()
+    shop_menu_5_slots = pygame.image.load(os.path.join('images', 'shop_menu', 'shop_menu_5_slots.png')).convert()
+    exit_pressed = pygame.image.load(os.path.join('images', 'shop_menu', 'exit_pressed.png')).convert_alpha()
+    exit_unpressed = pygame.image.load(os.path.join('images', 'shop_menu', 'exit_unpressed.png')).convert_alpha()
+    fight_pressed = pygame.image.load(os.path.join('images', 'shop_menu', 'fight_pressed.png')).convert_alpha()
+    fight_unpressed = pygame.image.load(os.path.join('images', 'shop_menu', 'fight_unpressed.png')).convert_alpha()
+    roll_pressed = pygame.image.load(os.path.join('images', 'shop_menu', 'roll_pressed.png')).convert_alpha()
+    roll_unpressed = pygame.image.load(os.path.join('images', 'shop_menu', 'roll_unpressed.png')).convert_alpha()
+    slot_selection_icon = pygame.image.load(os.path.join('images', 'shop_menu', 'selection_icon.png')).convert_alpha()
     exit_button = exit_unpressed
     fight_button = fight_unpressed
+    roll_button = roll_unpressed
     shop_menu_bg = shop_menu_3_slots
+    team_slot_selected = -1
 
     # for i in DATA.get("statuses"):
     #     print(i)
@@ -230,20 +249,23 @@ def main():
     while running:
         pygame.event.get()
         pygame.display.flip()
+        clock.tick(60)
         # main menu
         if screen == 0:
             window.blit(scrolling_background, (0, y_offset))
             window.blit(main_menu_bg, (0, 0))
-            if y_offset == -843:
+            if y_offset <= -843:
                 y_offset = 0
             else:
-                y_offset -= 0.75
+                y_offset -= 0.5
         # shop
         elif screen == 1:
             window.blit(shop_menu_bg, (0, 0))
             window.blit(exit_button, (0, 0))
             window.blit(fight_button, (0, 0))
-            ptext.draw(str(base_shop.get_turn()), centerx=456, centery=40, fontname="Lapsus", fontsize=40, owidth=1.5, ocolor=(0, 0, 0), color=(255, 255, 255))
+            window.blit(roll_button, (0, 0))
+            ptext.draw(str(base_shop.get_turn()), centerx=456, centery=40, fontname="Lapsus", fontsize=40, owidth=1.5,
+                       ocolor=(0, 0, 0), color=(255, 255, 255))
             display_shop(base_shop)
             if not base_shop.get_slot_selected() == -1:
                 window.blit(slot_selection_icon, (120 * base_shop.get_slot_selected(), 0))
@@ -253,21 +275,40 @@ def main():
             display_battle(base_battleground)
         # settings
         elif screen == 3:
-            window.blit(scrolling_background, (0,0))
+            window.blit(scrolling_background, (0, y_offset))
             window.blit(settings_menu_bg, (0, 0))
             window.blit(back_button_graphic, (0, 0))
             window.blit(game_speed_graphic, (0, 0))
             window.blit(debug_mode_graphic, (0, 0))
             window.blit(sfx_graphic, (0, 0))
             window.blit(music_graphic, (0, 0))
+            if y_offset <= -843:
+                y_offset = 0
+            else:
+                y_offset -= 0.5
         else:
             window.fill(BLACK)
+        if get_debug_mode():
+            display_fps()
+        if soy_mode:
+            window.blit(soyboys, (0, 0))
 
         # event handling here
         # --------------------------------------------------------------------------------------------------------------------------
         # --------------------------------------------------------------------------------------------------------------------------
         for event in pygame.event.get():
+
             if event.type == pygame.KEYUP:
+                if event.key == KONAMI_CODE[konami_index]:
+                    input_code.append(event.key)
+                    konami_index += 1
+                    if input_code == KONAMI_CODE:
+                        input_code = []
+                        konami_index = 0
+                        soy_mode = not soy_mode
+                else:
+                    input_code = []
+                    konami_index = 0
                 if event.key == pygame.K_SPACE:
                     if screen == 2:
                         if base_battleground.get_team1().has_units() and base_battleground.get_team2().has_units():
@@ -304,10 +345,15 @@ def main():
                         if SFX_ON:
                             pygame.mixer.Sound.play(button)
                         exit_button = exit_pressed
-                    elif 921 <= mouseX <= 1255 and 622 <= mouseY <= 694:
-                        if SFX_ON:
-                            pygame.mixer.Sound.play(button)
-                        fight_button = fight_pressed
+                    elif 622 <= mouseY <= 694:
+                        if 921 <= mouseX <= 1255:
+                            if SFX_ON:
+                                pygame.mixer.Sound.play(button)
+                            fight_button = fight_pressed
+                        elif 27 <= mouseX <= 227:
+                            if SFX_ON:
+                                pygame.mixer.Sound.play(button)
+                            roll_button = roll_pressed
                     elif 371 <= mouseY <= 542:
                         if 290 <= mouseX <= 410:
                             base_shop.slot_selected = 0
@@ -319,6 +365,25 @@ def main():
                             base_shop.slot_selected = 3
                         elif 774 <= mouseX <= 894 and base_shop.get_turn() >= 9:
                             base_shop.slot_selected = 4
+                    elif 165 <= mouseY <= 335:
+                        shop_slot = base_shop.slot_selected
+                        team_slot = -1
+                        if shop_slot > -1:
+                            if base_shop.shop_animals[shop_slot] is not None:
+                                if 290 <= mouseX <= 410:
+                                    team_slot = 0
+                                elif 411 <= mouseX <= 531:
+                                    team_slot = 1
+                                elif 532 <= mouseX <= 652:
+                                    team_slot = 2
+                                elif 653 <= mouseX <= 773:
+                                    team_slot = 3
+                                elif 774 <= mouseX <= 894:
+                                    team_slot = 4
+                                if team1.pets[team_slot] is None:
+                                    team1.add_pet(base_shop.shop_animals[shop_slot],team_slot)
+                                    base_shop.shop_animals[shop_slot] = None
+
                 # settings
                 elif screen == 3:
                     # back
@@ -386,7 +451,7 @@ def main():
                 pos = pygame.mouse.get_pos()
                 mouseX = pos[0]
                 mouseY = pos[1]
-                # print("("+str(mouseX) + " , " + str(mouseY) + ") \n")
+                print("("+str(mouseX) + " , " + str(mouseY) + ") \n")
                 # main menu
                 if screen == 0:
                     # play
@@ -412,9 +477,15 @@ def main():
                         screen = 0
                         base_shop.slot_selected = -1
                     # fight
-                    elif 921 <= mouseX <= 1255 and 622 <= mouseY <= 694:
-                        screen = 2
-                        team2.randomize_team()
+                    elif 622 <= mouseY <= 694:
+                        if 921 <= mouseX <= 1255:
+                            screen = 2
+                            team2.randomize_team()
+                        elif 27 <= mouseX <= 227:
+                            base_shop.roll_shop()
+                    elif 371 > mouseY or mouseY > 542 or 290 > mouseX or mouseX > 894:
+                        base_shop.slot_selected = -1
+                    roll_button = roll_unpressed
                     fight_button = fight_unpressed
                     exit_button = exit_unpressed
                 # battle
@@ -425,6 +496,7 @@ def main():
                         shop_menu_bg = shop_menu_4_slots
                     elif base_shop.get_turn() == 9:
                         shop_menu_bg = shop_menu_5_slots
+                    team1.advance_team()
                     screen = 1
                     base_battleground.reset_winner()
                     # team1 = copy.copy(team1_healthy)
@@ -452,6 +524,7 @@ def main():
                         music_graphic = music_on
                     else:
                         music_graphic = music_off
+
 
             # only do something if the event is of type QUIT
             if event.type == pygame.QUIT:
