@@ -7,7 +7,7 @@ f = open("SAPinfo.json")
 DATA = json.load(f)
 f.close()
 
-default_texture = pygame.image.load(os.path.join('images/pet-images', 'none.png'))
+default_texture = pygame.image.load(os.path.join('images/pet_images', 'none.png'))
 
 #delay, in seconds
 GAME_SPEED = 0.25

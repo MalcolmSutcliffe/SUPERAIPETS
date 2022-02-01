@@ -65,7 +65,7 @@ class Pet:
 
         try:
             self.rightSprite = pygame.transform.scale(
-                pygame.image.load(os.path.join('images/pet-images', self.name_tag + ".png")).convert_alpha(),
+                pygame.image.load(os.path.join('images/pet_images', self.name_tag + ".png")).convert_alpha(),
                 (128, 128))
         except FileNotFoundError:
             self.rightSprite = default_texture

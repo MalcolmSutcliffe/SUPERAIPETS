@@ -2,6 +2,8 @@ import copy
 import time
 
 import pygame
+import random
+import os
 from SuperAiPets import display_battle
 from AbilityManager import *
 from SAP_Data import get_game_speed, get_debug_mode, sfx_on
@@ -20,6 +22,10 @@ smack = pygame.mixer.Sound("audio/sfx/smack.wav")
 # MovePets : {[0,0,0,0,0,0,0,0,0,0]} (a list of 10 integers that represent the change in position for each of the pets)
 # AllOf : A list of animation types to perform all at once
 
+battle_bgs = [None] * 12
+for i in range(0, 12):
+    battle_bgs[i] = pygame.image.load(os.path.join("images/battle_screen/battle_bg_"+str(i)+".png")).convert()
+
 
 class Battleground:
 
@@ -32,6 +38,8 @@ class Battleground:
         self.battle_history = []
         #0=in progress, 1=team1, 2=team2, 3=draw
         self.winner = 0
+        self.left_bg = battle_bgs[0]
+        self.right_bg = battle_bgs[1]
 
         self.AM = AbilityManager(self)
 
@@ -177,3 +185,8 @@ class Battleground:
         for i in range(5):
             all_pets.append(self.team2.get_pets()[4 - i])
         return all_pets
+
+    def randomize_battle_bgs(self):
+        rando = random.sample(range(12), 2)
+        self.left_bg = battle_bgs[rando[0]]
+        self.right_bg = battle_bgs[rando[1]]

@@ -30,15 +30,15 @@ BLACK = (0, 0, 0)
 # create window
 window = pygame.display.set_mode((1280, 720))
 game_icon = pygame.image.load(os.path.join('images', 'game_icon.png')).convert_alpha()
-battle_bg = pygame.image.load(os.path.join('images', 'battle_bg.png')).convert()
+battle_overlay = pygame.image.load(os.path.join('images', 'battle_screen', 'battle_overlay.png')).convert_alpha()
 pygame.display.set_icon(game_icon)
 pygame.display.set_caption("SUPER AI PETS")
-
 pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, pygame.KEYUP, pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP])
 
 
 def display_fps():
     ptext.draw(str(int(clock.get_fps())), centerx=50, top=30, fontname="Minecraftia", fontsize=28, owidth=1.5, ocolor=BLACK, color=WHITE)
+
 
 # direction: 0 = left, 1 = right
 def display_pet(pet, direction, xpos, ypos):
@@ -74,9 +74,11 @@ def display_team_in_battle(is_friendly, team):
 
 def display_battle(bg_object):
     pygame.display.flip()
-    window.blit(battle_bg, (0, 0))
+    window.blit(bg_object.left_bg, (0, 0))
+    window.blit(bg_object.right_bg, (640, 0))
     display_team_in_battle(True, bg_object.get_team1())
     display_team_in_battle(False, bg_object.get_team2())
+    window.blit(battle_overlay, (0, 0))
     winner = bg_object.get_winner()
     ptext.draw(bg_object.get_team1().get_name(), left=20, bottom=bottom_offset, fontname="Lapsus", fontsize=40,
                owidth=1.5, ocolor=(0, 0, 0), color=(255, 255, 255))
@@ -211,7 +213,7 @@ def main():
     # my_caterpillar.set_level(3)
     # my_sheep.set_status(STATUS.MELON_ARMOR)
 
-    team1 = Team("Team Name", False)
+    team1 = Team("North Korean National SAP Team", False)
     team1.randomize_team()
     team2 = Team("Team Name", False)
     team2.randomize_team()
@@ -266,13 +268,17 @@ def main():
             window.blit(roll_button, (0, 0))
             ptext.draw(str(base_shop.get_turn()), centerx=456, centery=40, fontname="Lapsus", fontsize=40, owidth=1.5,
                        ocolor=(0, 0, 0), color=(255, 255, 255))
+            ptext.draw(team1.get_name(), centerx=577, bottom=695, fontname="Lapsus", fontsize=50,
+                       owidth=1.5, ocolor=(0, 0, 0), color=(255, 255, 255))
             display_shop(base_shop)
+
             if not base_shop.get_slot_selected() == -1:
                 window.blit(slot_selection_icon, (120 * base_shop.get_slot_selected(), 0))
 
         # battle
         elif screen == 2:
             display_battle(base_battleground)
+
         # settings
         elif screen == 3:
             window.blit(scrolling_background, (0, y_offset))
@@ -451,7 +457,7 @@ def main():
                 pos = pygame.mouse.get_pos()
                 mouseX = pos[0]
                 mouseY = pos[1]
-                print("("+str(mouseX) + " , " + str(mouseY) + ") \n")
+                # print("("+str(mouseX) + " , " + str(mouseY) + ") \n")
                 # main menu
                 if screen == 0:
                     # play
@@ -480,7 +486,9 @@ def main():
                     elif 622 <= mouseY <= 694:
                         if 921 <= mouseX <= 1255:
                             screen = 2
+                            base_shop.slot_selected = -1
                             team2.randomize_team()
+                            base_battleground.randomize_battle_bgs()
                         elif 27 <= mouseX <= 227:
                             base_shop.roll_shop()
                     elif 371 > mouseY or mouseY > 542 or 290 > mouseX or mouseX > 894:
