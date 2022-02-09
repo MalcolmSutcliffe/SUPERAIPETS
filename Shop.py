@@ -33,7 +33,7 @@ class Shop:
     def random_shop_animal(self):
         possible_animals = []
         for i in range(self.tiers_available):
-            possible_animals = possible_animals + ANIMAL_TIERS[i]
+            possible_animals = possible_animals + AVAILABLE_ANIMALS[i]
         pet_tag = random.choice(possible_animals)
         pet = Pet(pet_tag[4:])
         pet.set_base_attack(pet.get_base_attack() + self.get_attack_bonus())

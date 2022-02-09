@@ -11,7 +11,7 @@ fuck = pygame.mixer.Sound("audio/sfx/fuck.wav")
 
 
 def generate_random_pet():
-    new_pet = Pet(random.sample(random.sample(ANIMAL_TIERS, 1)[0], 1)[0][4:])
+    new_pet = Pet(random.sample(random.sample(AVAILABLE_ANIMALS, 1)[0], 1)[0][4:])
     return new_pet
 
 
@@ -21,6 +21,7 @@ class Pet:
 
         # create pet with default stats.
 
+        self.name = input_name
         self.base_attack = 1
         self.base_health = 1
         self.temp_attack = 0
@@ -71,8 +72,8 @@ class Pet:
         self.health = self.base_health
 
         # Note this will be replaced, when a scorpion is summoned it will have the status passed to it
-        if self.name == "scorpion":
-            self.status = STATUS.POISON_ATTACK
+        # if self.name == "scorpion":
+        #     self.status = STATUS.POISON_ATTACK
 
         try:
             self.rightSprite = pygame.transform.scale(
@@ -171,10 +172,12 @@ class Pet:
             team = self.team
 
         if self.status == STATUS.HONEY_BEE:
-            team.summon_pet(self.get_index(), "bee", 1, 1, None)
+            # team.summon_pet(self.get_index(), "bee", 1, 1, None)
+            pass
 
         if self.status == STATUS.EXTRA_LIFE:
-            team.summon_pet(self.get_index(), self.name, 1, 1, None)
+            # team.summon_pet(self.get_index(), self.name, 1, 1, None)
+            pass
 
     def die(self):
         self.end_of_battle()
@@ -206,7 +209,8 @@ class Pet:
             self.level = 3
 
     def generate_ability(self):
-        self.ability = PetAbility(self)
+        # self.ability = PetAbility(self)
+        pass
 
     # getters and setters
     def get_name(self):

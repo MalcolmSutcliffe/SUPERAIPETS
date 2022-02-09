@@ -105,20 +105,20 @@ SFX_ON = True
 
 PACK = "StandardPack"  # can be StandardPack or ExpansionPack1
 
-ANIMAL_TIERS = [[], [], [], [], [], []]
+AVAILABLE_ANIMALS = [[], [], [], [], [], []]
 
-FOOD_TIERS = [[], [], [], [], [], []]
+AVAILABLE_FOODS = [[], [], [], [], [], []]
 
 for name in PET_DATA:
     for i in range(6):
         if PET_DATA.get(name).get("tier") == i + 1 and PACK in PET_DATA.get(name).get("packs"):
-            ANIMAL_TIERS[i].append(name)
+            AVAILABLE_ANIMALS[i].append(name)
             continue
 
 for name in FOOD_DATA:
     for i in range(6):
         if FOOD_DATA.get(name).get("tier") == i + 1:  # and PACK in PET_DATA.get(name).get("packs"):
-            FOOD_TIERS[i].append(name)
+            AVAILABLE_FOODS[i].append(name)
             continue
 
 
