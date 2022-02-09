@@ -1,7 +1,7 @@
 from Pet import Pet
 from Pet import PetAbility
 from Team import Team
-from SAP_Data import DATA, ANIMAL_TIERS
+from SAP_Data import *
 import random
 
 
@@ -10,7 +10,7 @@ class Shop:
     def __init__(self, team):
         self.team = team
         self.turn = 1
-        self.turn_info = DATA.get("turns").get("turn-" + str(self.turn))
+        self.turn_info = TURN_DATA.get("turn-" + str(self.turn))
         self.animal_shop_slots = self.turn_info.get("animalShopSlots")
         # self.food_shop_slots = self.turn_info.get("foodShopSlots")
         self.tiers_available = self.turn_info.get("tiersAvailable")
@@ -62,7 +62,7 @@ class Shop:
 
     def reset(self):
         self.turn = 1
-        self.turn_info = DATA.get("turns").get("turn-" + str(self.turn))
+        self.turn_info = TURN_DATA.get("turn-" + str(self.turn))
         self.animal_shop_slots = self.turn_info.get("animalShopSlots")
         self.tiers_available = self.turn_info.get("tiersAvailable")
         self.shop_animals = [None, None, None]
@@ -70,7 +70,7 @@ class Shop:
     def next_turn(self):
         self.turn += 1
         if self.turn <= 11:
-            self.turn_info = DATA.get("turns").get("turn-" + str(self.turn))
+            self.turn_info = TURN_DATA.get("turn-" + str(self.turn))
             self.tiers_available = self.turn_info.get("tiersAvailable")
             if self.turn == 5 or self.turn == 9:
                 self.animal_shop_slots += 1

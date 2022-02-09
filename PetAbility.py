@@ -2,7 +2,7 @@ import copy
 import random
 from functools import total_ordering
 from AbilityManager import *
-from SAP_Data import DATA, ANIMAL_TIERS, get_debug_mode, DEFAULT_ABILITY, EFFECT_TYPE, TARGET, STATUS
+from SAP_Data import *
 
 
 @total_ordering
@@ -20,7 +20,7 @@ class PetAbility:
 
         if self.ability_data is None:
             try:
-                self.ability_data = DATA.get("pets").get(self.name).get("level" + str(self.level) + "Ability")
+                self.ability_data = PET_DATA.get(self.name).get("level" + str(self.level) + "Ability")
             except AttributeError:
                 print("Error: the pet tag '" + self.name + "' does not exist!")
             try:
@@ -394,9 +394,9 @@ class PetAbility:
             summon_attack = self.pet.get_attack()
 
         if summon_attack is None:
-            summon_attack = DATA.get("pets").get("pet-" + summon_tag).get("baseAttack")
+            summon_attack = PET_DATA.get("pet-" + summon_tag).get("baseAttack")
         if summon_health is None:
-            summon_health = DATA.get("pets").get("pet-" + summon_tag).get("baseHealth")
+            summon_health = PET_DATA.get("pet-" + summon_tag).get("baseHealth")
 
         try:
             status = STATUS[self.effect.get("withStatus")]
@@ -488,9 +488,9 @@ class PetAbility:
             summon_attack = self.pet.get_attack()
 
         if summon_attack is None:
-            summon_attack = DATA.get("pets").get("pet-" + summon_tag).get("baseAttack")
+            summon_attack = PET_DATA.get("pet-" + summon_tag).get("baseAttack")
         if summon_health is None:
-            summon_health = DATA.get("pets").get("pet-" + summon_tag).get("baseHealth")
+            summon_health = PET_DATA.get("pet-" + summon_tag).get("baseHealth")
 
         team = self.pet.get_battleground_team()
         if team is None:

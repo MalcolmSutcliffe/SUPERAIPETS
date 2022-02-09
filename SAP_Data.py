@@ -74,9 +74,24 @@ class TARGET(Enum):
     EachEnemy = 20
 
 
-f = open("data/SAPinfo.json")
-DATA = json.load(f)
+f = open("data/pet_data.json")
+PET_DATA = json.load(f)
 f.close()
+
+f = open("data/food_data.json")
+FOOD_DATA = json.load(f)
+f.close()
+
+f = open("data/status_data.json")
+STATUS_DATA = json.load(f)
+f.close()
+
+f = open("data/turn_data.json")
+TURN_DATA = json.load(f)
+f.close()
+
+print(FOOD_DATA)
+print(PET_DATA)
 
 default_texture = pygame.image.load(os.path.join('images/pet_images', 'none.png'))
 
@@ -91,19 +106,21 @@ DEBUG_MODE = False
 
 SFX_ON = True
 
+PACK = "StandardPack"  # can be StandardPack or ExpansionPack1
+
 ANIMAL_TIERS = [[], [], [], [], [], []]
 
 FOOD_TIERS = [[], [], [], [], [], []]
 
-for name in DATA.get("pets"):
+for name in PET_DATA:
     for i in range(6):
-        if DATA.get("pets").get(name).get("tier") == i + 1:
+        if PET_DATA.get(name).get("tier") == i + 1 and PACK in PET_DATA.get(name).get("packs"):
             ANIMAL_TIERS[i].append(name)
             continue
 
-for name in DATA.get("foods"):
+for name in FOOD_DATA:
     for i in range(6):
-        if DATA.get("foods").get(name).get("tier") == i + 1:
+        if FOOD_DATA.get(name).get("tier") == i + 1: # and PACK in PET_DATA.get(name).get("packs"):
             FOOD_TIERS[i].append(name)
             continue
 

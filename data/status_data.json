@@ -1,0 +1,162 @@
+{
+    "WEAK": {
+      "name": "Weak",
+      "id": "WEAK",
+      "ability": {
+        "description": "Take 3 extra damage.",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "trigger": "WhenDamaged",
+        "effect": {
+          "kind": "ModifyDamage",
+          "damageModifier": 3,
+          "appliesOnce": false
+        }
+      }
+    },
+    "COCONUT_SHIELD": {
+      "name": "Coconut Shield",
+      "id": "COCONUT_SHIELD",
+      "ability": {
+        "description": "Ignore damage once.",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "trigger": "WhenDamaged",
+        "effect": {
+          "kind": "ModifyDamage",
+          "damageModifier": null,
+          "appliesOnce": true
+        }
+      }
+    },
+    "HONEY_BEE": {
+      "name": "Honey Bee",
+      "id": "HONEY_BEE",
+      "ability": {
+        "description": "Summon a 1/1 Bee after fainting.",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "trigger": "Faint",
+        "effect": {
+          "kind": "SummonPet",
+          "pet": "pet-bee",
+          "team": "Friendly",
+          "n": 1
+        }
+      }
+    },
+    "BONE_ATTACK": {
+      "name": "Bone Attack",
+      "id": "BONE_ATTACK",
+      "ability": {
+        "description": "Attack for 5 more damage.",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "trigger": "WhenAttacking",
+        "effect": {
+          "kind": "ModifyDamage",
+          "damageModifier": 5,
+          "appliesOnce": false
+        }
+      }
+    },
+    "GARLIC_ARMOR": {
+      "name": "Garlic Armor",
+      "id": "GARLIC_ARMOR",
+      "ability": {
+        "description": "Take 2 less damage.",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "trigger": "WhenDamaged",
+        "effect": {
+          "kind": "ModifyDamage",
+          "damageModifier": -2,
+          "appliesOnce": false
+        }
+      }
+    },
+    "SPLASH_ATTACK": {
+      "name": "Splash Attack",
+      "id": "SPLASH_ATTACK",
+      "ability": {
+        "description": "Attack second enemy for 5 damage.",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "trigger": "WhenAttacking",
+        "effect": {
+          "kind": "SplashDamage",
+          "amount": 5
+        }
+      }
+    },
+    "MELON_ARMOR": {
+      "name": "Melon Armor",
+      "id": "MELON_ARMOR",
+      "ability": {
+        "description": "Take 20 damage less, once.",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "trigger": "WhenDamaged",
+        "effect": {
+          "kind": "ModifyDamage",
+          "damageModifier": -20,
+          "appliesOnce": true
+        }
+      }
+    },
+    "status-extra-life": {
+      "name": "Extra Life",
+      "id": "status-extra-life",
+      "ability": {
+        "description": "Come back as a 1/1 after fainting",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "trigger": "Faint",
+        "effect": {
+          "kind": "RespawnPet",
+          "baseAttack": 1,
+          "baseHealth": 1
+        }
+      }
+    },
+    "status-steak-attack": {
+      "name": "Steak Attack",
+      "id": "status-steak-attack",
+      "ability": {
+        "description": "Attack for 20 more damage, once.",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "trigger": "WhenAttacking",
+        "effect": {
+          "kind": "ModifyDamage",
+          "damageModifier": 20,
+          "appliesOnce": true
+        }
+      }
+    },
+    "POISON_ATTACK": {
+      "name": "Poison Attack",
+      "id": "POISON_ATTACK",
+      "ability": {
+        "description": "Knock out any animal hit by this.",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "trigger": "WhenAttacking",
+        "effect": {
+          "kind": "ModifyDamage",
+          "damageModifier": null,
+          "appliesOnce": false
+        }
+      }
+    }
+}

@@ -37,11 +37,11 @@ class Pet:
         self.battleground_enemy_team = None
 
         self.name_tag = "pet-" + input_name
-        self.name = DATA.get("pets").get(self.name_tag).get("name")
-        pet_data = DATA.get("pets").get("bee")
+        self.name = PET_DATA.get(self.name_tag).get("name")
+        pet_data = PET_DATA.get("bee")
 
         try:
-            pet_data = DATA.get("pets").get(self.name_tag)
+            pet_data = PET_DATA.get(self.name_tag)
         except AttributeError:
             print("Error: the pet tag '" + self.name_tag + "' does not exist!")
 
@@ -318,9 +318,9 @@ class Pet:
         self.battleground_enemy_team = None
         self.name_tag = pet_to_copy.name_tag
         self.name = pet_to_copy.name
-        pet_data = DATA.get("pets").get("bee")
+        pet_data = PET_DATA.get("bee")
         try:
-            pet_data = DATA.get("pets").get(self.name_tag)
+            pet_data = PET_DATA.get(self.name_tag)
         except AttributeError:
             print("Error: the pet tag '" + self.name_tag + "' does not exist!")
         try:

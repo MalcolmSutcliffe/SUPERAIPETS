@@ -14,7 +14,7 @@ class Team:
         self.pets = [None] * 5  # Type : Pets
         self.lives = 10
         self.wins = 0
-        self.turn = DATA.get("turns").get("turn-1")
+        self.turn = TURN_DATA.get("turn-1")
         self.battleground = None
         self.name = input_name
         self.plural = plural
@@ -151,7 +151,7 @@ class Team:
         self.pets = [None] * 5  # Type : Pets
         self.lives = 10
         self.wins = 0
-        self.turn = DATA.get("turns").get("turn-1")
+        self.turn = TURN_DATA.get("turn-1")
         self.name = input_name
         self.plural = plural
 
@@ -170,7 +170,7 @@ class Team:
         self.pets = team_to_copy.pets # Type : Pets
         self.lives = team_to_copy.lives
         self.wins = team_to_copy.wins
-        self.turn = DATA.get("turns").get("turn-1")
+        self.turn = TURN_DATA.get("turn-1")
         self.battleground = None
         self.name = team_to_copy.name
         self.plural = team_to_copy.plural
