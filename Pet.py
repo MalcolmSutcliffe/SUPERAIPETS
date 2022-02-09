@@ -4,7 +4,6 @@ import random
 from PetAbility import PetAbility
 from AbilityManager import *
 from SAP_Data import *
-from Status import STATUS
 import os
 
 pygame.mixer.init()

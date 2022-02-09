@@ -2,65 +2,7 @@ import copy
 import random
 from functools import total_ordering
 from AbilityManager import *
-from SAP_Data import DATA, ANIMAL_TIERS, get_debug_mode
-from Status import STATUS
-from enum import Enum
-
-DEFAULT_ABILITY = {
-    "description": "",
-    "trigger": "NA",
-    "triggeredBy": {
-        "kind": "NA"
-    },
-    "effect": {
-        "kind": "NA"
-    }
-}
-
-
-class EFFECT_TYPE(Enum):
-    AllOf = 1  # implemented
-    ApplyStatus = 2  # implemented
-    DealDamage = 3  # implemented
-    FoodMultiplier = 4  #
-    GainExperience = 5  #
-    GainGold = 6  #
-    ModifyStats = 7  # implemented
-    ModifyStatsNotInBattle = 8  #
-    OneOf = 9  # implemented
-    ReduceHealth = 10  # implemented
-    RefillShops = 11  #
-    RepeatAbility = 12  # implemented
-    SummonPet = 13  # implemented
-    SummonRandomPet = 14  # implemented
-    Swallow = 15  # implemented
-    TransferAbility = 16  #
-    TransferStats = 17  # implemented
-    NA = 18  # implemented
-    Evolve = 19  # implemented
-
-
-class TARGET(Enum):
-    AdjacentAnimals = 1  # implemented
-    All = 2  # implemented
-    DifferentTierAnimals = 3  # implemented
-    EachFriend = 4  # implemented
-    EachShopAnimal = 5  # implemented
-    FirstEnemy = 6  # implemented
-    FriendAhead = 7  # implemented
-    FriendBehind = 8  # implemented
-    HighestHealthEnemy = 9  # implemented
-    LastEnemy = 10  # implemented
-    LeftMostFriend = 11  # implemented
-    Level2And3Friends = 12  # implemented
-    LowestHealthEnemy = 13  # implemented
-    RandomEnemy = 14  # implemented
-    RandomFriend = 15  # implemented
-    RightMostFriend = 16  # implemented
-    Self = 17  # implemented
-    StrongestFriend = 18  # implemented
-    TriggeringEntity = 19  # implemented
-    EachEnemy = 20
+from SAP_Data import DATA, ANIMAL_TIERS, get_debug_mode, DEFAULT_ABILITY, EFFECT_TYPE, TARGET, STATUS
 
 
 @total_ordering
@@ -609,4 +551,4 @@ class PetAbility:
         self.priority = prio
 
     def __str__(self):
-        return str(self.pet) + " " + str(self.effect_type) # + " " + str(self.trigger)
+        return str(self.pet) + " " + str(self.effect_type)  # + " " + str(self.trigger)

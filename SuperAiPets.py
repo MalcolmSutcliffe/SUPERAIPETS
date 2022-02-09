@@ -3,7 +3,6 @@ import random
 import ptext
 import pygame
 import os
-from Status import STATUS
 from Battleground import *
 from Team import Team
 from Shop import Shop
