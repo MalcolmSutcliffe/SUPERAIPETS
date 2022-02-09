@@ -52,25 +52,25 @@ class EFFECT_TYPE(Enum):
 
 
 class TARGET(Enum):
-    AdjacentAnimals = 1  # implemented
-    All = 2  # implemented
-    DifferentTierAnimals = 3  # implemented
-    EachFriend = 4  # implemented
-    EachShopAnimal = 5  # implemented
-    FirstEnemy = 6  # implemented
-    FriendAhead = 7  # implemented
-    FriendBehind = 8  # implemented
-    HighestHealthEnemy = 9  # implemented
-    LastEnemy = 10  # implemented
-    LeftMostFriend = 11  # implemented
-    Level2And3Friends = 12  # implemented
-    LowestHealthEnemy = 13  # implemented
-    RandomEnemy = 14  # implemented
-    RandomFriend = 15  # implemented
-    RightMostFriend = 16  # implemented
-    Self = 17  # implemented
-    StrongestFriend = 18  # implemented
-    TriggeringEntity = 19  # implemented
+    AdjacentAnimals = 1
+    All = 2
+    DifferentTierAnimals = 3
+    EachFriend = 4
+    EachShopAnimal = 5
+    FirstEnemy = 6
+    FriendAhead = 7
+    FriendBehind = 8
+    HighestHealthEnemy = 9
+    LastEnemy = 10
+    LeftMostFriend = 11
+    Level2And3Friends = 12
+    LowestHealthEnemy = 13
+    RandomEnemy = 14
+    RandomFriend = 15
+    RightMostFriend = 16
+    Self = 17
+    StrongestFriend = 18
+    TriggeringEntity = 19
     EachEnemy = 20
 
 

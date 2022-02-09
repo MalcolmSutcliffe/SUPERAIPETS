@@ -17,48 +17,60 @@ def generate_random_pet():
 
 class Pet:
 
-    def __init__(self, input_name="", team=None, shop=None, battleground=None, status=None):
+    def __init__(self, input_name="", status=None, level=1, ability=None, team=None, shop=None, battleground=None):
 
-        self.base_attack = 0
-        self.base_health = 0
+        # create pet with default stats.
 
-        self.level = 1
+        self.base_attack = 1
+        self.base_health = 1
+        self.temp_attack = 0
+        self.temp_health = 0
+        self.experience = 0
+        self.level = level
+        self.tier = 1
+        self.packs = ["StandardPack"]
+
+        self.attack = self.base_attack
+        self.health = self.base_health
 
         self.is_fainted = False
-
         self.status = status
-
-        self.ability = None
-
+        self.ability = DEFAULT_ABILITY
         self.team = team
         self.shop = shop
         self.battleground = battleground
+        self.ability = ability
         self.battleground_team = None
         self.battleground_enemy_team = None
 
         self.name_tag = "pet-" + input_name
-        self.name = PET_DATA.get(self.name_tag).get("name")
-        pet_data = PET_DATA.get("bee")
+        self.pet_data = PET_DATA.get("bee")
 
+        self.rightSprite = pygame.transform.scale(default_texture, (128, 128))
+        self.leftSprite = pygame.transform.flip(self.rightSprite, True, False)
+
+        # try opening file, if it doesn't exist, returns, pet will be a bee.
         try:
-            pet_data = PET_DATA.get(self.name_tag)
+            self.pet_data = PET_DATA.get(self.name_tag)
         except AttributeError:
             print("Error: the pet tag '" + self.name_tag + "' does not exist!")
+            return
 
+        # try applying the unique pet stats
         try:
-            self.base_attack = pet_data.get("baseAttack")
-            self.base_health = pet_data.get("baseHealth")
-            self.packs = pet_data.get("packs")
-            self.tier = pet_data.get("tier")
+            self.base_attack = self.pet_data.get("baseAttack")
+            self.base_health = self.pet_data.get("baseHealth")
+            self.packs = self.pet_data.get("packs")
+            self.tier = self.pet_data.get("tier")
+            # self.ability = self.pet_data.get("level"+str(self.level)+"Ability")
         except AttributeError:
             pass
 
-        self.temp_attack = 0
-        self.temp_health = 0
+        # update attack and health
         self.attack = self.base_attack
         self.health = self.base_health
-        self.experience = 0
 
+        # Note this will be replaced, when a scorpion is summoned it will have the status passed to it
         if self.name == "scorpion":
             self.status = STATUS.POISON_ATTACK
 
@@ -67,8 +79,8 @@ class Pet:
                 pygame.image.load(os.path.join('images/pet_images', self.name_tag + ".png")).convert_alpha(),
                 (128, 128))
         except FileNotFoundError:
-            self.rightSprite = default_texture
             print("image for '" + input_name + "' not found")
+
         self.leftSprite = pygame.transform.flip(self.rightSprite, True, False)
 
     def receive_trigger(self, trigger, triggering_entity):
