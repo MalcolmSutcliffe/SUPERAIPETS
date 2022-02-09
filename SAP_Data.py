@@ -37,7 +37,6 @@ class EFFECT_TYPE(Enum):
     GainExperience = 5  #
     GainGold = 6  #
     ModifyStats = 7  # implemented
-    ModifyStatsNotInBattle = 8  #
     OneOf = 9  # implemented
     ReduceHealth = 10  # implemented
     RefillShops = 11  #

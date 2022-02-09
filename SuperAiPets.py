@@ -49,26 +49,26 @@ def display_pet(pet, direction, xpos, ypos):
 
 
 def display_shop(shop):
-    for i, x in enumerate(shop.team.get_pets()):
+    for j, x in enumerate(shop.team.get_pets()):
         if x is not None:
-            display_pet(x, 0, (285 + (120 * i)), 200)
+            display_pet(x, 0, (285 + (120 * j)), 200)
 
-    for i, x in enumerate(shop.shop_animals):
+    for j, x in enumerate(shop.shop_animals):
         if x is not None:
-            display_pet(x, 0, (285 + (120 * i)), 400)
+            display_pet(x, 0, (285 + (120 * j)), 400)
 
 
 def display_team_in_battle(is_friendly, team):
     if is_friendly:
         direction = 0
-        for i, x in enumerate(team.get_pets()):
+        for j, x in enumerate(team.get_pets()):
             if x is not None:
-                display_pet(x, direction, (25 + (120 * i)), 400)
+                display_pet(x, direction, (25 + (120 * j)), 400)
     else:
         direction = 1
-        for i, x in enumerate(team.get_pets()):
+        for j, x in enumerate(team.get_pets()):
             if x is not None:
-                display_pet(x, direction, (50 + (120 * (9 - i))), 400)
+                display_pet(x, direction, (50 + (120 * (9 - j))), 400)
 
 
 def display_battle(bg_object):

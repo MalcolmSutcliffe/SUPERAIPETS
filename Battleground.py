@@ -34,7 +34,7 @@ class Battleground:
         self.team1.set_battleground(self)
         self.team2.set_battleground(self)
         self.battle_history = []
-        #0=in progress, 1=team1, 2=team2, 3=draw
+        # 0=in progress, 1=team1, 2=team2, 3=draw
         self.winner = 0
         self.left_bg = battle_bgs[0]
         self.right_bg = battle_bgs[1]
@@ -48,14 +48,14 @@ class Battleground:
                 self.team1.pets[i].set_battleground(self)
                 self.team1.pets[i].set_battleground_team(self.team1)
                 self.team1.pets[i].set_battleground_enemy_team(self.team2)
-                self.team1.pets[i].generate_ability()
+                # self.team1.pets[i].generate_ability()
 
             self.team2.pets[i] = copy.copy(team2.get_pets()[i])
             if self.team2.pets[i] is not None:
                 self.team2.pets[i].set_battleground(self)
                 self.team2.pets[i].set_battleground_team(self.team2)
                 self.team2.pets[i].set_battleground_enemy_team(self.team1)
-                self.team2.pets[i].generate_ability()
+                # self.team2.pets[i].generate_ability()
 
     def display(self):
         display_battle(self)
@@ -70,9 +70,9 @@ class Battleground:
 
         if get_debug_mode():
             print(str(team1_fighter) + " | HP: " + str(team1_fighter.get_health()) + " | Attack: " + str(
-                team1_fighter.get_attack()))
+                team1_fighter.get_attack()) + " | Status: " + str(team1_fighter.get_status())[7:])
             print(str(team2_fighter) + " | HP: " + str(team2_fighter.get_health()) + " | Attack: " + str(
-                team2_fighter.get_attack()))
+                team2_fighter.get_attack()) + " | Status: " + str(team2_fighter.get_status())[7:])
 
         send_triggers(TRIGGER.BeforeAttack, team1_fighter, self)
         send_triggers(TRIGGER.BeforeAttack, team2_fighter, self)

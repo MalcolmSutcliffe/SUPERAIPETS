@@ -107,15 +107,20 @@ class Pet:
 
     def attack_enemy(self, victim):
 
-        victim.take_damage(self, self.get_dmg())
-
         index = victim.get_index()
-        if self.status == STATUS.SPLASH_ATTACK:
-            for i in range(index - 1):
-                x = victim.get_battleground_team().get_pets()[index - 1 - i]
-                if x is not None:
-                    x.take_damage(self, 5)
-                    break
+
+        # needs to be fixed
+
+        # if self.status == STATUS.SPLASH_ATTACK:
+        #     print(victim)
+        #     print(victim.get_battleground_team())
+        #     for i in range(index - 1):
+        #         x = victim.get_battleground_team().get_pets()[index - 1 - i]
+        #         if x is not None:
+        #             x.take_damage(self, 5)
+        #             break
+
+        victim.take_damage(self, self.get_dmg())
 
     def take_damage(self, attacker, dmg):
 
