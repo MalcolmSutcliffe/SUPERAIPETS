@@ -244,7 +244,7 @@ def main():
     # 4 = pet selection screen
     screen = 0
     pygame.mixer.music.load(os.path.join('audio', 'music', 'random_firl.mp3'))
-    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.set_volume(0.25)
     pygame.mixer.music.play(-1)
     running = True
 
