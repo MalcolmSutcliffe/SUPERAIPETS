@@ -90,9 +90,6 @@ f = open("data/turn_data.json")
 TURN_DATA = json.load(f)
 f.close()
 
-print(FOOD_DATA)
-print(PET_DATA)
-
 default_texture = pygame.image.load(os.path.join('images/pet_images', 'none.png'))
 
 # delay, in seconds
@@ -120,7 +117,7 @@ for name in PET_DATA:
 
 for name in FOOD_DATA:
     for i in range(6):
-        if FOOD_DATA.get(name).get("tier") == i + 1: # and PACK in PET_DATA.get(name).get("packs"):
+        if FOOD_DATA.get(name).get("tier") == i + 1:  # and PACK in PET_DATA.get(name).get("packs"):
             FOOD_TIERS[i].append(name)
             continue
 
