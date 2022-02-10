@@ -20,7 +20,7 @@ def target_triggering_entity(pet_ability):
 
 # RandomFriend
 def target_random_friend(pet_ability):
-    team = copy.copy(pet_ability.pet.get_battleground_team())
+    team = pet_ability.pet.get_battleground_team().get_pets()
     n = pet_ability.target_info.get("n")
     try:
         team.remove(pet_ability.pet)
@@ -37,18 +37,18 @@ def target_random_friend(pet_ability):
 # RandomEnemy
 def target_random_enemy(pet_ability):
     n = pet_ability.target_info.get("n")
-    targets = copy.copy(pet_ability.pet.get_battleground_enemy_team())
+    targets = pet_ability.pet.get_battleground_enemy_team().get_pets()
     targets = [x for x in targets if x is not None]
     targets = [x for x in targets if not x.get_is_fainted()]
     n = min(n, len(targets))
     targets = random.sample(targets, n)
-    return targets
+    pet_ability.targets = targets
 
 
 # All
 def target_all(pet_ability):
-    team = copy.copy(pet_ability.pet.get_battleground_team())
-    enemy_team = copy.copy(pet_ability.pet.get_battleground_enemy_team())
+    team = pet_ability.pet.get_battleground_team().get_pets()
+    enemy_team = pet_ability.pet.get_battleground_enemy_team().get_pets()
     targets = []
     for x in team:
         if x is not None:
@@ -87,8 +87,8 @@ def target_adjacent_animals(pet_ability):
 
 # DifferentTierAnimals
 def target_different_tier_animals(pet_ability):
-    team = copy.copy(pet_ability.pet.get_battleground_team())
-    enemy_team = copy.copy(pet_ability.pet.get_battleground_enemy_team())
+    team = pet_ability.pet.get_battleground_team().get_pets()
+    enemy_team = pet_ability.pet.get_battleground_enemy_team().get_pets()
     targets = []
     for x in team.append(enemy_team):
         if not x.get_tier() == pet_ability.pet.get_tier():
@@ -98,7 +98,7 @@ def target_different_tier_animals(pet_ability):
 
 # EachFriend
 def target_each_friend(pet_ability):
-    targets = copy.copy(pet_ability.pet.get_battleground_team())
+    targets = pet_ability.pet.get_battleground_team().get_pets()
     try:
         targets.remove(pet_ability.pet)
     except ValueError:
@@ -108,7 +108,7 @@ def target_each_friend(pet_ability):
 
 # EachEnemy
 def target_each_enemy(pet_ability):
-    targets = copy.copy(pet_ability.pet.get_battleground_enemy_team())
+    targets = pet_ability.pet.get_battleground_enemy_team().get_pets()
     pet_ability.targets = targets
 
 
@@ -119,7 +119,7 @@ def target_each_enemy(pet_ability):
 
 # FirstEnemy
 def target_first_enemy(pet_ability):
-    enemy_team = copy.copy(pet_ability.pet.get_battleground_enemy_team())
+    enemy_team = pet_ability.pet.get_battleground_enemy_team().get_pets()
     targets = [j for j in enemy_team if j is not None and not j.get_is_fainted()]
     if len(targets) > 0:
         targets = [targets[len(targets) - 1]]
@@ -128,7 +128,7 @@ def target_first_enemy(pet_ability):
 
 # FriendAhead
 def target_friend_ahead(pet_ability):
-    team = copy.copy(pet_ability.pet.get_battleground_team())
+    team = pet_ability.pet.get_battleground_team().get_pets()
     n = pet_ability.target_info.get("n")
     team = [j for j in team if j is not None]
     team = [j for j in team if not j.get_is_fainted()]
@@ -143,7 +143,7 @@ def target_friend_ahead(pet_ability):
 
 # FriendBehind
 def target_friend_behind(pet_ability):
-    team = copy.copy(pet_ability.pet.get_battleground_team())
+    team = pet_ability.pet.get_battleground_team().get_pets()
     n = pet_ability.target_info.get("n")
     targets = []
     for k in range(n):
@@ -157,7 +157,7 @@ def target_friend_behind(pet_ability):
 
 # HighestHealthEnemy
 def target_highest_health_enemy(pet_ability):
-    enemy_team = copy.copy(pet_ability.pet.get_battleground_enemy_team())
+    enemy_team = pet_ability.pet.get_battleground_enemy_team().get_pets()
     target = None
     for x in enemy_team:
         if target is None:
@@ -169,19 +169,16 @@ def target_highest_health_enemy(pet_ability):
 
 # LastEnemy
 def target_last_enemy(pet_ability):
-    enemy_team = copy.copy(pet_ability.pet.get_battleground_enemy_team())
-    targets = []
+    enemy_team = pet_ability.pet.get_battleground_enemy_team().get_pets()
     for x in enemy_team:
         if x is not None and not x.get_is_fainted():
-            targets.append(x)
-            return targets
-
-    # LeftMostFriend
+            pet_ability.targets = [x]
+            return
 
 
 # LeftMostFriend
 def target_left_most_friend(pet_ability):
-    team = copy.copy(pet_ability.pet.get_battleground_team())
+    team = pet_ability.pet.get_battleground_team().get_pets()
     for k in range(5):
         if team[k] is not None:
             pet_ability.targets = [team[k]]
@@ -190,7 +187,7 @@ def target_left_most_friend(pet_ability):
 
 # Level2And3Friends
 def target_level_2_and_3_friends(pet_ability):
-    team = copy.copy(pet_ability.pet.get_battleground_team())
+    team = pet_ability.pet.get_battleground_team().get_pets()
     targets = []
     for x in team:
         if x is not None and x.get_level() >= 2:
@@ -200,7 +197,7 @@ def target_level_2_and_3_friends(pet_ability):
 
 # LowestHealthEnemy
 def target_lowest_health_enemy(pet_ability):
-    enemy_team = copy.copy(pet_ability.pet.get_battleground_enemy_team())
+    enemy_team = pet_ability.pet.get_battleground_enemy_team().get_pets()
     target = None
     for x in enemy_team:
         if target is None:
@@ -212,7 +209,7 @@ def target_lowest_health_enemy(pet_ability):
 
 # RightMostFriend
 def target_right_most_friend(pet_ability):
-    team = copy.copy(pet_ability.pet.get_battleground_team())
+    team = pet_ability.pet.get_battleground_team().get_pets()
     for k in range(5):
         if team[4 - k] is not None:
             pet_ability.targets = [team[4 - k]]
@@ -220,7 +217,7 @@ def target_right_most_friend(pet_ability):
 
 # StrongestFriend
 def target_strongest_friend(pet_ability):
-    team = copy.copy(pet_ability.pet.get_battleground_team())
+    team = pet_ability.pet.get_battleground_team().get_pets()
     target = None
     for x in team:
         if target is None:
@@ -281,8 +278,8 @@ def deal_damage(pet_ability):
 
 
 # Summon
-def summon_pet(pet_ability, summon_random):
-    if not summon_random:
+def summon_pet(pet_ability):
+    if not pet_ability.summon_random:
         summon_tag = pet_ability.effect.get("pet")
         n = pet_ability.effect.get("n")
         summon_team = pet_ability.effect.get("team")
@@ -328,7 +325,8 @@ def summon_pet(pet_ability, summon_random):
 
 # SummonRandomPet
 def summon_random_pet(pet_ability):
-    summon_pet(pet_ability, True)
+    pet_ability.summon_random = True
+    summon_pet(pet_ability)
 
 
 # AllOf
@@ -396,7 +394,11 @@ def swallow(pet_ability):
              "team": "Friendly",
              "withHealh": 1,
              "withAttack": 1,
-             "withLevel": pet_ability.level}
+             "withLevel": pet_ability.level,
+             "target": {
+                 "kind": "Self"
+                }
+             }
         target.faint()
 
 
@@ -440,9 +442,13 @@ def transfer_stats(pet_ability):
     copy_health = pet_ability.effect.get("copyHealth")
     pet_ability.target_info = pet_ability.effect.get("from")
     pet_ability.generate_targets()
-    pet_from = pet_ability.targets[0]
+    if not pet_ability.targets:
+        return
+    pet_from = pet_ability.targets
     pet_ability.target_info = pet_ability.effect.get("to")
     pet_ability.generate_targets()
+    if not pet_ability.targets:
+        return
     pet_to = pet_ability.targets[0]
     if pet_from is None or pet_to is None:
         return
@@ -523,6 +529,7 @@ class PetAbility:
         self.target_info = None
         self.trigger = TRIGGER.NA
         self.triggered_by = TRIGGERED_BY.NA
+        self.summon_random = False
 
         # try to get effect
         try:
@@ -562,9 +569,10 @@ class PetAbility:
             pass
 
         self.perform_while_fainted = ((
-                                                  self.triggered_by == TRIGGERED_BY.Self and self.trigger == TRIGGER.Faint) or self.triggered_by == TRIGGERED_BY.Player)
+                                              self.triggered_by == TRIGGERED_BY.Self and self.trigger == TRIGGER.Faint) or self.triggered_by == TRIGGERED_BY.Player)
 
     def execute(self):
+
         if self.pet is None or self.pet.get_battleground() is None:
             return
 
@@ -576,8 +584,10 @@ class PetAbility:
         # generate targets
         self.generate_targets()
 
+        if DEBUG_MODE:
+            print(self.pet.get_name() + " performs ability " + str(self.effect_type)[12:] + " to " + str(self.targets))
+
         # performs the function
-        print(effect_functions[self.effect_type])
         effect_functions[self.effect_type](self)
 
     # updates the list of targets for the ability when it is triggered, based on the target info
@@ -591,7 +601,7 @@ class PetAbility:
             self.targets = []
             return
 
-        targeting_functions[self.target_info](self)
+        targeting_functions[TARGET[self.target_info.get("kind")]](self)
 
         # if ability is targeted check if targets exist, and remove any None targets
         if self.is_targeted_ability:

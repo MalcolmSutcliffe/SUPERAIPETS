@@ -147,6 +147,9 @@ class Pet:
             self.status = None
             send_hurt = False
 
+        if get_debug_mode():
+            print(str(self) + " took " + str(dmg) + " dmg ")
+
         self.health = self.health - dmg
 
         if dmg >= 1 and attacker.get_status() == STATUS.POISON_ATTACK:
@@ -188,7 +191,7 @@ class Pet:
             pass
 
     def summon_pet(self, summon_tag, attack, health, level, status):
-        summon_index = min(0, self.get_team().get_pets.index(self)-1)
+        summon_index = min(0, self.get_team().get_pets().index(self)-1)
         self.get_team().summon_pet(summon_index, summon_tag, attack, health, level, status)
 
     def die(self):

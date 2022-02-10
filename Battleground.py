@@ -62,6 +62,8 @@ class Battleground:
 
     def smack(self):
 
+        self.set_pets_battleground()
+
         if self.team1.get_pets()[4] is None or self.team2.get_pets()[4] is None:
             return
 
@@ -106,6 +108,8 @@ class Battleground:
         self.team2.remove_fainted()
 
     def battle(self):
+
+        self.set_pets_battleground()
 
         GAME_SPEED = get_game_speed()
 
@@ -156,6 +160,18 @@ class Battleground:
             self.winner = 3
 
         # time.sleep(2)
+
+    def set_pets_battleground(self):
+        for pet in self.team1.get_pets():
+            if pet is not None:
+                pet.set_battleground(self)
+                pet.set_battleground_team(self.team1)
+                pet.set_battleground_enemy_team(self.team2)
+        for pet in self.team2.get_pets():
+            if pet is not None:
+                pet.set_battleground(self)
+                pet.set_battleground_team(self.team2)
+                pet.set_battleground_enemy_team(self.team1)
 
     def set_team1(self, team1):
         self.team1 = team1

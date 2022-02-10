@@ -21,12 +21,16 @@ class Team:
         self.plural = plural
 
     def add_pet(self, new_pet, pos):
+        new_pet.set_team(self)
+        if self.battleground is not None:
+            new_pet.set_battleground(self.battleground)
+            new_pet.set_battleground_team(self.battleground.get_team1())
+            new_pet.set_battleground(self.battleground.get_team2())
         if self.pets[pos] is None:
             self.pets[pos] = new_pet
         else:
             print("that position is taken")
             return -1
-        new_pet.set_team(self)
 
     def summon_pet(self, index, summon_tag, summon_attack=0, summon_health=0, level=1, status=None):
 
@@ -123,6 +127,7 @@ class Team:
                     self.battleground.AM.force_ability(x.ability)
                     self.pets[j] = None
 
+
     # def combine_pet(self, new_pet, pos):
     #     if self.pets[pos] is None:
     #         return -1
@@ -136,7 +141,7 @@ class Team:
     #         self.pets[pos].gain_exp(1)
 
     def get_pets(self):
-        return self.pets
+        return [x for x in self.pets]
 
     def get_name(self):
         return self.name
@@ -168,7 +173,8 @@ class Team:
             new_pet = generate_random_pet()
             new_pet.set_level(random.randint(1, 3))
             self.add_pet(new_pet, j)
-            new_pet.set_status(random.choice(list(STATUS)))
+            if random.uniform(0, 1) > 0.7:
+                new_pet.set_status(random.choice(list(STATUS)))
 
     def copy_team(self, team_to_copy):
         self.pets = team_to_copy.pets # Type : Pets
