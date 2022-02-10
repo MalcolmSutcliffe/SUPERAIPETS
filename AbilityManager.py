@@ -38,15 +38,15 @@ def send_triggers(trigger_type, trigger_from, zone):
     # EachFriend (excluding self)
     trigger = [trigger_type, TRIGGERED_BY.EachFriend]
 
-    for i, x in enumerate(team.get_pets()):
-        if x is not None and not i == trigger_from:
+    for j, x in enumerate(team.get_pets()):
+        if x is not None and not j == trigger_from:
             x.receive_trigger(trigger, trigger_from)
 
     # FriendAhead
     trigger = [trigger_type, TRIGGERED_BY.FriendAhead]
     if 1 <= trigger_index <= 4:
-        for i in range(trigger_index):
-            x = team.get_pets()[trigger_index - 1 - i]
+        for j in range(trigger_index):
+            x = team.get_pets()[trigger_index - 1 - j]
             if x is not None:
                 x.receive_trigger(trigger, trigger_from)
                 break
@@ -71,3 +71,8 @@ class AbilityManager:
             self.ability_queue.pop(0).execute()
             self.battleground.display()
             time.sleep(GAME_SPEED)
+
+    def force_ability(self, pet_ability):
+        if self.ability_queue.remove(pet_ability):
+            pet_ability.execute()
+

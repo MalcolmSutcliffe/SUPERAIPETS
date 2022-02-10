@@ -1,5 +1,3 @@
-import copy
-import random
 import ptext
 import pygame
 import os

@@ -537,32 +537,32 @@ class PetAbility:
         # try to get effect
         try:
             self.effect = ability_data.get("effect")
-        except AttributeError:
+        except KeyError or AttributeError:
             pass
 
         # try to implement effect_type
         try:
             self.effect_type = EFFECT_TYPE[self.effect.get("kind")]
-        except AttributeError:
+        except KeyError or AttributeError:
             pass
 
         # try to implement target_info
         try:
             self.target_info = TARGET[self.effect.get("target")]
             self.is_targeted_ability = True
-        except AttributeError:
+        except KeyError or AttributeError:
             pass
 
         # try to implement trigger
         try:
             self.trigger = TRIGGER[self.effect.get("trigger")]
-        except AttributeError:
+        except KeyError or AttributeError:
             pass
 
         # try to implement triggered_by
         try:
             self.triggered_by = TRIGGERED_BY[self.effect.get("triggeredBy").get("kind")]
-        except AttributeError:
+        except KeyError or AttributeError:
             pass
 
         self.perform_while_fainted = ((

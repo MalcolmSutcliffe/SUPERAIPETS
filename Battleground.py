@@ -48,14 +48,14 @@ class Battleground:
                 self.team1.pets[i].set_battleground(self)
                 self.team1.pets[i].set_battleground_team(self.team1)
                 self.team1.pets[i].set_battleground_enemy_team(self.team2)
-                # self.team1.pets[i].generate_ability()
+                self.team1.pets[i].generate_ability()
 
             self.team2.pets[i] = copy.copy(team2.get_pets()[i])
             if self.team2.pets[i] is not None:
                 self.team2.pets[i].set_battleground(self)
                 self.team2.pets[i].set_battleground_team(self.team2)
                 self.team2.pets[i].set_battleground_enemy_team(self.team1)
-                # self.team2.pets[i].generate_ability()
+                self.team2.pets[i].generate_ability()
 
     def display(self):
         display_battle(self)

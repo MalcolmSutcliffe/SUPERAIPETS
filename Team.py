@@ -50,28 +50,24 @@ class Team:
         self.remove_fainted()
         self.battleground.display()
 
+        def attempt_summon(loc, pet):
+            if self.pets[loc] is None:
+                self.pets.insert(loc, pet)
+                send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
+                if get_debug_mode():
+                    print(str(pet) + " was summoned with status: " + str(status))
+                return True
+            else:
+                return False
+
         if self.has_space():
-            has_summoned = False
             self.battleground.display()
-            while not has_summoned:
-                x = self.pets[index]
-                if x is None:
-                    self.pets[index] = summon_animal
-                    send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
-                    if get_debug_mode():
-                        print(str(summon_animal) + " was summoned with status: " + str(status))
-                    has_summoned = True
-                else:
-                    self.advance_team_from(index)
-                    x = self.pets[index]
-                    if x is None:
-                        self.pets[index] = summon_animal
-                        send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
-                        if get_debug_mode():
-                            print(str(summon_animal) + " was summoned with status: " + str(status))
-                        has_summoned = True
-                    else:
-                        self.retreat_team()
+            self.advance_team_from(index)
+            if attempt_summon(index, summon_animal):
+                return
+            self.retreat_team_from(index)
+            if attempt_summon(index, summon_animal):
+                return
         else:
             return
 
@@ -98,19 +94,23 @@ class Team:
         return team_has_space
 
     def advance_team(self):
-        for j in range(4):
-            if self.pets[4 - j] is None:
-                self.pets[4 - j] = self.pets[3 - j]
-                self.pets[3 - j] = None
+        self.advance_team_from(0)
 
     def advance_team_from(self, index):
-        for j in range(4 - index):
+        # loop from front (4) to index
+        for j in range(4-index):
+            # if empty position, advance unit up
             if self.pets[4 - j] is None:
                 self.pets[4 - j] = self.pets[3 - j]
                 self.pets[3 - j] = None
 
     def retreat_team(self):
-        for j in range(4):
+        self.retreat_team_from(4)
+
+    def retreat_team_from(self, index):
+        # loop from back (0) to index
+        for j in range(index-1):
+            # if empty, retreat
             if self.pets[j] is None:
                 self.pets[j] = self.pets[j + 1]
                 self.pets[j + 1] = None
@@ -119,6 +119,8 @@ class Team:
         for (j, x) in enumerate(self.pets):
             if x is not None:
                 if x.get_is_fainted():
+                    # if being removed, first execute ability if it was queued
+                    self.battleground.AM.force_ability(x.ability)
                     self.pets[j] = None
 
     # def combine_pet(self, new_pet, pos):
