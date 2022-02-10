@@ -179,11 +179,11 @@ class Pet:
             team = self.team
 
         if self.status == STATUS.HONEY_BEE:
-            # team.summon_pet(self.get_index(), "bee", 1, 1, None)
+            team.summon_pet(self.get_index(), "bee", 1, 1, None)
             pass
 
         if self.status == STATUS.EXTRA_LIFE:
-            # team.summon_pet(self.get_index(), self.name, 1, 1, None)
+            team.summon_pet(self.get_index(), self.name, 1, 1, None)
             pass
 
     def summon_pet(self, summon_tag, attack, health, level, status):
