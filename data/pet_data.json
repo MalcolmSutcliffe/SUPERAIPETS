@@ -254,12 +254,14 @@
           "pet": "pet-zombie-cricket",
           "withAttack": 1,
           "withHealth": 1,
-          "team": "Friendly",
-          "n": 1
+          "n": 1,
+          "target": {
+            "kind": "Self"
+          }
         }
       },
       "level2Ability": {
-        "description": "Faint: Summon a 2/2 Cricket",
+        "description": "Faint: a 2/2 Cricket",
         "trigger": "Faint",
         "triggeredBy": {
           "kind": "Self"
@@ -284,8 +286,10 @@
           "pet": "pet-zombie-cricket",
           "withAttack": 3,
           "withHealth": 3,
-          "team": "Friendly",
-          "n": 1
+          "n": 1,
+          "target": {
+            "kind": "Self"
+          }
         }
       }
     },
@@ -1298,9 +1302,11 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-dirty-rat",
-          "team": "Enemy",
           "n": 1,
-          "withLevel": 1
+          "withLevel": 1,
+          "target": {
+            "kind": "LastEnemy"
+          }
         }
       },
       "level2Ability": {
@@ -1312,9 +1318,11 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-dirty-rat",
-          "team": "Enemy",
           "n": 1,
-          "withLevel": 1
+          "withLevel": 1,
+          "target": {
+            "kind": "LastEnemy"
+          }
         }
       },
       "level3Ability": {
@@ -1326,9 +1334,11 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-dirty-rat",
-          "team": "Enemy",
           "n": 1,
-          "withLevel": 1
+          "withLevel": 1,
+          "target": {
+            "kind": "LastEnemy"
+          }
         }
       }
     },
@@ -1411,7 +1421,10 @@
           "kind": "SummonRandomPet",
           "tier": 3,
           "withAttack": 2,
-          "withHealth": 2
+          "withHealth": 2,
+          "target": {
+            "kind": "Self"
+          }
         }
       },
       "level2Ability": {
@@ -1424,7 +1437,10 @@
           "kind": "SummonRandomPet",
           "tier": 3,
           "withAttack": 4,
-          "withHealth": 4
+          "withHealth": 4,
+          "target": {
+            "kind": "Self"
+          }
         }
       },
       "level3Ability": {
@@ -1437,7 +1453,10 @@
           "kind": "SummonRandomPet",
           "tier": 3,
           "withAttack": 6,
-          "withHealth": 6
+          "withHealth": 6,
+          "target": {
+            "kind": "Self"
+          }
         }
       }
     },
@@ -2235,8 +2254,10 @@
           "pet": "pet-ram",
           "withAttack": 2,
           "withHealth": 2,
-          "team": "Friendly",
-          "n": 2
+          "n": 2,
+          "target": {
+            "kind": "Self"
+          }
         }
       },
       "level2Ability": {
@@ -2250,8 +2271,10 @@
           "pet": "pet-ram",
           "withAttack": 4,
           "withHealth": 4,
-          "team": "Friendly",
-          "n": 2
+          "n": 2,
+          "target": {
+            "kind": "Self"
+          }
         }
       },
       "level3Ability": {
@@ -2265,8 +2288,10 @@
           "pet": "pet-ram",
           "withAttack": 6,
           "withHealth": 6,
-          "team": "Friendly",
-          "n": 2
+          "n": 2,
+          "target": {
+            "kind": "Self"
+          }
         }
       }
     },
@@ -2631,7 +2656,9 @@
           "withAttack": 5,
           "withHealth": 5,
           "withStatus": "SPLASH_ATTACK",
-          "team": "Friendly",
+          "target": {
+            "kind": "Self"
+          },
           "n": 1,
           "withLevel": 1
         }
@@ -2648,7 +2675,9 @@
           "withAttack": 10,
           "withHealth": 10,
           "withStatus": "SPLASH_ATTACK",
-          "team": "Friendly",
+          "target": {
+            "kind": "Self"
+          },
           "n": 1,
           "withLevel": 1
         }
@@ -2665,7 +2694,9 @@
           "withAttack": 15,
           "withHealth": 15,
           "withStatus": "SPLASH_ATTACK",
-          "team": "Friendly",
+          "target": {
+            "kind": "Self"
+          },
           "n": 1,
           "withLevel": 1
         }
@@ -3090,7 +3121,9 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-chick",
-          "team": "Friendly",
+          "target": {
+            "kind": "Self"
+          },
           "withHealh": 1,
           "withAttack": "this",
           "n": 1
@@ -3105,7 +3138,9 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-chick",
-          "team": "Friendly",
+          "target": {
+            "kind": "Self"
+          },
           "withHealh": 1,
           "withAttack": "this",
           "n": 2
@@ -3120,7 +3155,9 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-chick",
-          "team": "Friendly",
+          "target": {
+            "kind": "Self"
+          },
           "withHealh": 1,
           "withAttack": "this",
           "n": 3
@@ -3465,7 +3502,10 @@
           "kind": "SummonRandomPet",
           "tier": 6,
           "level": 1,
-          "withLevel": 1
+          "withLevel": 1,
+          "target": {
+            "kind": "Self"
+          }
         }
       },
       "level2Ability": {
@@ -3477,7 +3517,10 @@
         "effect": {
           "kind": "SummonRandomPet",
           "tier": 6,
-          "withLevel": 2
+          "withLevel": 2,
+          "target": {
+            "kind": "Self"
+          }
         }
       },
       "level3Ability": {
@@ -3489,7 +3532,10 @@
         "effect": {
           "kind": "SummonRandomPet",
           "tier": 6,
-          "withLevel": 1
+          "withLevel": 1,
+          "target": {
+            "kind": "Self"
+          }
         }
       }
     },
@@ -4049,7 +4095,9 @@
           "pet": "pet-zombie-fly",
           "withAttack": 2,
           "withHealth": 2,
-          "team": "Friendly",
+          "target": {
+            "kind": "TriggeringEntity"
+          },
           "n": 1
         }
       },
@@ -4064,7 +4112,9 @@
           "pet": "pet-zombie-fly",
           "withAttack": 4,
           "withHealth": 4,
-          "team": "Friendly",
+          "target": {
+            "kind": "TriggeringEntity"
+          },
           "n": 1
         }
       },
@@ -4079,7 +4129,9 @@
           "pet": "pet-zombie-fly",
           "withAttack": 6,
           "withHealth": 6,
-          "team": "Friendly",
+          "target": {
+            "kind": "TriggeringEntity"
+          },
           "n": 1
         }
       }

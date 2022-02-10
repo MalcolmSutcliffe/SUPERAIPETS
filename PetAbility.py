@@ -1,7 +1,6 @@
 import copy
 import random
 from functools import total_ordering
-from AbilityManager import *
 from SAP_Data import *
 
 
@@ -11,12 +10,12 @@ from SAP_Data import *
 
 # Self
 def target_self(pet_ability):
-    pet_ability.targets.append(pet_ability.pet)
+    pet_ability.targets = [pet_ability.pet]
 
 
 # TriggeringEntity
 def target_triggering_entity(pet_ability):
-    pet_ability.targets.append(pet_ability.triggering_entity)
+    pet_ability.targets = [pet_ability.triggering_entity]
 
 
 # RandomFriend
@@ -281,67 +280,56 @@ def deal_damage(pet_ability):
         target.take_damage(pet_ability.pet, damage)
 
 
-# Summon (not implemented)
-# def summon(pet_ability):
-#
-#     if not pet_ability.summon_random:
-#         summon_tag = pet_ability.effect.get("pet")
-#         n = pet_ability.effect.get("n")
-#         summon_team = pet_ability.effect.get("team")
-#     else:
-#         tier = pet_ability.effect.get("tier")
-#         summon_tag = random.sample(AVAILABLE_ANIMALS[tier - 1], 1)[0]
-#         n = 1
-#         summon_team = "Friendly"
-#
-#     summon_tag = summon_tag[4:]
-#     summon_attack = pet_ability.effect.get("withAttack")
-#     summon_health = pet_ability.effect.get("withHealth")
-#
-#     if summon_attack != "this":
-#         pass
-#     else:
-#         summon_attack = pet_ability.pet.get_attack()
-#
-#     if summon_attack is None:
-#         summon_attack = PET_DATA.get("pet-" + summon_tag).get("baseAttack")
-#     if summon_health is None:
-#         summon_health = PET_DATA.get("pet-" + summon_tag).get("baseHealth")
-#
-#     try:
-#         status = STATUS[pet_ability.effect.get("withStatus")]
-#     except KeyError:
-#         status = None
-#
-#     level = pet_ability.effect.get("withLevel")
-#
-#     if level is None:
-#         level = 1
-#
-#     team = pet_ability.pet.get_battleground_team()
-#     if team is None:
-#         team = pet_ability.pet.get_team()
-#
-#     if team is None:
-#         return
-#
-#     try:
-#         target_index = team.get_pets().index(target)
-#     except ValueError:
-#         target_index = 4
-#
-#     if summon_team == "Enemy":
-#         team = pet_ability.pet.get_battleground_enemy_team()
-#         target_index = 0
-#
-#     if team is None:
-#         return
-#
-#     if n is None:
-#         n = 1
-#
-#     for i in range(n):
-#         team.summon_pet(target_index, summon_tag, summon_attack, summon_health, level, status)
+# Summon
+def summon_pet(pet_ability, summon_random):
+    if not summon_random:
+        summon_tag = pet_ability.effect.get("pet")
+        n = pet_ability.effect.get("n")
+        summon_team = pet_ability.effect.get("team")
+    else:
+        tier = pet_ability.effect.get("tier")
+        summon_tag = random.sample(AVAILABLE_ANIMALS[tier - 1], 1)[0]
+        n = 1
+        summon_team = "Friendly"
+
+    summon_tag = summon_tag[4:]
+    summon_attack = pet_ability.effect.get("withAttack")
+    summon_health = pet_ability.effect.get("withHealth")
+
+    if summon_attack != "this":
+        pass
+    else:
+        summon_attack = pet_ability.pet.get_attack()
+
+    if summon_attack is None:
+        summon_attack = PET_DATA.get("pet-" + summon_tag).get("baseAttack")
+    if summon_health is None:
+        summon_health = PET_DATA.get("pet-" + summon_tag).get("baseHealth")
+
+    try:
+        status = STATUS[pet_ability.effect.get("withStatus")]
+    except KeyError:
+        status = None
+
+    level = pet_ability.effect.get("withLevel")
+
+    if level is None:
+        level = 1
+
+    pet_ability.generate_targets()
+    target = pet_ability.targets[0]
+
+    if n is None:
+        n = 1
+
+    for j in range(n):
+        target.summon_pet(summon_tag, summon_attack, summon_health, level, status)
+
+
+# SummonRandomPet
+def summon_random_pet(pet_ability):
+    summon_pet(pet_ability, True)
+
 
 # AllOf
 def all_of(pet_ability):
@@ -479,6 +467,7 @@ def transfer_stats(pet_ability):
 # dictionaries to  link target types with corresponding functions
 targeting_functions = {
     None: lambda: [],
+    TARGET.NA: lambda: [],
     TARGET.AdjacentAnimals: target_adjacent_animals,
     TARGET.All: target_all,
     TARGET.DifferentTierAnimals: target_different_tier_animals,
@@ -503,6 +492,7 @@ targeting_functions = {
 
 effect_functions = {
     None: lambda: None,
+    EFFECT_TYPE.NA: None,
     EFFECT_TYPE.AllOf: all_of,
     EFFECT_TYPE.ApplyStatus: apply_status,
     EFFECT_TYPE.DealDamage: deal_damage,
@@ -528,6 +518,7 @@ class PetAbility:
 
     def __init__(self, pet, ability_data=None):
 
+        # Initialize default ability
         self.pet = pet
         self.ability_data = ability_data
         self.name = self.pet.get_name_tag()
@@ -538,10 +529,44 @@ class PetAbility:
         self.perform_while_fainted = False
         self.targets = []
         self.effect = None
-        self.target_info = None
-        self.effect_type = None
-        self.trigger = None
-        self.triggered_by = None
+        self.effect_type = EFFECT_TYPE.NA
+        self.target_info = TARGET.NA
+        self.trigger = TRIGGER.NA
+        self.triggered_by = TRIGGERED_BY.NA
+
+        # try to get effect
+        try:
+            self.effect = ability_data.get("effect")
+        except AttributeError:
+            pass
+
+        # try to implement effect_type
+        try:
+            self.effect_type = EFFECT_TYPE[self.effect.get("kind")]
+        except AttributeError:
+            pass
+
+        # try to implement target_info
+        try:
+            self.target_info = TARGET[self.effect.get("target")]
+            self.is_targeted_ability = True
+        except AttributeError:
+            pass
+
+        # try to implement trigger
+        try:
+            self.trigger = TRIGGER[self.effect.get("trigger")]
+        except AttributeError:
+            pass
+
+        # try to implement triggered_by
+        try:
+            self.triggered_by = TRIGGERED_BY[self.effect.get("triggeredBy").get("kind")]
+        except AttributeError:
+            pass
+
+        self.perform_while_fainted = ((
+                                                  self.triggered_by == TRIGGERED_BY.Self and self.trigger == TRIGGER.Faint) or self.triggered_by == TRIGGERED_BY.Player)
 
     def execute(self):
 

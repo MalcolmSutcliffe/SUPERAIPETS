@@ -36,11 +36,10 @@ class Pet:
 
         self.is_fainted = False
         self.status = status
-        self.ability = DEFAULT_ABILITY
+        self.ability_data = DEFAULT_ABILITY
         self.team = team
         self.shop = shop
         self.battleground = battleground
-        self.ability = ability
         self.battleground_team = None
         self.battleground_enemy_team = None
 
@@ -63,13 +62,16 @@ class Pet:
             self.base_health = self.pet_data.get("baseHealth")
             self.packs = self.pet_data.get("packs")
             self.tier = self.pet_data.get("tier")
-            # self.ability = self.pet_data.get("level"+str(self.level)+"Ability")
+            self.ability_data = self.pet_data.get("level"+str(self.level)+"Ability")
         except AttributeError:
             pass
 
         # update attack and health
         self.attack = self.base_attack
         self.health = self.base_health
+
+        # set ability
+        self.ability = PetAbility(self, self.ability_data)
 
         # Note this will be replaced, when a scorpion is summoned it will have the status passed to it
         # if self.name == "scorpion":
@@ -107,7 +109,7 @@ class Pet:
 
     def attack_enemy(self, victim):
 
-        index = victim.get_index()
+        # index = victim.get_index()
 
         # needs to be fixed
 
@@ -183,6 +185,10 @@ class Pet:
         if self.status == STATUS.EXTRA_LIFE:
             # team.summon_pet(self.get_index(), self.name, 1, 1, None)
             pass
+
+    def summon_pet(self, summon_tag, attack, health, level, status):
+        summon_index = min(0, self.get_team().get_pets.index(self)-1)
+        self.get_team().summon_pet(summon_index, summon_tag, attack, health, level, status)
 
     def die(self):
         self.end_of_battle()

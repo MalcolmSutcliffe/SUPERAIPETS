@@ -16,6 +16,40 @@ DEFAULT_ABILITY = {
 }
 
 
+class TRIGGER(Enum):
+    AfterAttack = 1  # implemented
+    BeforeAttack = 2  # implemented
+    Buy = 3
+    BuyAfterLoss = 4
+    BuyFood = 5
+    BuyTier1Animal = 6
+    CastsAbility = 7
+    EatsShopFood = 8
+    EndOfTurn = 9
+    EndOfTurnWith2PlusGold = 10
+    EndOfTurnWith3PlusGold = 11
+    EndOfTurnWith4OrLessAnimals = 12
+    EndOfTurnWithLvl3Friend = 13
+    Faint = 14  # implemented
+    Hurt = 15  # implemented
+    KnockOut = 16
+    LevelUp = 17
+    Sell = 18
+    StartOfBattle = 19  # implemented
+    StartOfTurn = 20
+    Summoned = 21
+    NA = 22
+
+
+class TRIGGERED_BY(Enum):
+    EachFriend = 1  # implemented
+    EachFriendInShop = 2
+    FriendAhead = 3  # implemented
+    Player = 4  # implemented
+    Self = 5  # implemented
+    NA = 6
+
+
 class STATUS(Enum):
     WEAK = 1
     COCONUT_SHIELD = 2
@@ -64,13 +98,14 @@ class TARGET(Enum):
     LeftMostFriend = 11
     Level2And3Friends = 12
     LowestHealthEnemy = 13
-    RandomEnemy = 14
-    RandomFriend = 15
-    RightMostFriend = 16
-    Self = 17
-    StrongestFriend = 18
-    TriggeringEntity = 19
-    EachEnemy = 20
+    NA = 14
+    RandomEnemy = 15
+    RandomFriend = 16
+    RightMostFriend = 17
+    Self = 18
+    StrongestFriend = 19
+    TriggeringEntity = 20
+    EachEnemy = 21
 
 
 f = open("data/pet_data.json")

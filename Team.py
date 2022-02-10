@@ -11,6 +11,7 @@ class Team:
 
     def __init__(self, input_name, plural):
 
+        # initialize default team
         self.pets = [None] * 5  # Type : Pets
         self.lives = 10
         self.wins = 0
@@ -27,52 +28,52 @@ class Team:
             return -1
         new_pet.set_team(self)
 
-    # def summon_pet(self, index, summon_tag, summon_attack=0, summon_health=0, level=1, status=None):
-    #
-    #     summon_animal = Pet(summon_tag)
-    #     summon_animal.generate_ability()
-    #
-    #     if self.battleground is not None:
-    #         teams = [self.battleground.get_team1(), self.battleground.get_team2()]
-    #         summon_animal.set_battleground_team(self)
-    #         teams.remove(self)
-    #         summon_animal.set_battleground_enemy_team(teams[0])
-    #         summon_animal.set_battleground(self.battleground)
-    #     else:
-    #         summon_animal.set_team(self)
-    #
-    #     summon_animal.set_base_attack(summon_attack)
-    #     summon_animal.set_base_health(summon_health)
-    #     summon_animal.set_status(status)
-    #     summon_animal.set_level(level)
-    #
-    #     self.remove_fainted()
-    #     self.battleground.display()
-    #
-    #     if self.has_space():
-    #         has_summoned = False
-    #         self.battleground.display()
-    #         while not has_summoned:
-    #             x = self.pets[index]
-    #             if x is None:
-    #                 self.pets[index] = summon_animal
-    #                 send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
-    #                 if get_debug_mode():
-    #                     print(str(summon_animal) + " was summoned with status: " + str(status))
-    #                 has_summoned = True
-    #             else:
-    #                 self.advance_team_from(index)
-    #                 x = self.pets[index]
-    #                 if x is None:
-    #                     self.pets[index] = summon_animal
-    #                     send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
-    #                     if get_debug_mode():
-    #                         print(str(summon_animal) + " was summoned with status: " + str(status))
-    #                     has_summoned = True
-    #                 else:
-    #                     self.retreat_team()
-    #     else:
-    #         return
+    def summon_pet(self, index, summon_tag, summon_attack=0, summon_health=0, level=1, status=None):
+
+        summon_animal = Pet(summon_tag)
+        summon_animal.generate_ability()
+
+        if self.battleground is not None:
+            teams = [self.battleground.get_team1(), self.battleground.get_team2()]
+            summon_animal.set_battleground_team(self)
+            teams.remove(self)
+            summon_animal.set_battleground_enemy_team(teams[0])
+            summon_animal.set_battleground(self.battleground)
+        else:
+            summon_animal.set_team(self)
+
+        summon_animal.set_base_attack(summon_attack)
+        summon_animal.set_base_health(summon_health)
+        summon_animal.set_status(status)
+        summon_animal.set_level(level)
+
+        self.remove_fainted()
+        self.battleground.display()
+
+        if self.has_space():
+            has_summoned = False
+            self.battleground.display()
+            while not has_summoned:
+                x = self.pets[index]
+                if x is None:
+                    self.pets[index] = summon_animal
+                    send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
+                    if get_debug_mode():
+                        print(str(summon_animal) + " was summoned with status: " + str(status))
+                    has_summoned = True
+                else:
+                    self.advance_team_from(index)
+                    x = self.pets[index]
+                    if x is None:
+                        self.pets[index] = summon_animal
+                        send_triggers(TRIGGER.Summoned, summon_animal, self.battleground)
+                        if get_debug_mode():
+                            print(str(summon_animal) + " was summoned with status: " + str(status))
+                        has_summoned = True
+                    else:
+                        self.retreat_team()
+        else:
+            return
 
     def sell_pet(self, pos):
         if self.pets[pos] is None:
@@ -115,10 +116,10 @@ class Team:
                 self.pets[j + 1] = None
 
     def remove_fainted(self):
-        for (i, x) in enumerate(self.pets):
+        for (j, x) in enumerate(self.pets):
             if x is not None:
                 if x.get_is_fainted():
-                    self.pets[i] = None
+                    self.pets[j] = None
 
     # def combine_pet(self, new_pet, pos):
     #     if self.pets[pos] is None:
