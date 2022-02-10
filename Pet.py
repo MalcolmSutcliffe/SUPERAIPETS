@@ -92,7 +92,7 @@ class Pet:
         if trigger[0] == self.ability.get_trigger() and trigger[1] == self.ability.get_triggered_by():
             self.ability.triggering_entity = triggering_entity
             send_triggers(TRIGGER.CastsAbility, self, self.get_battleground())
-            self.battleground.AM.add_to_queue(self.ability)
+            self.team.battleground.AM.add_to_queue(self.ability)
 
     def get_dmg(self):
 
@@ -164,13 +164,14 @@ class Pet:
             send_triggers(TRIGGER.Faint, self, self.battleground)
         else:
             pass
-        # self.battleground_team[self.battleground_team.index(self)] = None
+
         if sfx_on():
             pygame.mixer.Sound.play(fuck)
         if get_debug_mode():
             print(self.name + " has fainted!")
 
         self.is_fainted = True
+
         if self.ability is not None:
             self.ability.set_priority(0)
 

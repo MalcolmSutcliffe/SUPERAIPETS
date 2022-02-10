@@ -452,16 +452,6 @@ def transfer_stats(pet_ability):
         pet_to.set_attack(pet_from.get_attack())
     if copy_health:
         pet_to.set_health(pet_from.get_health())
-    # "effect": {
-    #     "kind": "TransferStats",
-    #     "copyAttack": true,
-    #     "copyHealth": true,
-    #     "from": {
-    #         "kind": "StrongestFriend"
-    #     },
-    #     "to": {
-    #         "kind": "pet_ability"
-    #     }
 
 
 # dictionaries to  link target types with corresponding functions
@@ -504,8 +494,8 @@ effect_functions = {
     EFFECT_TYPE.ReduceHealth: reduce_health,
     # EFFECT_TYPE.RefillShops: refill_shops,
     EFFECT_TYPE.RepeatAbility: repeat_ability,
-    # EFFECT_TYPE.SummonPet: summon,
-    # EFFECT_TYPE.SummonRandomPet: summon_random_pet,
+    EFFECT_TYPE.SummonPet: summon_pet,
+    EFFECT_TYPE.SummonRandomPet: summon_random_pet,
     EFFECT_TYPE.Swallow: swallow,
     # EFFECT_TYPE.TransferAbility: transfer_ability,
     EFFECT_TYPE.TransferStats: transfer_stats,
@@ -529,29 +519,30 @@ class PetAbility:
         self.perform_while_fainted = False
         self.targets = []
         self.effect = None
-        self.effect_type = EFFECT_TYPE.NA
-        self.target_info = TARGET.NA
+        self.effect_type = None
+        self.target_info = None
         self.trigger = TRIGGER.NA
         self.triggered_by = TRIGGERED_BY.NA
 
         # try to get effect
         try:
             self.effect = ability_data.get("effect")
-        except KeyError or AttributeError:
+        except AttributeError:
             pass
 
         # try to implement effect_type
         try:
             self.effect_type = EFFECT_TYPE[self.effect.get("kind")]
-        except KeyError:
+        except AttributeError:
             pass
 
         # try to implement target_info
-        print(self.effect.get("target"))
         try:
             self.target_info = self.effect.get("target")
             self.is_targeted_ability = True
         except KeyError:
+            pass
+        except AttributeError:
             pass
 
         # try to implement trigger
@@ -559,18 +550,21 @@ class PetAbility:
             self.trigger = TRIGGER[self.ability_data.get("trigger")]
         except KeyError:
             pass
+        except AttributeError:
+            pass
 
         # try to implement triggered_by
         try:
             self.triggered_by = TRIGGERED_BY[self.ability_data.get("triggeredBy").get("kind")]
         except KeyError:
             pass
+        except AttributeError:
+            pass
 
         self.perform_while_fainted = ((
                                                   self.triggered_by == TRIGGERED_BY.Self and self.trigger == TRIGGER.Faint) or self.triggered_by == TRIGGERED_BY.Player)
 
     def execute(self):
-
         if self.pet is None or self.pet.get_battleground() is None:
             return
 
@@ -583,6 +577,7 @@ class PetAbility:
         self.generate_targets()
 
         # performs the function
+        print(effect_functions[self.effect_type])
         effect_functions[self.effect_type](self)
 
     # updates the list of targets for the ability when it is triggered, based on the target info

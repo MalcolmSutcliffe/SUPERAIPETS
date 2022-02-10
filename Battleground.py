@@ -110,7 +110,6 @@ class Battleground:
         GAME_SPEED = get_game_speed()
 
         display_battle(self)
-        # time.sleep(GAME_SPEED)
         send_triggers(TRIGGER.StartOfBattle, None, self)
         self.AM.perform_abilities()
 

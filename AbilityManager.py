@@ -73,6 +73,8 @@ class AbilityManager:
             time.sleep(GAME_SPEED)
 
     def force_ability(self, pet_ability):
-        if self.ability_queue.remove(pet_ability):
+        if pet_ability in self.ability_queue:
             pet_ability.execute()
+            self.ability_queue.remove(pet_ability)
+
 
