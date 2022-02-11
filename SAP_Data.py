@@ -145,7 +145,7 @@ AVAILABLE_FOODS = [[], [], [], [], [], []]
 
 for name in PET_DATA:
     for i in range(6):
-        if PET_DATA.get(name).get("tier") == i + 1 and PACK in PET_DATA.get(name).get("packs"):
+        if PET_DATA.get(name).get("tier") == i + 1 and PACK in PET_DATA.get(name).get("packs") and (name != "pet-sloth"):
             AVAILABLE_ANIMALS[i].append(name)
             continue
 
