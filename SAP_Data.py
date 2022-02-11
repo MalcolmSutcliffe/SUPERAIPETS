@@ -94,18 +94,19 @@ class TARGET(Enum):
     FriendAhead = 7
     FriendBehind = 8
     HighestHealthEnemy = 9
-    LastEnemy = 10
-    LeftMostFriend = 11
-    Level2And3Friends = 12
-    LowestHealthEnemy = 13
-    NA = 14
-    RandomEnemy = 15
-    RandomFriend = 16
-    RightMostFriend = 17
-    Self = 18
-    StrongestFriend = 19
-    TriggeringEntity = 20
-    EachEnemy = 21
+    HighestHealthFriend = 10
+    LastEnemy = 11
+    LeftMostFriend = 12
+    Level2And3Friends = 13
+    LowestHealthEnemy = 14
+    NA = 15
+    RandomEnemy = 16
+    RandomFriend = 17
+    RightMostFriend = 18
+    Self = 19
+    StrongestFriend = 20
+    TriggeringEntity = 21
+    EachEnemy = 22
 
 
 f = open("data/pet_data.json")

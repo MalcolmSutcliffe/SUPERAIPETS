@@ -546,7 +546,7 @@
         }
       },
       "level2Ability": {
-        "description": "Start of battle: Deal 2 damage to a random enemy",
+        "description": "Start of battle: Deal 1 damage to 2 random enemies",
         "trigger": "StartOfBattle",
         "triggeredBy": {
           "kind": "Player"
@@ -555,13 +555,13 @@
           "kind": "DealDamage",
           "target": {
             "kind": "RandomEnemy",
-            "n": 1
+            "n": 2
           },
-          "amount": 2
+          "amount": 1
         }
       },
       "level3Ability": {
-        "description": "Start of battle: Deal 3 damage to a random enemy",
+        "description": "Start of battle: Deal 1 damage to 3 random enemies",
         "trigger": "StartOfBattle",
         "triggeredBy": {
           "kind": "Player"
@@ -570,9 +570,9 @@
           "kind": "DealDamage",
           "target": {
             "kind": "RandomEnemy",
-            "n": 1
+            "n": 3
           },
-          "amount": 3
+          "amount": 1
         }
       }
     },
@@ -641,8 +641,8 @@
       "name": "Pig",
       "id": "pet-pig",
       "tier": 1,
-      "baseAttack": 2,
-      "baseHealth": 2,
+      "baseAttack": 3,
+      "baseHealth": 1,
       "packs": [
         "StandardPack",
         "ExpansionPack1"
@@ -790,7 +790,7 @@
       ],
       "level1Ability": {
         "description": "Start of battle: Copy Health from friend ahead.",
-        "trigger": "StartOfBattle",
+        "trigger": "Buy",
         "triggeredBy": {
           "kind": "Player"
         },
@@ -799,7 +799,7 @@
           "copyAttack": false,
           "copyHealth": true,
           "from": {
-            "kind": "FriendAhead",
+            "kind": "HighestHealthFriend",
             "n": 1
           },
           "to": {
@@ -809,7 +809,7 @@
       },
       "level2Ability": {
         "description": "Start of battle: Copy Health from friend ahead.",
-        "trigger": "StartOfBattle",
+        "trigger": "Buy",
         "triggeredBy": {
           "kind": "Player"
         },
@@ -818,7 +818,7 @@
           "copyAttack": false,
           "copyHealth": true,
           "from": {
-            "kind": "FriendAhead",
+            "kind": "HighestHealthFriend",
             "n": 1
           },
           "to": {
@@ -828,7 +828,7 @@
       },
       "level3Ability": {
         "description": "Start of battle: Copy Health from friend ahead.",
-        "trigger": "StartOfBattle",
+        "trigger": "Buy",
         "triggeredBy": {
           "kind": "Player"
         },
@@ -837,7 +837,7 @@
           "copyAttack": false,
           "copyHealth": true,
           "from": {
-            "kind": "FriendAhead",
+            "kind": "HighestHealthFriend",
             "n": 1
           },
           "to": {
@@ -850,13 +850,13 @@
       "name": "Dodo",
       "id": "pet-dodo",
       "tier": 2,
-      "baseAttack": 1,
-      "baseHealth": 3,
+      "baseAttack": 2,
+      "baseHealth": 2,
       "packs": [
         "StandardPack"
       ],
       "level1Ability": {
-        "description": "Start of battle: Give Attack to friend ahead.",
+        "description": "Start of battle: Give 50% Attack to friend ahead.",
         "trigger": "StartOfBattle",
         "triggeredBy": {
           "kind": "Player"
@@ -864,6 +864,7 @@
         "effect": {
           "kind": "ModifyStats",
           "attackAmount": "this",
+          "multiplier": 0.5,
           "target": {
             "kind": "FriendAhead",
             "n": 1
@@ -871,7 +872,7 @@
         }
       },
       "level2Ability": {
-        "description": "Start of battle: Give Attack to friend ahead.",
+        "description": "Start of battle: Give 100% Attack to friend ahead.",
         "trigger": "StartOfBattle",
         "triggeredBy": {
           "kind": "Player"
@@ -879,14 +880,15 @@
         "effect": {
           "kind": "ModifyStats",
           "attackAmount": "this",
+          "multiplier": 1,
           "target": {
             "kind": "FriendAhead",
-            "n": 2
+            "n": 1
           }
         }
       },
       "level3Ability": {
-        "description": "Start of battle: Give Attack to friend ahead.",
+        "description": "Start of battle: Give 150% Attack to friend ahead.",
         "trigger": "StartOfBattle",
         "triggeredBy": {
           "kind": "Player"
@@ -894,105 +896,11 @@
         "effect": {
           "kind": "ModifyStats",
           "attackAmount": "this",
+          "multiplier": 1.5,
           "target": {
             "kind": "FriendAhead",
-            "n": 3
+            "n": 1
           }
-        }
-      }
-    },
-    "pet-dog": {
-      "name": "Dog",
-      "id": "pet-dog",
-      "tier": 2,
-      "baseAttack": 2,
-      "baseHealth": 2,
-      "packs": [
-        "StandardPack",
-        "ExpansionPack1"
-      ],
-      "level1Ability": {
-        "description": "Friend summoned: Gain +1 Attack or +1 Health.",
-        "trigger": "Summoned",
-        "triggeredBy": {
-          "kind": "EachFriend"
-        },
-        "effect": {
-          "kind": "OneOf",
-          "effects": [
-            {
-              "kind": "ModifyStats",
-              "untilEndOfBattle": false,
-              "target": {
-                "kind": "Self"
-              },
-              "attackAmount": 1
-            },
-            {
-              "kind": "ModifyStats",
-              "untilEndOfBattle": false,
-              "target": {
-                "kind": "Self"
-              },
-              "healthAmount": 1
-            }
-          ]
-        }
-      },
-      "level2Ability": {
-        "description": "Friend summoned: Gain +2 Attack or +2 Health.",
-        "trigger": "Summoned",
-        "triggeredBy": {
-          "kind": "EachFriend"
-        },
-        "effect": {
-          "kind": "OneOf",
-          "effects": [
-            {
-              "kind": "ModifyStats",
-              "untilEndOfBattle": false,
-              "target": {
-                "kind": "Self"
-              },
-              "attackAmount": 2
-            },
-            {
-              "kind": "ModifyStats",
-              "untilEndOfBattle": false,
-              "target": {
-                "kind": "Self"
-              },
-              "healthAmount": 2
-            }
-          ]
-        }
-      },
-      "level3Ability": {
-        "description": "Friend summoned: Gain +3 Attack or +3 Health.",
-        "trigger": "Summoned",
-        "triggeredBy": {
-          "kind": "EachFriend"
-        },
-        "effect": {
-          "kind": "OneOf",
-          "effects": [
-            {
-              "kind": "ModifyStats",
-              "untilEndOfBattle": false,
-              "target": {
-                "kind": "Self"
-              },
-              "attackAmount": 3
-            },
-            {
-              "kind": "ModifyStats",
-              "untilEndOfBattle": false,
-              "target": {
-                "kind": "Self"
-              },
-              "healthAmount": 3
-            }
-          ]
         }
       }
     },
@@ -1556,6 +1464,101 @@
           },
           "attackAmount": 3,
           "untilEndOfBattle": true
+        }
+      }
+    },
+    "pet-dog": {
+      "name": "Dog",
+      "id": "pet-dog",
+      "tier": 3,
+      "baseAttack": 2,
+      "baseHealth": 2,
+      "packs": [
+        "StandardPack",
+        "ExpansionPack1"
+      ],
+      "level1Ability": {
+        "description": "Friend summoned: Gain +1 Attack or +1 Health.",
+        "trigger": "Summoned",
+        "triggeredBy": {
+          "kind": "EachFriend"
+        },
+        "effect": {
+          "kind": "OneOf",
+          "effects": [
+            {
+              "kind": "ModifyStats",
+              "untilEndOfBattle": false,
+              "target": {
+                "kind": "Self"
+              },
+              "attackAmount": 1
+            },
+            {
+              "kind": "ModifyStats",
+              "untilEndOfBattle": false,
+              "target": {
+                "kind": "Self"
+              },
+              "healthAmount": 1
+            }
+          ]
+        }
+      },
+      "level2Ability": {
+        "description": "Friend summoned: Gain +2 Attack or +2 Health.",
+        "trigger": "Summoned",
+        "triggeredBy": {
+          "kind": "EachFriend"
+        },
+        "effect": {
+          "kind": "OneOf",
+          "effects": [
+            {
+              "kind": "ModifyStats",
+              "untilEndOfBattle": false,
+              "target": {
+                "kind": "Self"
+              },
+              "attackAmount": 2
+            },
+            {
+              "kind": "ModifyStats",
+              "untilEndOfBattle": false,
+              "target": {
+                "kind": "Self"
+              },
+              "healthAmount": 2
+            }
+          ]
+        }
+      },
+      "level3Ability": {
+        "description": "Friend summoned: Gain +3 Attack or +3 Health.",
+        "trigger": "Summoned",
+        "triggeredBy": {
+          "kind": "EachFriend"
+        },
+        "effect": {
+          "kind": "OneOf",
+          "effects": [
+            {
+              "kind": "ModifyStats",
+              "untilEndOfBattle": false,
+              "target": {
+                "kind": "Self"
+              },
+              "attackAmount": 3
+            },
+            {
+              "kind": "ModifyStats",
+              "untilEndOfBattle": false,
+              "target": {
+                "kind": "Self"
+              },
+              "healthAmount": 3
+            }
+          ]
         }
       }
     },

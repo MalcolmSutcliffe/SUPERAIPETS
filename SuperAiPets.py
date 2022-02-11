@@ -175,46 +175,6 @@ def main():
     shop_menu_bg = shop_menu_3_slots
     team_slot_selected = -1
 
-    # for i in DATA.get("statuses"):
-    #     print(i)
-    # print(DATA.get("pets").get("pet-ant").get("level1Ability"))
-
-    # print(ANIMAL_TIERS)
-
-    # my_fish = Pet("fish")
-    # my_ant = Pet("ant")
-    # my_cow = Pet("cow")
-    # my_caterpillar = Pet("caterpillar")
-    # my_crab = Pet("crab")
-    # my_dog = Pet("dog")
-    # my_hippo = Pet("hippo")
-    # my_beetle = Pet("beetle")
-    # my_lobster = Pet("lobster")
-    # my_kangaroo = Pet("kangaroo")
-    # my_camel = Pet("camel")
-    # my_spider = Pet("spider")
-    # my_sheep = Pet("sheep")
-    # my_dragon = Pet("dragon")
-    # my_deer = Pet("deer")
-    # my_turtle = Pet("turtle")
-    # my_badger = Pet("badger")
-    # my_blowfish = Pet("blowfish")
-    # my_rhino = Pet("rhino")
-    # my_fly = Pet("fly")
-    # my_tiger = Pet("tiger")
-    # my_snake = Pet("snake")
-    # my_whale = Pet("whale")
-    # my_skunk = Pet("skunk")
-    # my_eagle = Pet("eagle")
-    # my_leopard = Pet("leopard")
-    # my_turtle.set_level(2)
-    # my_octopus = Pet("octopus")
-    # my_octopus.set_level(3)
-    # my_eagle.set_level(2)
-    # my_dragon.set_status(STATUS.GARLIC_ARMOR)
-    # my_caterpillar.set_level(3)
-    # my_sheep.set_status(STATUS.MELON_ARMOR)
-
     team1 = Team(1, "North Korean National SAP Team", False)
     # team1.randomize_team()
     team2 = Team(1, "Team Name", False)
@@ -263,14 +223,16 @@ def main():
                 y_offset -= 0.5
         # shop
         elif screen == 1:
+
             window.blit(shop_menu_bg, (0, 0))
             window.blit(exit_button, (0, 0))
             window.blit(fight_button, (0, 0))
             window.blit(roll_button, (0, 0))
             ptext.draw(str(base_shop.get_turn()), centerx=456, centery=40, fontname="Lapsus", fontsize=40, owidth=1.5,
                        ocolor=(0, 0, 0), color=(255, 255, 255))
-            ptext.draw(team1.get_name(), centerx=577, bottom=695, fontname="Lapsus", fontsize=50,
+            ptext.draw(base_shop.get_team().get_name(), centerx=577, bottom=695, fontname="Lapsus", fontsize=50,
                        owidth=1.5, ocolor=(0, 0, 0), color=(255, 255, 255))
+
             display_shop(base_shop)
 
             if not base_shop.get_slot_selected() == -1:
@@ -393,6 +355,7 @@ def main():
                                 if team1.pets[team_slot] is None:
                                     team1.add_pet(base_shop.shop_animals[shop_slot], team_slot)
                                     base_shop.shop_animals[shop_slot] = None
+                                    # display_shop(base_shop)
                     # attempt to cast abilities
                     base_shop.get_AM().perform_abilities()
 

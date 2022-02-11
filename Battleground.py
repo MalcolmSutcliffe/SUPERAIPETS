@@ -1,9 +1,4 @@
-import copy
-import time
-
-import pygame
 import random
-import os
 from SuperAiPets import display_battle
 from AbilityManager import *
 from SAP_Data import get_game_speed, get_debug_mode, sfx_on
@@ -135,6 +130,12 @@ class Battleground:
     def set_location(self):
         self.team1.set_location(self)
         self.team2.set_location(self)
+
+    def is_battleground(self):
+        return True
+
+    def is_shop(self):
+        return False
 
     def get_AM(self):
         return self.AM

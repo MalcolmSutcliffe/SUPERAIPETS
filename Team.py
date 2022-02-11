@@ -30,6 +30,8 @@ class Team:
             new_pet.set_team(self)
             if self.location is not None:
                 self.location.get_AM().send_triggers(TRIGGER.Summoned, new_pet)
+                if self.location.is_shop():
+                    self.location.get_AM().send_triggers(TRIGGER.Buy, new_pet)
         else:
             print("that position is taken")
             return -1

@@ -57,6 +57,9 @@ class Shop:
     # def clear_non_frozen_food(self):
     #     return [x for x in self.shop_food if not x.get_is_frozen()]
 
+    def get_team(self):
+        return self.team
+
     def get_attack_bonus(self):
         return self.can_bonus
 
@@ -90,6 +93,12 @@ class Shop:
 
     def get_turn(self):
         return self.turn
+
+    def is_battleground(self):
+        return False
+
+    def is_shop(self):
+        return True
 
     def get_slot_selected(self):
         return self.slot_selected

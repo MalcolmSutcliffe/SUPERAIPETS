@@ -241,6 +241,7 @@ def target_strongest_friend(pet_ability):
 def modify_stats(pet_ability):
 
     stats = [0, 0]
+    multiplier = 1
     until_end_of_battle = False
 
     try:
@@ -255,6 +256,10 @@ def modify_stats(pet_ability):
         until_end_of_battle = pet_ability.effect.get("untilEndOfBattle")
     except AttributeError:
         pass
+    try:
+        multiplier = pet_ability.effect.get("multiplier")
+    except AttributeError:
+        pass
 
     if stats[0] == "this":
         stats[0] = pet_ability.pet.get_attack()
@@ -263,6 +268,11 @@ def modify_stats(pet_ability):
         stats[0] = 0
     if stats[1] is None:
         stats[1] = 0
+    if multiplier is None:
+        multiplier = 1
+
+    stats[0] = stats[0]*multiplier
+    stats[1] = stats[1]*multiplier
 
     pet_ability.generate_targets()
 
@@ -611,7 +621,8 @@ class PetAbility:
     def receive_trigger(self, trigger, triggering_entity):
         if trigger[0] == self.get_trigger() and trigger[1] == self.get_triggered_by():
             self.triggering_entity = triggering_entity
-            self.get_pet().get_location().get_AM().send_triggers(TRIGGER.CastsAbility, self.get_pet())
+            if self.get_pet().get_location().is_battleground():
+                self.get_pet().get_location().get_AM().send_triggers(TRIGGER.CastsAbility, self.get_pet())
             self.get_pet().get_location().get_AM().add_to_queue(self)
 
     # updates the list of targets for the ability when it is triggered, based on the target info
