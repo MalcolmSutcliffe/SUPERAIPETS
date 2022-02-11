@@ -278,7 +278,6 @@ def main():
 
         # battle
         elif screen == 2:
-            battleground = Battleground(team1, team2)
             display_battle(battleground)
 
         # settings
@@ -321,9 +320,6 @@ def main():
                     if screen == 2:
                         if battleground.get_team1().has_units() and battleground.get_team2().has_units():
                             battleground.battle()
-                            team2 = Team("Team Name", False)
-                            team2.randomize_team()
-                            battleground = Battleground(team1, team2)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 mouseX = pos[0]
@@ -361,6 +357,9 @@ def main():
                             if SFX_ON:
                                 pygame.mixer.Sound.play(button)
                             fight_button = fight_pressed
+                            team2 = Team("Team Name", False)
+                            team2.randomize_team()
+                            battleground = Battleground(team1, team2)
                         elif 27 <= mouseX <= 227:
                             if SFX_ON:
                                 pygame.mixer.Sound.play(button)

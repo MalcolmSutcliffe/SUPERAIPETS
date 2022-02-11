@@ -391,19 +391,19 @@ def swallow(pet_ability):
 
     pet_ability.generate_targets()
 
-    for target in pet_ability.targets:
-        pet_ability.effect = \
-            {"kind": "SummonPet",
-             "pet": target.get_name_tag(),
-             "team": "Friendly",
-             "withHealth": 1,
-             "withAttack": 1,
-             "withLevel": pet_ability.level,
-             "target": {
-                 "kind": "Self"
-             }
-             }
-        target.faint()
+    target = pet_ability.targets[0]
+    target.faint()
+    pet_ability.effect = \
+        {"kind": "SummonPet",
+         "pet": target.get_name_tag(),
+         "team": "Friendly",
+         "withHealth": 1,
+         "withAttack": 1,
+         "withLevel": pet_ability.level,
+         "target": {
+             "kind": "Self"
+         }
+         }
 
 
 # Evolve
