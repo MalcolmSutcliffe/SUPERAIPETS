@@ -53,19 +53,13 @@ class Team:
                     if get_debug_mode():
                         print(str(pet) + " was summoned with status: " + str(status))
                     return True
-                else:
-                    return False
+                elif DEBUG_MODE:
+                    print("failed to summon pet: " + summon_tag)
 
-            if self.has_space():
-                self.location.display()
-                self.advance_team_from(index)
-                if attempt_summon(index, summon_animal):
-                    return
-                self.retreat_team_from(index)
-                if attempt_summon(index, summon_animal):
-                    return
-            else:
-                return
+            if self.make_space(index):
+                attempt_summon(index, summon_animal)
+            elif DEBUG_MODE:
+                print("failed to summon pet: " + summon_tag)
 
     def sell_pet(self, pos):
         if self.pets[pos] is None:
@@ -89,6 +83,56 @@ class Team:
                 break
         return team_has_space
 
+    # opens up spot at desired index location, returns true if completed, false if not.
+    def make_space(self, index):
+
+        # remove fainted animals
+        self.remove_fainted()
+
+        # check if there is space
+        if not self.has_space():
+            return False
+
+        # check if spot is open
+        if self.pets[index] is None:
+            return True
+
+        # find index of first open spot
+        index2 = -1
+        for j, x in enumerate(self.pets):
+            if x is None:
+                index2 = j
+                break
+
+        if index2 == -1:
+            return False
+
+        # if index 2 is less than index (before in the team) then retreat animals
+        if index2 < index:
+            for j in range(index2, index):
+                self.pets[j] = self.pets[j+1]
+                self.pets[j+1] = None
+
+        # if not, push forward
+        else:
+            for j in range(0, index2-index+1):
+                self.pets[index2-j] = self.pets[index2-j-1]
+                self.pets[index2 - j - 1] = None
+
+        # check if spot is open
+        if self.pets[index] is None:
+            return True
+        else:
+            return False
+
+    def remove_fainted(self):
+        for (j, x) in enumerate(self.pets):
+            if x is not None:
+                if x.get_is_fainted():
+                    # try to cast ability before removing from team
+                    self.location.get_AM().force_ability(x)
+                    self.pets[j] = None
+
     def advance_team(self):
         self.advance_team_from(0)
 
@@ -99,23 +143,6 @@ class Team:
             if self.pets[4 - j] is None:
                 self.pets[4 - j] = self.pets[3 - j]
                 self.pets[3 - j] = None
-
-    def retreat_team(self):
-        self.retreat_team_from(4)
-
-    def retreat_team_from(self, index):
-        # loop from back (0) to index
-        for j in range(index - 1):
-            # if empty, retreat
-            if self.pets[j] is None:
-                self.pets[j] = self.pets[j + 1]
-                self.pets[j + 1] = None
-
-    def remove_fainted(self):
-        for (j, x) in enumerate(self.pets):
-            if x is not None:
-                if x.get_is_fainted():
-                    self.pets[j] = None
 
     # def combine_pet(self, new_pet, pos):
     #     if self.pets[pos] is None:

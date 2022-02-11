@@ -320,11 +320,17 @@ def summon_pet(pet_ability):
     pet_ability.generate_targets()
     target = pet_ability.targets[0]
 
+    if target.get_name_tag()[4:] == summon_tag:
+        return
+
     if n is None:
         n = 1
 
+    print(n)
     for j in range(n):
-        target.get_team().summon_pet(target.get_index(), summon_tag, summon_attack, summon_health, level, status, n)
+        index = target.get_index()
+        if index >= 0:
+            target.get_team().summon_pet(target.get_index(), summon_tag, summon_attack, summon_health, level, status, n)
 
 
 # SummonRandomPet

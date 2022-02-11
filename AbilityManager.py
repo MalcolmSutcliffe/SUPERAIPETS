@@ -73,9 +73,9 @@ class AbilityManager:
             self.location.display()
             time.sleep(GAME_SPEED)
 
-    # def force_ability(self, pet_ability):
-    #     if pet_ability in self.ability_queue:
-    #         pet_ability.execute()
-    #         self.ability_queue.remove(pet_ability)
+    def force_ability(self, pet):
+        if pet.get_ability() in self.ability_queue:
+            pet.get_ability().execute()
+            self.ability_queue.remove(pet.get_ability())
 
 

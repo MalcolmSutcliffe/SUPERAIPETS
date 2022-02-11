@@ -255,6 +255,8 @@ class Pet:
         return self.get_team().get_location()
 
     def get_index(self):
+        if self not in self.get_team().get_pets():
+            return -1
         return self.get_team().get_pets().index(self)
 
     def set_team(self, team):
