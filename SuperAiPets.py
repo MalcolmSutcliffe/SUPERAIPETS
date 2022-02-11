@@ -34,16 +34,21 @@ pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, pygame.KEYUP, pygame.MOUS
 
 
 def display_fps():
-    ptext.draw(str(int(clock.get_fps())), centerx=50, top=30, fontname="Minecraftia", fontsize=28, owidth=1.5, ocolor=BLACK, color=WHITE)
+    ptext.draw(str(int(clock.get_fps())), centerx=50, top=30, fontname="Minecraftia", fontsize=28, owidth=1.5,
+               ocolor=BLACK, color=WHITE)
 
 
 # direction: 0 = left, 1 = right
 def display_pet(pet, direction, xpos, ypos):
     window.blit(pet.get_sprite(direction), (xpos, ypos))
-    ptext.draw(str(pet.status)[7:], centerx=(xpos + 64), top=ypos, fontname="Minecraftia", fontsize=15, owidth=1.5, ocolor=BLACK, color=WHITE)
-    ptext.draw(pet.name, centerx=(xpos + 64), top=(ypos - 40), fontname="Minecraftia", fontsize=18, owidth=1.5, ocolor=BLACK, color=WHITE)
-    ptext.draw("lvl: " + str(pet.get_level()), centerx=(xpos + 64), top=(ypos - 20), fontname="Minecraftia", fontsize=15, owidth=1.5, ocolor=BLACK, color=WHITE)
-    ptext.draw("AD: " + str(pet.get_attack()) + "   HP: " + str(pet.get_health()), centerx=(xpos + 64),top=(ypos + 128), fontname="Minecraftia", fontsize=15, owidth=1.5, ocolor=BLACK, color=WHITE)
+    ptext.draw(str(pet.status)[7:], centerx=(xpos + 64), top=ypos, fontname="Minecraftia", fontsize=15, owidth=1.5,
+               ocolor=BLACK, color=WHITE)
+    ptext.draw(pet.name, centerx=(xpos + 64), top=(ypos - 40), fontname="Minecraftia", fontsize=18, owidth=1.5,
+               ocolor=BLACK, color=WHITE)
+    ptext.draw("lvl: " + str(pet.get_level()), centerx=(xpos + 64), top=(ypos - 20), fontname="Minecraftia",
+               fontsize=15, owidth=1.5, ocolor=BLACK, color=WHITE)
+    ptext.draw("AD: " + str(pet.get_attack()) + "   HP: " + str(pet.get_health()), centerx=(xpos + 64),
+               top=(ypos + 128), fontname="Minecraftia", fontsize=15, owidth=1.5, ocolor=BLACK, color=WHITE)
 
 
 def display_shop(shop):
@@ -211,10 +216,9 @@ def main():
     # my_sheep.set_status(STATUS.MELON_ARMOR)
 
     team1 = Team("North Korean National SAP Team", False)
-    team1.randomize_team()
+    # team1.randomize_team()
     team2 = Team("Team Name", False)
     team2.randomize_team()
-    team1_healthy = copy.copy(team1)
 
     # print(random_pet[i])
     # print(random_pet[i+5])
@@ -232,7 +236,7 @@ def main():
 
     # base_shop = Shop()
     base_shop = Shop(team1)
-    base_battleground = Battleground(team1, team2)
+    battleground = Battleground(team1, team2)
 
     # 0 = main menu
     # 1 = shop
@@ -274,7 +278,8 @@ def main():
 
         # battle
         elif screen == 2:
-            display_battle(base_battleground)
+            battleground = Battleground(team1, team2)
+            display_battle(battleground)
 
         # settings
         elif screen == 3:
@@ -314,8 +319,11 @@ def main():
                     konami_index = 0
                 if event.key == pygame.K_SPACE:
                     if screen == 2:
-                        if base_battleground.get_team1().has_units() and base_battleground.get_team2().has_units():
-                            base_battleground.battle()
+                        if battleground.get_team1().has_units() and battleground.get_team2().has_units():
+                            battleground.battle()
+                            team2 = Team("Team Name", False)
+                            team2.randomize_team()
+                            battleground = Battleground(team1, team2)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 mouseX = pos[0]
@@ -384,7 +392,7 @@ def main():
                                 elif 774 <= mouseX <= 894:
                                     team_slot = 4
                                 if team1.pets[team_slot] is None:
-                                    team1.add_pet(base_shop.shop_animals[shop_slot],team_slot)
+                                    team1.add_pet(base_shop.shop_animals[shop_slot], team_slot)
                                     base_shop.shop_animals[shop_slot] = None
 
                 # settings
@@ -485,7 +493,7 @@ def main():
                             screen = 2
                             base_shop.slot_selected = -1
                             team2.randomize_team()
-                            base_battleground.randomize_battle_bgs()
+                            battleground.randomize_battle_bgs()
                         elif 27 <= mouseX <= 227:
                             base_shop.roll_shop()
                     elif 371 > mouseY or mouseY > 542 or 290 > mouseX or mouseX > 894:
@@ -501,9 +509,9 @@ def main():
                         shop_menu_bg = shop_menu_4_slots
                     elif base_shop.get_turn() == 9:
                         shop_menu_bg = shop_menu_5_slots
-                    team1.advance_team()
+                    # team1.advance_team()
                     screen = 1
-                    base_battleground.reset_winner()
+                    battleground.reset_winner()
                     # team1 = copy.copy(team1_healthy)
                 # settings
                 elif screen == 3:
@@ -529,7 +537,6 @@ def main():
                         music_graphic = music_on
                     else:
                         music_graphic = music_off
-
 
             # only do something if the event is of type QUIT
             if event.type == pygame.QUIT:

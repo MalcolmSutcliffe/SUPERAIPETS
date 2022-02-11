@@ -324,7 +324,7 @@ def summon_pet(pet_ability):
         n = 1
 
     for j in range(n):
-        target.summon_pet(summon_tag, summon_attack, summon_health, level, status, n)
+        target.get_team().summon_pet(target.get_index(), summon_tag, summon_attack, summon_health, level, status, n)
 
 
 # SummonRandomPet
@@ -457,7 +457,7 @@ def transfer_stats(pet_ability):
     if pet_from is None or pet_to is None:
         return
     if get_debug_mode():
-        print("transfering stats from :" + str(pet_from) + " to: " + str(pet_to))
+        print("transferring stats from :" + str(pet_from) + " to: " + str(pet_to))
     if copy_attack:
         pet_to.set_attack(pet_from.get_attack())
     if copy_health:
@@ -575,6 +575,8 @@ class PetAbility:
         if self.trigger == TRIGGER.Faint and self.triggered_by == TRIGGERED_BY.Self:
             self.perform_while_fainted = True
 
+        # print(str(self.pet) + " | " + str(self.trigger) + " | " + str(self.triggered_by))
+
     def execute(self):
 
         if self.pet is None or self.pet.get_location() is None:
@@ -582,7 +584,7 @@ class PetAbility:
 
         # if animal is fainted, then check if it can perform ability
         if self.pet.get_is_fainted():
-            if not self.perform_while_fainted:
+            if not (self.triggered_by == TRIGGERED_BY.Self and self.trigger == TRIGGER.Faint):
                 return
 
         # generate targets
@@ -593,6 +595,12 @@ class PetAbility:
 
         # performs the function
         effect_functions[self.effect_type](self)
+
+    def receive_trigger(self, trigger, triggering_entity):
+        if trigger[0] == self.get_trigger() and trigger[1] == self.get_triggered_by():
+            self.triggering_entity = triggering_entity
+            self.get_pet().get_location().get_AM().send_triggers(TRIGGER.CastsAbility, self.get_pet())
+            self.get_pet().get_location().get_AM().add_to_queue(self)
 
     # updates the list of targets for the ability when it is triggered, based on the target info
 
@@ -631,6 +639,12 @@ class PetAbility:
 
     def get_triggered_by(self):
         return self.triggered_by
+
+    def get_pet(self):
+        return self.pet
+
+    def set_pet(self, pet):
+        self.pet = pet
 
     def set_priority(self, prio):
         self.priority = prio

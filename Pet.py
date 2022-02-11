@@ -19,7 +19,7 @@ def generate_random_pet():
 
 class Pet:
 
-    def __init__(self, input_name="", status=None, level=1, ability_data=DEFAULT_ABILITY, team=None, location=None):
+    def __init__(self, input_name="", status=None, level=1, ability_data=DEFAULT_ABILITY, team=None):
 
         # create pet with default stats.
 
@@ -41,11 +41,6 @@ class Pet:
         self.ability_data = ability_data
 
         self.team = team
-
-        self.location = location
-
-        if team is not None:
-            self.location = team.get_location()
 
         self.name_tag = "pet-" + input_name
         self.pet_data = PET_DATA.get("bee")
@@ -91,12 +86,9 @@ class Pet:
         self.leftSprite = pygame.transform.flip(self.rightSprite, True, False)
 
     def receive_trigger(self, trigger, triggering_entity):
-        if self.ability is None:
+        if self.ability is None or self.get_location() is None:
             return
-        if trigger[0] == self.ability.get_trigger() and trigger[1] == self.ability.get_triggered_by():
-            self.ability.triggering_entity = triggering_entity
-            send_triggers(TRIGGER.CastsAbility, self, self.get_location())
-            self.team.get_location().AM.add_to_queue(self.ability)
+        self.ability.receive_trigger(trigger, triggering_entity)
 
     def get_dmg(self):
 
@@ -157,10 +149,10 @@ class Pet:
 
         if self.health <= 0 and not self.is_fainted:
             self.faint()
-            send_triggers(TRIGGER.KnockOut, attacker, self.get_location())
+            self.get_location().get_AM().send_triggers(TRIGGER.KnockOut, attacker)
 
         if send_hurt:
-            send_triggers(TRIGGER.Hurt, self, self.get_location())
+            self.get_location().get_AM().send_triggers(TRIGGER.Hurt, self)
 
     def faint(self):
 
@@ -171,7 +163,7 @@ class Pet:
 
         self.is_fainted = True
 
-        send_triggers(TRIGGER.Faint, self, self.get_location())
+        self.get_location().get_AM().send_triggers(TRIGGER.Faint, self)
 
         team = self.get_team()
 
@@ -203,8 +195,7 @@ class Pet:
             self.level = 3
 
     def generate_ability(self):
-        self.ability = PetAbility(self)
-        pass
+        self.ability = PetAbility(self, self.ability_data)
 
     # getters and setters
     def get_name(self):
@@ -335,6 +326,7 @@ class Pet:
     def deep_copy(self):
         new_pet = copy.copy(self)
         new_pet.ability = self.get_ability().deep_copy()
+        new_pet.ability.set_pet(new_pet)
         return new_pet
 
     def __str__(self):

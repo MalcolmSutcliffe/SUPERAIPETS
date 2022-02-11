@@ -63,8 +63,8 @@ class Battleground:
             print(str(team2_fighter) + " | HP: " + str(team2_fighter.get_health()) + " | Attack: " + str(
                 team2_fighter.get_attack()) + " | Status: " + str(team2_fighter.get_status())[7:])
 
-        send_triggers(TRIGGER.BeforeAttack, team1_fighter, self)
-        send_triggers(TRIGGER.BeforeAttack, team2_fighter, self)
+        self.get_AM().send_triggers(TRIGGER.BeforeAttack, team1_fighter)
+        self.get_AM().send_triggers(TRIGGER.BeforeAttack, team2_fighter)
         self.AM.perform_abilities()
 
         self.team1.remove_fainted()
@@ -81,8 +81,8 @@ class Battleground:
         if sfx_on():
             pygame.mixer.Sound.play(smack)
 
-        send_triggers(TRIGGER.AfterAttack, team1_fighter, self)
-        send_triggers(TRIGGER.AfterAttack, team2_fighter, self)
+        self.get_AM().send_triggers(TRIGGER.AfterAttack, team1_fighter)
+        self.get_AM().send_triggers(TRIGGER.AfterAttack, team2_fighter)
 
         display_battle(self)
 
@@ -95,10 +95,10 @@ class Battleground:
 
     def battle(self):
 
-        GAME_SPEED = get_game_speed()
+        self.set_location()
 
         display_battle(self)
-        send_triggers(TRIGGER.StartOfBattle, None, self)
+        self.get_AM().send_triggers(TRIGGER.StartOfBattle, None)
         self.AM.perform_abilities()
 
         display_battle(self)
@@ -120,21 +120,8 @@ class Battleground:
             time.sleep(GAME_SPEED)
 
             display_battle(self)
-            # time.sleep(GAME_SPEED)
 
         display_battle(self)
-        # time.sleep(GAME_SPEED)
-
-        # print(self.battleground[4])
-
-        # for k in range(4):
-        #     self.advance_team(1)
-        #     self.advance_team(2)
-
-        # print(battleground)
-        # print("cock and ball torture")
-        # display_battle(self)
-        # time.sleep(GAME_SPEED)
 
         if self.team1.has_units():
             self.winner = 1
@@ -144,6 +131,13 @@ class Battleground:
             self.winner = 3
 
         # time.sleep(2)
+
+    def set_location(self):
+        self.team1.set_location(self)
+        self.team2.set_location(self)
+
+    def get_AM(self):
+        return self.AM
 
     def set_team1(self, team1):
         self.team1 = team1

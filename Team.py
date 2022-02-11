@@ -1,6 +1,5 @@
 import copy
 
-# from Battleground import Battleground
 from Pet import Pet, generate_random_pet
 from SAP_Data import *
 from RandomName import *
@@ -14,7 +13,8 @@ class Team:
     def __init__(self, input_name="default_name", plural=False, location=None):
 
         # initialize default team
-        self.pets = [None] * 5  # Type : Pets
+
+        self.pets = [None] * 5
         self.lives = 10
         self.wins = 0
         self.turn = TURN_DATA.get("turn-1")
@@ -26,7 +26,8 @@ class Team:
         if self.pets[pos] is None:
             self.pets[pos] = new_pet
             new_pet.set_team(self)
-            send_triggers(TRIGGER.Summoned, new_pet, self.location)
+            if self.location is not None:
+                self.location.get_AM().send_triggers(TRIGGER.Summoned, new_pet)
         else:
             print("that position is taken")
             return -1
