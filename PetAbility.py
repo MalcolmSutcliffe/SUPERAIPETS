@@ -602,7 +602,7 @@ class PetAbility:
         # generate targets
         self.generate_targets()
 
-        if DEBUG_MODE:
+        if get_debug_mode():
             print(self.pet.get_name() + " performs ability " + str(self.effect_type)[12:] + " to " + str(self.targets))
 
         # performs the function
