@@ -116,7 +116,7 @@ class Team:
                 self.pets[j] = self.pets[j+1]
                 self.pets[j+1] = None
 
-        # otherwise, reverse the list, apply the function from a
+        # otherwise, advance animals forward
         else:
             for j in range(0, index2-index):
                 self.pets[index2-j] = self.pets[index2-j-1]
