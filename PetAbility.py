@@ -326,7 +326,6 @@ def summon_pet(pet_ability):
     if n is None:
         n = 1
 
-    print(n)
     for j in range(n):
         index = target.get_index()
         if index >= 0:

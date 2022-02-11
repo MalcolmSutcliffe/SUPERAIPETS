@@ -116,11 +116,11 @@ class Team:
                 self.pets[j] = self.pets[j+1]
                 self.pets[j+1] = None
 
-        # if not, push forward
+        # otherwise, reverse the list, apply the function from a
         else:
-            for j in range(0, index2-index+1):
+            for j in range(0, index2-index):
                 self.pets[index2-j] = self.pets[index2-j-1]
-                self.pets[index2 - j - 1] = None
+                self.pets[index2-j-1] = None
 
         # check if spot is open
         if self.pets[index] is None:
