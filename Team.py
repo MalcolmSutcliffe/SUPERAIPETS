@@ -47,6 +47,9 @@ class Team:
             self.remove_fainted()
             self.location.display()
 
+            if not self.has_space():
+                return
+
             def attempt_summon(pos, pet):
                 if self.pets[pos] is None:
                     self.add_pet(pet, pos)

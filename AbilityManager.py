@@ -75,7 +75,8 @@ class AbilityManager:
 
     def force_ability(self, pet):
         if pet.get_ability() in self.ability_queue:
-            pet.get_ability().execute()
             self.ability_queue.remove(pet.get_ability())
+            pet.get_ability().execute()
+
 
 
