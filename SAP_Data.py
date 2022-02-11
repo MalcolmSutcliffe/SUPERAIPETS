@@ -135,7 +135,7 @@ SCREEN_HEIGHT = 720
 
 DEBUG_MODE = True
 
-SFX_ON = True
+SFX_ON = False
 
 PACK = "StandardPack"  # can be StandardPack or ExpansionPack1
 

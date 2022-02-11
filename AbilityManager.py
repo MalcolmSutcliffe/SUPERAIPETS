@@ -21,7 +21,7 @@ def send_triggers(trigger_type, trigger_from, zone):
                 x.receive_trigger([trigger_type, TRIGGERED_BY.Player], None)
         return
 
-    team = trigger_from.get_battleground_team()
+    team = trigger_from.get_team()
     if team is None:
         team = trigger_from.get_team()
 
@@ -72,9 +72,9 @@ class AbilityManager:
             self.battleground.display()
             time.sleep(GAME_SPEED)
 
-    def force_ability(self, pet_ability):
-        if pet_ability in self.ability_queue:
-            pet_ability.execute()
-            self.ability_queue.remove(pet_ability)
+    # def force_ability(self, pet_ability):
+    #     if pet_ability in self.ability_queue:
+    #         pet_ability.execute()
+    #         self.ability_queue.remove(pet_ability)
 
 

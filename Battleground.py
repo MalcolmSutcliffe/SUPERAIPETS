@@ -13,26 +13,31 @@ smack = pygame.mixer.Sound("audio/sfx/smack.wav")
 
 # ANIMATION TYPES : {required info}
 
-# Attack : {} (makes the front two pets attack each other) ModifyStats/TransferStats/TransferAbility : {stats: STATS,
-# from: INDEX, to: INDEX} (sends a burger then performs the action) DealDamage/Swallow : {damage: DAMAGE,
-# from: INDEX, to: INDEX} (sends a rock and performs the action) ApplyStatus : {status: STATUS, from: INDEX,
-# to: INDEX} Summon : {pet_to_summon: PET_OBJECT, index: INDEX} (usually preceded by a MovePets) Faint : {index_of:
-# INDEX} MovePets : {[0,0,0,0,0,0,0,0,0,0]} (a list of 10 integers that represent the change in position for each of
+# Attack : {} (makes the front two pets attack each other)
+# ModifyStats/TransferStats/TransferAbility : {stats: STATS,
+# from: INDEX, to: INDEX} (sends a burger then performs the action)
+# DealDamage/Swallow : {damage: DAMAGE,
+# from: INDEX, to: INDEX} (sends a rock and performs the action)
+# ApplyStatus : {status: STATUS, from: INDEX,
+# to: INDEX}
+# Summon : {pet_to_summon: PET_OBJECT, index: INDEX} (usually preceded by a MovePets)
+# Faint : {index_of: INDEX}
+# MovePets : {[0,0,0,0,0,0,0,0,0,0]} (a list of 10 integers that represent the change in position for each of
 # the pets) AllOf : A list of animation types to perform all at once
 
 battle_bgs = [None] * 12
 for i in range(0, 12):
-    battle_bgs[i] = pygame.image.load(os.path.join("images/battle_screen/battle_bg_"+str(i)+".png")).convert()
+    battle_bgs[i] = pygame.image.load(os.path.join("images/battle_screen/battle_bg_" + str(i) + ".png")).convert()
 
 
 class Battleground:
 
     def __init__(self, team1, team2):
 
-        self.team1 = team1
-        self.team2 = team2
-        self.team1.set_battleground(self)
-        self.team2.set_battleground(self)
+        self.team1 = team1.deep_copy()
+        self.team2 = team2.deep_copy()
+        self.team1.set_location(self)
+        self.team2.set_location(self)
         self.battle_history = []
         # 0=in progress, 1=team1, 2=team2, 3=draw
         self.winner = 0
@@ -41,28 +46,10 @@ class Battleground:
 
         self.AM = AbilityManager(self)
 
-        for i in range(5):
-
-            self.team1.pets[i] = copy.copy(team1.get_pets()[i])
-            if self.team1.pets[i] is not None:
-                self.team1.pets[i].set_battleground(self)
-                self.team1.pets[i].set_battleground_team(self.team1)
-                self.team1.pets[i].set_battleground_enemy_team(self.team2)
-                self.team1.pets[i].generate_ability()
-
-            self.team2.pets[i] = copy.copy(team2.get_pets()[i])
-            if self.team2.pets[i] is not None:
-                self.team2.pets[i].set_battleground(self)
-                self.team2.pets[i].set_battleground_team(self.team2)
-                self.team2.pets[i].set_battleground_enemy_team(self.team1)
-                self.team2.pets[i].generate_ability()
-
     def display(self):
         display_battle(self)
 
     def smack(self):
-
-        self.set_pets_battleground()
 
         if self.team1.get_pets()[4] is None or self.team2.get_pets()[4] is None:
             return
@@ -94,7 +81,6 @@ class Battleground:
         if sfx_on():
             pygame.mixer.Sound.play(smack)
 
-
         send_triggers(TRIGGER.AfterAttack, team1_fighter, self)
         send_triggers(TRIGGER.AfterAttack, team2_fighter, self)
 
@@ -108,8 +94,6 @@ class Battleground:
         self.team2.remove_fainted()
 
     def battle(self):
-
-        self.set_pets_battleground()
 
         GAME_SPEED = get_game_speed()
 
@@ -161,18 +145,6 @@ class Battleground:
 
         # time.sleep(2)
 
-    def set_pets_battleground(self):
-        for pet in self.team1.get_pets():
-            if pet is not None:
-                pet.set_battleground(self)
-                pet.set_battleground_team(self.team1)
-                pet.set_battleground_enemy_team(self.team2)
-        for pet in self.team2.get_pets():
-            if pet is not None:
-                pet.set_battleground(self)
-                pet.set_battleground_team(self.team2)
-                pet.set_battleground_enemy_team(self.team1)
-
     def set_team1(self, team1):
         self.team1 = team1
 
@@ -185,6 +157,11 @@ class Battleground:
     def get_team2(self):
         return self.team2
 
+    def get_enemy_team(self, team):
+        teams = [self.team1, self.team2]
+        teams.remove(team)
+        return teams[0]
+
     def get_winner(self):
         return self.winner
 
@@ -193,10 +170,10 @@ class Battleground:
 
     def get_all_pets(self):
         all_pets = []
-        for i in range(5):
-            all_pets.append(self.team1.get_pets()[i])
-        for i in range(5):
-            all_pets.append(self.team2.get_pets()[4 - i])
+        for j in range(5):
+            all_pets.append(self.team1.get_pets()[j])
+        for j in range(5):
+            all_pets.append(self.team2.get_pets()[4 - j])
         return all_pets
 
     def randomize_battle_bgs(self):

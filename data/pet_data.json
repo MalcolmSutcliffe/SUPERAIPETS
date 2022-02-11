@@ -3984,9 +3984,9 @@
       ],
       "level1Ability": {
         "description": "Food with Health and Attack effects are doubled.",
-        "trigger": "Hurt",
+        "trigger": "BuyShopFood",
         "triggeredBy": {
-          "kind": "Self"
+          "kind": "Player"
         },
         "effect": {
           "kind": "FoodMultiplier",
@@ -3995,9 +3995,9 @@
       },
       "level2Ability": {
         "description": "Food with Health and Attack effects are tripled.",
-        "trigger": "Hurt",
+        "trigger": "BuyShopFood",
         "triggeredBy": {
-          "kind": "Self"
+          "kind": "Player"
         },
         "effect": {
           "kind": "FoodMultiplier",
@@ -4006,9 +4006,9 @@
       },
       "level3Ability": {
         "description": "Food with Health and Attack effects are quadrupled.",
-        "trigger": "Hurt",
+        "trigger": "BuyShopFood",
         "triggeredBy": {
-          "kind": "Self"
+          "kind": "Player"
         },
         "effect": {
           "kind": "FoodMultiplier",

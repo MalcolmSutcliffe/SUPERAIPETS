@@ -60,6 +60,12 @@ class Shop:
     def get_health_bonus(self):
         return self.can_bonus
 
+    def get_all_pets(self):
+        return self.team.get_pets()
+
+    def get_enemy_team(self):
+        return None
+
     def reset(self):
         self.turn = 1
         self.turn_info = TURN_DATA.get("turn-" + str(self.turn))

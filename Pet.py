@@ -1,3 +1,5 @@
+import copy
+
 import pygame
 import random
 
@@ -17,7 +19,7 @@ def generate_random_pet():
 
 class Pet:
 
-    def __init__(self, input_name="", status=None, level=1, ability=None, team=None, shop=None, battleground=None):
+    def __init__(self, input_name="", status=None, level=1, ability_data=DEFAULT_ABILITY, team=None, location=None):
 
         # create pet with default stats.
 
@@ -36,12 +38,14 @@ class Pet:
 
         self.is_fainted = False
         self.status = status
-        self.ability_data = DEFAULT_ABILITY
+        self.ability_data = ability_data
+
         self.team = team
-        self.shop = shop
-        self.battleground = battleground
-        self.battleground_team = None
-        self.battleground_enemy_team = None
+
+        self.location = location
+
+        if team is not None:
+            self.location = team.get_location()
 
         self.name_tag = "pet-" + input_name
         self.pet_data = PET_DATA.get("bee")
@@ -62,7 +66,7 @@ class Pet:
             self.base_health = self.pet_data.get("baseHealth")
             self.packs = self.pet_data.get("packs")
             self.tier = self.pet_data.get("tier")
-            self.ability_data = self.pet_data.get("level"+str(self.level)+"Ability")
+            self.ability_data = self.pet_data.get("level" + str(self.level) + "Ability")
         except AttributeError:
             pass
 
@@ -91,8 +95,8 @@ class Pet:
             return
         if trigger[0] == self.ability.get_trigger() and trigger[1] == self.ability.get_triggered_by():
             self.ability.triggering_entity = triggering_entity
-            send_triggers(TRIGGER.CastsAbility, self, self.get_battleground())
-            self.team.battleground.AM.add_to_queue(self.ability)
+            send_triggers(TRIGGER.CastsAbility, self, self.get_location())
+            self.team.get_location().AM.add_to_queue(self.ability)
 
     def get_dmg(self):
 
@@ -109,18 +113,13 @@ class Pet:
 
     def attack_enemy(self, victim):
 
-        # index = victim.get_index()
-
-        # needs to be fixed
-
-        # if self.status == STATUS.SPLASH_ATTACK:
-        #     print(victim)
-        #     print(victim.get_battleground_team())
-        #     for i in range(index - 1):
-        #         x = victim.get_battleground_team().get_pets()[index - 1 - i]
-        #         if x is not None:
-        #             x.take_damage(self, 5)
-        #             break
+        if self.status == STATUS.SPLASH_ATTACK:
+            team = victim.get_team().get_pets()
+            index = victim.get_index()
+            for j in range(1, index):
+                if index - j >= 0 and team[index - j] is not None:
+                    team[index - j].take_damage(self, self.get_dmg())
+                    break
 
         victim.take_damage(self, self.get_dmg())
 
@@ -140,6 +139,7 @@ class Pet:
             dmg -= 20
             if dmg < 0:
                 dmg = 0
+                send_hurt = False
             self.status = None
 
         if self.status == STATUS.COCONUT_SHIELD:
@@ -157,16 +157,12 @@ class Pet:
 
         if self.health <= 0 and not self.is_fainted:
             self.faint()
-            send_triggers(TRIGGER.KnockOut, attacker, self.battleground)
+            send_triggers(TRIGGER.KnockOut, attacker, self.get_location())
 
         if send_hurt:
-            send_triggers(TRIGGER.Hurt, self, self.battleground)
+            send_triggers(TRIGGER.Hurt, self, self.get_location())
 
     def faint(self):
-        if self.battleground is not None:
-            send_triggers(TRIGGER.Faint, self, self.battleground)
-        else:
-            pass
 
         if sfx_on():
             pygame.mixer.Sound.play(fuck)
@@ -175,12 +171,9 @@ class Pet:
 
         self.is_fainted = True
 
-        if self.ability is not None:
-            self.ability.set_priority(0)
+        send_triggers(TRIGGER.Faint, self, self.get_location())
 
-        team = self.battleground_team
-        if team is None:
-            team = self.team
+        team = self.get_team()
 
         if self.status == STATUS.HONEY_BEE:
             team.summon_pet(self.get_index(), "bee", 1, 1, None)
@@ -189,20 +182,6 @@ class Pet:
         if self.status == STATUS.EXTRA_LIFE:
             team.summon_pet(self.get_index(), self.name, 1, 1, None)
             pass
-
-    def summon_pet(self, summon_tag, attack, health, level, status):
-        summon_index = min(0, self.get_team().get_pets().index(self)-1)
-        self.get_team().summon_pet(summon_index, summon_tag, attack, health, level, status)
-
-    def die(self):
-        self.end_of_battle()
-        del self
-
-    def end_of_battle(self):
-        self.battleground_team.get_pets()[self.battleground_team.get_pets().index(self)] = None
-        self.battleground_team = None
-        self.battleground_enemy_team = None
-        self.battleground = None
 
     def gain_stats(self, stats, stat_type=0):  # (0 = permanent stats, #1 = temp stat)
         if stat_type == 0:
@@ -224,7 +203,7 @@ class Pet:
             self.level = 3
 
     def generate_ability(self):
-        # self.ability = PetAbility(self)
+        self.ability = PetAbility(self)
         pass
 
     # getters and setters
@@ -248,17 +227,11 @@ class Pet:
     def get_health(self):
         return self.health
 
-    def get_battleground(self):
-        return self.battleground
-
     def get_team(self):
         return self.team
 
-    def get_battleground_team(self):
-        return self.battleground_team
-
-    def get_battleground_enemy_team(self):
-        return self.battleground_enemy_team
+    def get_enemy_team(self):
+        return self.team.get_enemy_team()
 
     def get_base_attack(self):
         return self.base_attack
@@ -287,34 +260,21 @@ class Pet:
     def get_ability(self):
         return self.ability
 
+    def get_location(self):
+        return self.get_team().get_location()
+
     def get_index(self):
-
-        team = self.battleground_team
-        if team is None:
-            team = self.team
-        if team is None:
-            return -1
-
-        return team.get_pets().index(self)
+        return self.get_team().get_pets().index(self)
 
     def set_team(self, team):
         self.team = team
-
-    def set_battleground(self, bg):
-        self.battleground = bg
-
-    def set_battleground_team(self, bg_team):
-        self.battleground_team = bg_team
-
-    def set_battleground_enemy_team(self, bg_en_team):
-        self.battleground_enemy_team = bg_en_team
 
     def set_base_attack(self, ba):
         self.base_attack = ba
         self.attack = self.base_attack + self.temp_attack
 
-    def set_attack(self, atck):
-        self.attack = atck
+    def set_attack(self, atk):
+        self.attack = atk
 
     def set_base_health(self, bh):
         self.base_health = bh
@@ -343,10 +303,6 @@ class Pet:
         self.status = pet_to_copy.status
         self.ability = pet_to_copy.Ability
         self.team = None
-        self.shop = None
-        self.battleground = None
-        self.battleground_team = None
-        self.battleground_enemy_team = None
         self.name_tag = pet_to_copy.name_tag
         self.name = pet_to_copy.name
         pet_data = PET_DATA.get("bee")
@@ -375,6 +331,11 @@ class Pet:
             self.rightSprite = default_texture
             print("image for '" + self.name_tag + "' not found")
         self.leftSprite = pygame.transform.flip(self.rightSprite, True, False)
+
+    def deep_copy(self):
+        new_pet = copy.copy(self)
+        new_pet.ability = self.get_ability().deep_copy()
+        return new_pet
 
     def __str__(self):
         return self.name
