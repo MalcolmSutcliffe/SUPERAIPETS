@@ -239,13 +239,20 @@ def target_strongest_friend(pet_ability):
 
 # ModifyStats
 def modify_stats(pet_ability):
+
     stats = [0, 0]
+    until_end_of_battle = False
+
     try:
         stats[0] = pet_ability.effect.get("attackAmount")
     except AttributeError:
         pass
     try:
         stats[1] = pet_ability.effect.get("healthAmount")
+    except AttributeError:
+        pass
+    try:
+        until_end_of_battle = pet_ability.effect.get("untilEndOfBattle")
     except AttributeError:
         pass
 
@@ -260,7 +267,7 @@ def modify_stats(pet_ability):
     pet_ability.generate_targets()
 
     for target in pet_ability.targets:
-        target.gain_stats(stats, 0)
+        target.gain_stats(stats, until_end_of_battle)
 
 
 # DealDamage

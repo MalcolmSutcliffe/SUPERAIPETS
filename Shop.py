@@ -1,3 +1,4 @@
+from AbilityManager import AbilityManager
 from Pet import Pet
 from Pet import PetAbility
 from Team import Team
@@ -9,6 +10,7 @@ class Shop:
 
     def __init__(self, team):
         self.team = team
+        self.team.set_location(self)
         self.turn = 1
         self.turn_info = TURN_DATA.get("turn-" + str(self.turn))
         self.animal_shop_slots = self.turn_info.get("animalShopSlots")
@@ -18,6 +20,7 @@ class Shop:
         self.shop_animals = [None, None, None]
         self.frozen_slots = [False, False, False, False, False]
         self.slot_selected = -1
+        self.AM = AbilityManager(self)
         # self.shop_food = []
 
     def roll_shop(self):
@@ -82,10 +85,15 @@ class Shop:
                 self.animal_shop_slots += 1
                 self.shop_animals.append(None)
 
+    def get_AM(self):
+        return self.AM
+
     def get_turn(self):
         return self.turn
 
     def get_slot_selected(self):
         return self.slot_selected
 
+    def display(self):
+        pass
 

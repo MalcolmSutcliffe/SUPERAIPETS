@@ -47,7 +47,7 @@ class AbilityManager:
         trigger = [trigger_type, TRIGGERED_BY.EachFriend]
 
         for j, x in enumerate(team.get_pets()):
-            if x is not None and not j == trigger_from:
+            if x is not None and not j == trigger_index:
                 x.receive_trigger(trigger, trigger_from)
 
         # FriendAhead
@@ -72,6 +72,9 @@ class AbilityManager:
             self.ability_queue.pop(0).execute()
             self.location.display()
             time.sleep(GAME_SPEED)
+
+    def is_abilities_in_queue(self):
+        return not self.ability_queue
 
     def force_ability(self, pet):
         if pet.get_ability() in self.ability_queue:

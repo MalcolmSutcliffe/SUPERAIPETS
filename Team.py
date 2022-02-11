@@ -10,14 +10,16 @@ t_f_list = [0, 1]
 
 class Team:
 
-    def __init__(self, input_name="default_name", plural=False, location=None):
+    def __init__(self, turn, input_name="default_name", plural=False, location=None):
 
         # initialize default team
 
         self.pets = [None] * 5
         self.lives = 10
         self.wins = 0
-        self.turn = TURN_DATA.get("turn-1")
+        self.turn = turn
+        self.turn_data = TURN_DATA.get("turn-"+str(turn))
+        self.tiers_available = self.turn_data.get("tiersAvailable")
         self.name = input_name
         self.plural = plural
         self.location = location
@@ -166,6 +168,9 @@ class Team:
     def get_name(self):
         return self.name
 
+    def get_tiers_available(self):
+        return self.tiers_available
+
     def is_plural(self):
         return self.plural
 
@@ -180,6 +185,11 @@ class Team:
 
     def set_name(self, name_string, plural):
         self.name = name_string
+
+    def remove_temp_stats(self):
+        for x in self.pets:
+            if isinstance(x, Pet):
+                x.remove_temp_stats()
 
     def reset(self, input_name, plural):
         self.pets = [None] * 5  # Type : Pets
@@ -196,7 +206,7 @@ class Team:
         else:
             self.reset(generateRandomNamePlural(), True)
         for j in range(5):
-            new_pet = generate_random_pet()
+            new_pet = generate_random_pet(self.get_tiers_available())
             new_pet.set_level(random.randint(1, 3))
             self.add_pet(new_pet, j)
             if random.uniform(0, 1) > 0.7:

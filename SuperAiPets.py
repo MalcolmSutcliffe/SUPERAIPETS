@@ -215,9 +215,9 @@ def main():
     # my_caterpillar.set_level(3)
     # my_sheep.set_status(STATUS.MELON_ARMOR)
 
-    team1 = Team("North Korean National SAP Team", False)
+    team1 = Team(1, "North Korean National SAP Team", False)
     # team1.randomize_team()
-    team2 = Team("Team Name", False)
+    team2 = Team(1, "Team Name", False)
     team2.randomize_team()
 
     # print(random_pet[i])
@@ -357,7 +357,7 @@ def main():
                             if SFX_ON:
                                 pygame.mixer.Sound.play(button)
                             fight_button = fight_pressed
-                            team2 = Team("Team Name", False)
+                            team2 = Team(base_shop.get_turn(), "Team Name", False)
                             team2.randomize_team()
                             battleground = Battleground(team1, team2)
                         elif 27 <= mouseX <= 227:
@@ -393,6 +393,8 @@ def main():
                                 if team1.pets[team_slot] is None:
                                     team1.add_pet(base_shop.shop_animals[shop_slot], team_slot)
                                     base_shop.shop_animals[shop_slot] = None
+                    # attempt to cast abilities
+                    base_shop.get_AM().perform_abilities()
 
                 # settings
                 elif screen == 3:
@@ -508,10 +510,10 @@ def main():
                         shop_menu_bg = shop_menu_4_slots
                     elif base_shop.get_turn() == 9:
                         shop_menu_bg = shop_menu_5_slots
-                    # team1.advance_team()
+                    # remove temp stats
+                    team1.remove_temp_stats()
                     screen = 1
                     battleground.reset_winner()
-                    # team1 = copy.copy(team1_healthy)
                 # settings
                 elif screen == 3:
                     if 42 <= mouseX <= 108 and 37 <= mouseY <= 102:

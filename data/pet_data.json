@@ -303,7 +303,7 @@
         "StandardPack"
       ],
       "level1Ability": {
-        "description": "Sell: Give shop animals +1/+1",
+        "description": "Sell: Give shop animals +1 Health",
         "trigger": "Sell",
         "triggeredBy": {
           "kind": "Self"
@@ -314,13 +314,13 @@
             "kind": "EachShopAnimal",
             "includingFuture": false
           },
-          "attackAmount": 1,
+          "attackAmount": 0,
           "healthAmount": 1,
           "untilEndOfBattle": false
         }
       },
       "level2Ability": {
-        "description": "Sell: Give shop animals +2/+2",
+        "description": "Sell: Give shop animals +2 Health",
         "trigger": "Sell",
         "triggeredBy": {
           "kind": "Self"
@@ -331,13 +331,13 @@
             "kind": "EachShopAnimal",
             "includingFuture": false
           },
-          "attackAmount": 2,
+          "attackAmount": 0,
           "healthAmount": 2,
           "untilEndOfBattle": false
         }
       },
       "level3Ability": {
-        "description": "Sell: Give shop animals +3/+3",
+        "description": "Sell: Give shop animals +3 Health",
         "trigger": "Sell",
         "triggeredBy": {
           "kind": "Self"
@@ -348,7 +348,7 @@
             "kind": "EachShopAnimal",
             "includingFuture": false
           },
-          "attackAmount": 3,
+          "attackAmount": 0,
           "healthAmount": 3,
           "untilEndOfBattle": false
         }
@@ -411,7 +411,7 @@
       "name": "Horse",
       "id": "pet-horse",
       "tier": 1,
-      "baseAttack": 1,
+      "baseAttack": 2,
       "baseHealth": 1,
       "packs": [
         "StandardPack"

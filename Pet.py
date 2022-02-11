@@ -12,8 +12,8 @@ pygame.mixer.init()
 fuck = pygame.mixer.Sound("audio/sfx/fuck.wav")
 
 
-def generate_random_pet():
-    new_pet = Pet(random.sample(random.sample(AVAILABLE_ANIMALS, 1)[0], 1)[0][4:])
+def generate_random_pet(tier):
+    new_pet = Pet(random.sample(random.sample(AVAILABLE_ANIMALS[:tier], 1)[0], 1)[0][4:])
     return new_pet
 
 
@@ -175,17 +175,23 @@ class Pet:
             team.summon_pet(self.get_index(), self.name, 1, 1, None)
             pass
 
-    def gain_stats(self, stats, stat_type=0):  # (0 = permanent stats, #1 = temp stat)
-        if stat_type == 0:
+    def gain_stats(self, stats, temp_stat=False):
+        if not temp_stat:
             self.base_attack += stats[0]
             self.base_health += stats[1]
-        if stat_type == 1:
+        if temp_stat:
             self.temp_attack += stats[0]
             self.temp_health += stats[1]
-        self.attack += stats[0]
-        self.health += stats[1]
+        self.attack = self.base_attack + self.temp_attack
+        self.health = self.base_health + self.temp_health
         if get_debug_mode():
             print(str(self) + " gained " + str(stats[0]) + " attack and " + str(stats[1]) + " health.")
+
+    def remove_temp_stats(self):
+        self.temp_attack = 0
+        self.temp_health = 0
+        self.attack = self.base_attack + self.temp_attack
+        self.health = self.base_health + self.temp_health
 
     def gain_exp(self, exp):
         self.experience += exp
