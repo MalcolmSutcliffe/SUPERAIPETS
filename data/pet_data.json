@@ -4579,7 +4579,7 @@
         "effect": {
           "kind": "RepeatAbility",
           "target": {
-            "kind": "TriggeringEntity",
+            "kind": "TriggeringEntity"
           },
           "n": 1,
           "withLevel": 1
