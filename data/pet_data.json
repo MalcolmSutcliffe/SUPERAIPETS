@@ -298,7 +298,7 @@
       "id": "pet-duck",
       "tier": 1,
       "baseAttack": 1,
-      "baseHealth": 2,
+      "baseHealth": 3,
       "packs": [
         "StandardPack"
       ],
@@ -1139,14 +1139,14 @@
       "name": "Peacock",
       "id": "pet-peacock",
       "tier": 2,
-      "baseAttack": 1,
+      "baseAttack": 2,
       "baseHealth": 5,
       "packs": [
         "StandardPack",
         "ExpansionPack1"
       ],
       "level1Ability": {
-        "description": "Hurt: Gain 2 Attack.",
+        "description": "Hurt: Gain 50% Attack Once.",
         "trigger": "Hurt",
         "triggeredBy": {
           "kind": "Self"
@@ -1156,12 +1156,14 @@
           "target": {
             "kind": "Self"
           },
-          "attackAmount": 2,
-          "untilEndOfBattle": false
-        }
+          "attackAmount": "this",
+          "untilEndOfBattle": false,
+          "multiplier": 0.5
+        },
+        "maxTriggers": 1
       },
       "level2Ability": {
-        "description": "Hurt: Gain 4 Attack.",
+        "description": "Hurt: Gain 50% Attack Twice.",
         "trigger": "Hurt",
         "triggeredBy": {
           "kind": "Self"
@@ -1171,12 +1173,14 @@
           "target": {
             "kind": "Self"
           },
-          "attackAmount": 4,
-          "untilEndOfBattle": false
-        }
+          "attackAmount": "this",
+          "untilEndOfBattle": false,
+          "multiplier": 0.5
+        },
+        "maxTriggers": 2
       },
       "level3Ability": {
-        "description": "Hurt: Gain 6 Attack.",
+        "description": "Hurt: Gain 50% Attack Three Times.",
         "trigger": "Hurt",
         "triggeredBy": {
           "kind": "Self"
@@ -1186,9 +1190,11 @@
           "target": {
             "kind": "Self"
           },
-          "attackAmount": 6,
-          "untilEndOfBattle": false
-        }
+          "attackAmount": "this",
+          "untilEndOfBattle": false,
+          "multiplier": 0.5
+        },
+        "maxTriggers": 3
       }
     },
     "pet-rat": {
@@ -1202,7 +1208,7 @@
         "ExpansionPack1"
       ],
       "level1Ability": {
-        "description": "Faint: summon one 1/1 Dirty Rat for the opponent that betrays him.",
+        "description": "Faint: summon one 1/1 Dirty Rat for the opponent.",
         "trigger": "Faint",
         "triggeredBy": {
           "kind": "Self"
@@ -1213,12 +1219,12 @@
           "n": 1,
           "withLevel": 1,
           "target": {
-            "kind": "LastEnemy"
+            "kind": "FirstEnemy"
           }
         }
       },
       "level2Ability": {
-        "description": "Faint: summon one 1/1 Dirty Rat for the opponent that betrays him.",
+        "description": "Faint: summon one 1/1 Dirty Rat for the opponent.",
         "trigger": "Faint",
         "triggeredBy": {
           "kind": "Self"
@@ -1229,12 +1235,12 @@
           "n": 1,
           "withLevel": 1,
           "target": {
-            "kind": "LastEnemy"
+            "kind": "FirstEnemy"
           }
         }
       },
       "level3Ability": {
-        "description": "Faint: summon one 1/1 Dirty Rat for the opponent that betrays him.",
+        "description": "Faint: summon one 1/1 Dirty Rat for the opponent.",
         "trigger": "Faint",
         "triggeredBy": {
           "kind": "Self"
@@ -1245,7 +1251,7 @@
           "n": 1,
           "withLevel": 1,
           "target": {
-            "kind": "LastEnemy"
+            "kind": "FirstEnemy"
           }
         }
       }
@@ -1255,7 +1261,7 @@
       "id": "pet-shrimp",
       "tier": 2,
       "baseAttack": 2,
-      "baseHealth": 1,
+      "baseHealth": 3,
       "packs": [
         "StandardPack",
         "ExpansionPack1"
@@ -1320,7 +1326,7 @@
         "ExpansionPack1"
       ],
       "level1Ability": {
-        "description": "Faint: Summon one tier 3 animal as a 2/2.",
+        "description": "Faint: Summon a level 1 tier 3 animal as a 2/2.",
         "trigger": "Faint",
         "triggeredBy": {
           "kind": "Self"
@@ -1330,13 +1336,14 @@
           "tier": 3,
           "withAttack": 2,
           "withHealth": 2,
+          "withLevel": 1,
           "target": {
             "kind": "Self"
           }
         }
       },
       "level2Ability": {
-        "description": "Faint: Summon one tier 3 animal as a 4/4.",
+        "description": "Faint: Summon a level 2 tier 3 animal as a 2/2.",
         "trigger": "Faint",
         "triggeredBy": {
           "kind": "Self"
@@ -1344,15 +1351,16 @@
         "effect": {
           "kind": "SummonRandomPet",
           "tier": 3,
-          "withAttack": 4,
-          "withHealth": 4,
+          "withAttack": 2,
+          "withHealth": 2,
+          "withLevel": 2,
           "target": {
             "kind": "Self"
           }
         }
       },
       "level3Ability": {
-        "description": "Faint: Summon one tier 3 animal as a 6/6.",
+        "description": "Faint: Summon a level 3 tier 3 animal as a 2/2.",
         "trigger": "Faint",
         "triggeredBy": {
           "kind": "Self"
@@ -1360,8 +1368,9 @@
         "effect": {
           "kind": "SummonRandomPet",
           "tier": 3,
-          "withAttack": 6,
-          "withHealth": 6,
+          "withAttack": 2,
+          "withHealth": 2,
+          "withLevel": 3,
           "target": {
             "kind": "Self"
           }
@@ -1372,8 +1381,8 @@
       "name": "Swan",
       "id": "pet-swan",
       "tier": 2,
-      "baseAttack": 3,
-      "baseHealth": 4,
+      "baseAttack": 1,
+      "baseHealth": 3,
       "packs": [
         "StandardPack",
         "ExpansionPack1"
@@ -1416,7 +1425,7 @@
       "name": "Tabby Cat",
       "id": "pet-tabby-cat",
       "tier": 2,
-      "baseAttack": 4,
+      "baseAttack": 5,
       "baseHealth": 3,
       "packs": [
         "ExpansionPack1"
@@ -1681,7 +1690,7 @@
       "id": "pet-caterpillar",
       "tier": 3,
       "baseAttack": 1,
-      "baseHealth": 4,
+      "baseHealth": 3,
       "packs": [
         "ExpansionPack1"
       ],
@@ -1849,8 +1858,8 @@
       "name": "Giraffe",
       "id": "pet-giraffe",
       "tier": 3,
-      "baseAttack": 1,
-      "baseHealth": 3,
+      "baseAttack": 2,
+      "baseHealth": 5,
       "packs": [
         "StandardPack"
       ],
@@ -1910,8 +1919,8 @@
       "name": "Kangaroo",
       "id": "pet-kangaroo",
       "tier": 3,
-      "baseAttack": 2,
-      "baseHealth": 3,
+      "baseAttack": 1,
+      "baseHealth": 2,
       "packs": [
         "StandardPack"
       ],
@@ -2257,6 +2266,7 @@
           "pet": "pet-ram",
           "withAttack": 2,
           "withHealth": 2,
+          "withLevel": 1,
           "n": 2,
           "target": {
             "kind": "Self"
@@ -2274,6 +2284,7 @@
           "pet": "pet-ram",
           "withAttack": 4,
           "withHealth": 4,
+          "withLevel": 2,
           "n": 2,
           "target": {
             "kind": "Self"
@@ -2291,6 +2302,7 @@
           "pet": "pet-ram",
           "withAttack": 6,
           "withHealth": 6,
+          "withLevel": 3,
           "n": 2,
           "target": {
             "kind": "Self"
@@ -2309,7 +2321,23 @@
         "ExpansionPack1"
       ],
       "level1Ability": {
-        "description": "Buy: If you lost last battle, give all friends +2/+1",
+        "description": "Buy: If you lost last battle, give all friends +1/+1",
+        "trigger": "BuyAfterLoss",
+        "triggeredBy": {
+          "kind": "Player"
+        },
+        "effect": {
+          "kind": "ModifyStats",
+          "target": {
+            "kind": "EachFriend"
+          },
+          "attackAmount": 1,
+          "healthAmount": 1,
+          "untilEndOfBattle": false
+        }
+      },
+      "level2Ability": {
+        "description": "Buy: If you lost last battle, give all friends +2/+2",
         "trigger": "BuyAfterLoss",
         "triggeredBy": {
           "kind": "Player"
@@ -2320,28 +2348,12 @@
             "kind": "EachFriend"
           },
           "attackAmount": 2,
-          "healthAmount": 1,
-          "untilEndOfBattle": false
-        }
-      },
-      "level2Ability": {
-        "description": "Buy: If you lost last battle, give all friends +4/+2",
-        "trigger": "BuyAfterLoss",
-        "triggeredBy": {
-          "kind": "Player"
-        },
-        "effect": {
-          "kind": "ModifyStats",
-          "target": {
-            "kind": "EachFriend"
-          },
-          "attackAmount": 4,
           "healthAmount": 2,
           "untilEndOfBattle": false
         }
       },
       "level3Ability": {
-        "description": "Buy: If you lost last battle, give all friends +6/+3",
+        "description": "Buy: If you lost last battle, give all friends +3/+3",
         "trigger": "BuyAfterLoss",
         "triggeredBy": {
           "kind": "Player"
@@ -2351,7 +2363,7 @@
           "target": {
             "kind": "EachFriend"
           },
-          "attackAmount": 6,
+          "attackAmount": 3,
           "healthAmount": 3,
           "untilEndOfBattle": false
         }
@@ -2416,8 +2428,8 @@
       "name": "Turtle",
       "id": "pet-turtle",
       "tier": 3,
-      "baseAttack": 2,
-      "baseHealth": 4,
+      "baseAttack": 1,
+      "baseHealth": 2,
       "packs": [
         "StandardPack",
         "ExpansionPack1"
@@ -2472,8 +2484,8 @@
       "name": "Whale",
       "id": "pet-whale",
       "tier": 3,
-      "baseAttack": 2,
-      "baseHealth": 6,
+      "baseAttack": 3,
+      "baseHealth": 8,
       "packs": [
         "StandardPack"
       ],
@@ -2819,8 +2831,8 @@
       "name": "Llama",
       "id": "pet-llama",
       "tier": 4,
-      "baseAttack": 2,
-      "baseHealth": 5,
+      "baseAttack": 3,
+      "baseHealth": 6,
       "packs": [
         "ExpansionPack1"
       ],
@@ -2877,8 +2889,8 @@
       "name": "Lobster",
       "id": "pet-lobster",
       "tier": 4,
-      "baseAttack": 3,
-      "baseHealth": 3,
+      "baseAttack": 4,
+      "baseHealth": 5,
       "packs": [
         "ExpansionPack1"
       ],
@@ -2924,64 +2936,6 @@
           "kind": "ModifyStats",
           "target": {
             "kind": "TriggeringEntity"
-          },
-          "attackAmount": 6,
-          "healthAmount": 6,
-          "untilEndOfBattle": false
-        }
-      }
-    },
-    "pet-monkey": {
-      "name": "Monkey",
-      "id": "pet-monkey",
-      "tier": 4,
-      "baseAttack": 3,
-      "baseHealth": 3,
-      "packs": [
-        "StandardPack"
-      ],
-      "level1Ability": {
-        "description": "End turn: Give right-most friend +2/+2",
-        "trigger": "EndOfTurn",
-        "triggeredBy": {
-          "kind": "Player"
-        },
-        "effect": {
-          "kind": "ModifyStats",
-          "target": {
-            "kind": "RightMostFriend"
-          },
-          "attackAmount": 2,
-          "healthAmount": 2,
-          "untilEndOfBattle": false
-        }
-      },
-      "level2Ability": {
-        "description": "End turn: Give right-most friend +4/+4",
-        "trigger": "EndOfTurn",
-        "triggeredBy": {
-          "kind": "Player"
-        },
-        "effect": {
-          "kind": "ModifyStats",
-          "target": {
-            "kind": "RightMostFriend"
-          },
-          "attackAmount": 4,
-          "healthAmount": 4,
-          "untilEndOfBattle": false
-        }
-      },
-      "level3Ability": {
-        "description": "End turn: Give right-most friend +6/+6",
-        "trigger": "EndOfTurn",
-        "triggeredBy": {
-          "kind": "Player"
-        },
-        "effect": {
-          "kind": "ModifyStats",
-          "target": {
-            "kind": "RightMostFriend"
           },
           "attackAmount": 6,
           "healthAmount": 6,
@@ -3047,76 +3001,18 @@
         }
       }
     },
-    "pet-poodle": {
-      "name": "Poodle",
-      "id": "pet-poodle",
-      "tier": 4,
-      "baseAttack": 4,
-      "baseHealth": 2,
-      "packs": [
-        "ExpansionPack1"
-      ],
-      "level1Ability": {
-        "description": "End turn: Give +1/+1 to different tier animals.",
-        "trigger": "EndOfTurn",
-        "triggeredBy": {
-          "kind": "Player"
-        },
-        "effect": {
-          "kind": "ModifyStats",
-          "target": {
-            "kind": "DifferentTierAnimals"
-          },
-          "attackAmount": 1,
-          "healthAmount": 1,
-          "untilEndOfBattle": false
-        }
-      },
-      "level2Ability": {
-        "description": "End turn: Give +2/+2 to different tier animals.",
-        "trigger": "EndOfTurn",
-        "triggeredBy": {
-          "kind": "Player"
-        },
-        "effect": {
-          "kind": "ModifyStats",
-          "target": {
-            "kind": "DifferentTierAnimals"
-          },
-          "attackAmount": 2,
-          "healthAmount": 2,
-          "untilEndOfBattle": false
-        }
-      },
-      "level3Ability": {
-        "description": "End turn: Give +3/+3 to different tier animals.",
-        "trigger": "EndOfTurn",
-        "triggeredBy": {
-          "kind": "Player"
-        },
-        "effect": {
-          "kind": "ModifyStats",
-          "target": {
-            "kind": "DifferentTierAnimals"
-          },
-          "attackAmount": 3,
-          "healthAmount": 3,
-          "untilEndOfBattle": false
-        }
-      }
-    },
     "pet-rooster": {
       "name": "Rooster",
       "id": "pet-rooster",
       "tier": 4,
-      "baseAttack": 3,
+      "baseAttack": 5,
       "baseHealth": 3,
       "packs": [
         "StandardPack",
         "ExpansionPack1"
       ],
       "level1Ability": {
-        "description": "Faint: Summon a Chick with the same Attack as this.",
+        "description": "Faint: Summon a Chick with 1 health and half the Attack of this.",
         "trigger": "Faint",
         "triggeredBy": {
           "kind": "Self"
@@ -3127,13 +3023,14 @@
           "target": {
             "kind": "Self"
           },
-          "withHealh": 1,
+          "withHealth": 1,
           "withAttack": "this",
+          "multiplier": 0.5,
           "n": 1
         }
       },
       "level2Ability": {
-        "description": "Faint: Summon 2 Chicks with the same Attack as this.",
+        "description": "Faint: Summon 2 Chicks with 1 health and half the Attack of this.",
         "trigger": "Faint",
         "triggeredBy": {
           "kind": "Self"
@@ -3144,13 +3041,14 @@
           "target": {
             "kind": "Self"
           },
-          "withHealh": 1,
+          "withHealth": 1,
           "withAttack": "this",
+          "multiplier": 0.5,
           "n": 2
         }
       },
       "level3Ability": {
-        "description": "Faint: Summon 3 Chicks with the same Attack as this.",
+        "description": "Faint: Summon 3 Chicks with 1 health and half the Attack of this.",
         "trigger": "Faint",
         "triggeredBy": {
           "kind": "Self"
@@ -3161,8 +3059,9 @@
           "target": {
             "kind": "Self"
           },
-          "withHealh": 1,
+          "withHealth": 1,
           "withAttack": "this",
+          "multiplier": 0.5,
           "n": 3
         }
       }
@@ -3172,7 +3071,7 @@
       "id": "pet-skunk",
       "tier": 4,
       "baseAttack": 3,
-      "baseHealth": 5,
+      "baseHealth": 6,
       "packs": [
         "StandardPack",
         "ExpansionPack1"
@@ -3216,7 +3115,7 @@
           "target": {
             "kind": "HighestHealthEnemy"
           },
-          "percentage": 1.00
+          "percentage": 1
         }
       }
     },
@@ -3231,39 +3130,36 @@
         "ExpansionPack1"
       ],
       "level1Ability": {
-        "description": "Buy: Clear and fill shops with food.",
-        "trigger": "Buy",
+        "description": "Start of turn: Discount shop food by 1 gold",
+        "trigger": "StartOfTurn",
         "triggeredBy": {
-          "kind": "Self"
+          "kind": "Player"
         },
         "effect": {
-          "kind": "RefillShops",
-          "shop": "All",
-          "food": "Any"
+          "kind": "DiscountFood",
+          "amount": 1
         }
       },
       "level2Ability": {
-        "description": "Buy: Clear and fill shops with food.",
-        "trigger": "Buy",
+        "description": "Start of turn: Discount shop food by 2 gold",
+        "trigger": "StartOfTurn",
         "triggeredBy": {
-          "kind": "Self"
+          "kind": "Player"
         },
         "effect": {
-          "kind": "RefillShops",
-          "shop": "All",
-          "food": "Any"
+          "kind": "DiscountFood",
+          "amount": 2
         }
       },
       "level3Ability": {
-        "description": "Buy: Clear and fill shops with food.",
-        "trigger": "Buy",
+        "description": "Start of turn: Discount shop food by 3 gold",
+        "trigger": "StartOfTurn",
         "triggeredBy": {
-          "kind": "Self"
+          "kind": "Player"
         },
         "effect": {
-          "kind": "RefillShops",
-          "shop": "All",
-          "food": "Any"
+          "kind": "DiscountFood",
+          "amount": 3
         }
       }
     },
@@ -3271,8 +3167,8 @@
       "name": "Worm",
       "id": "pet-worm",
       "tier": 4,
-      "baseAttack": 1,
-      "baseHealth": 1,
+      "baseAttack": 2,
+      "baseHealth": 2,
       "packs": [
         "StandardPack",
         "ExpansionPack1"
@@ -3326,6 +3222,238 @@
         }
       }
     },
+    "pet-microbe": {
+      "name": "Microbe",
+      "id": "pet-microbe",
+      "tier": 4,
+      "baseAttack": 1,
+      "baseHealth": 1,
+      "packs": [
+        "ExpansionPack1"
+      ],
+      "level1Ability": {
+        "description": "Faint: Make all animals Weak.",
+        "trigger": "Faint",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "effect": {
+          "kind": "ApplyStatus",
+          "status": "WEAK",
+          "target": {
+            "kind": "All"
+          }
+        }
+      },
+      "level2Ability": {
+        "description": "Faint: Make all animals Weak.",
+        "trigger": "Faint",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "effect": {
+          "kind": "ApplyStatus",
+          "status": "WEAK",
+          "target": {
+            "kind": "All"
+          }
+        }
+      },
+      "level3Ability": {
+        "description": "Faint: Make all animals Weak.",
+        "trigger": "Faint",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "effect": {
+          "kind": "ApplyStatus",
+          "status": "WEAK",
+          "target": {
+            "kind": "All"
+          }
+        }
+      }
+    },
+    "pet-parrot": {
+      "name": "Parrot",
+      "id": "pet-parrot",
+      "tier": 4,
+      "baseAttack": 5,
+      "baseHealth": 3,
+      "packs": [
+        "StandardPack"
+      ],
+      "level1Ability": {
+        "description": "End Turn: Copy ability from pet ahead as lvl. 1 until end of battle.",
+        "trigger": "EndOfTurn",
+        "triggeredBy": {
+          "kind": "Player"
+        },
+        "effect": {
+          "kind": "TransferAbility",
+          "from": {
+            "kind": "FriendAhead",
+            "n": 1
+          },
+          "to": {
+            "kind": "Self"
+          },
+          "level": 1
+        }
+      },
+      "level2Ability": {
+        "description": "End Turn: Copy ability from pet ahead as lvl. 2 until end of battle.",
+        "trigger": "EndOfTurn",
+        "triggeredBy": {
+          "kind": "Player"
+        },
+        "effect": {
+          "kind": "TransferAbility",
+          "from": {
+            "kind": "FriendAhead",
+            "n": 1
+          },
+          "to": {
+            "kind": "Self"
+          },
+          "level": 2
+        }
+      },
+      "level3Ability": {
+        "description": "End Turn: Copy ability from pet ahead as lvl. 3 until end of battle.",
+        "trigger": "EndOfTurn",
+        "triggeredBy": {
+          "kind": "Player"
+        },
+        "effect": {
+          "kind": "TransferAbility",
+          "from": {
+            "kind": "FriendAhead",
+            "n": 1
+          },
+          "to": {
+            "kind": "Self"
+          },
+          "level": 3
+        }
+      }
+    },
+    "pet-monkey": {
+      "name": "Monkey",
+      "id": "pet-monkey",
+      "tier": 5,
+      "baseAttack": 3,
+      "baseHealth": 3,
+      "packs": [
+        "StandardPack"
+      ],
+      "level1Ability": {
+        "description": "End turn: Give right-most friend +2/+3",
+        "trigger": "EndOfTurn",
+        "triggeredBy": {
+          "kind": "Player"
+        },
+        "effect": {
+          "kind": "ModifyStats",
+          "target": {
+            "kind": "RightMostFriend"
+          },
+          "attackAmount": 2,
+          "healthAmount": 3,
+          "untilEndOfBattle": false
+        }
+      },
+      "level2Ability": {
+        "description": "End turn: Give right-most friend +4/+6",
+        "trigger": "EndOfTurn",
+        "triggeredBy": {
+          "kind": "Player"
+        },
+        "effect": {
+          "kind": "ModifyStats",
+          "target": {
+            "kind": "RightMostFriend"
+          },
+          "attackAmount": 4,
+          "healthAmount": 6,
+          "untilEndOfBattle": false
+        }
+      },
+      "level3Ability": {
+        "description": "End turn: Give right-most friend +6/+9",
+        "trigger": "EndOfTurn",
+        "triggeredBy": {
+          "kind": "Player"
+        },
+        "effect": {
+          "kind": "ModifyStats",
+          "target": {
+            "kind": "RightMostFriend"
+          },
+          "attackAmount": 6,
+          "healthAmount": 9,
+          "untilEndOfBattle": false
+        }
+      }
+    },
+    "pet-poodle": {
+      "name": "Poodle",
+      "id": "pet-poodle",
+      "tier": 5,
+      "baseAttack": 2,
+      "baseHealth": 2,
+      "packs": [
+        "ExpansionPack1"
+      ],
+      "level1Ability": {
+        "description": "End turn: Give +1/+1 to different tier animals.",
+        "trigger": "EndOfTurn",
+        "triggeredBy": {
+          "kind": "Player"
+        },
+        "effect": {
+          "kind": "ModifyStats",
+          "target": {
+            "kind": "DifferentTierAnimals"
+          },
+          "attackAmount": 1,
+          "healthAmount": 1,
+          "untilEndOfBattle": false
+        }
+      },
+      "level2Ability": {
+        "description": "End turn: Give +2/+2 to different tier animals.",
+        "trigger": "EndOfTurn",
+        "triggeredBy": {
+          "kind": "Player"
+        },
+        "effect": {
+          "kind": "ModifyStats",
+          "target": {
+            "kind": "DifferentTierAnimals"
+          },
+          "attackAmount": 2,
+          "healthAmount": 2,
+          "untilEndOfBattle": false
+        }
+      },
+      "level3Ability": {
+        "description": "End turn: Give +3/+3 to different tier animals.",
+        "trigger": "EndOfTurn",
+        "triggeredBy": {
+          "kind": "Player"
+        },
+        "effect": {
+          "kind": "ModifyStats",
+          "target": {
+            "kind": "DifferentTierAnimals"
+          },
+          "attackAmount": 3,
+          "healthAmount": 3,
+          "untilEndOfBattle": false
+        }
+      }
+    },
     "pet-chicken": {
       "name": "Chicken",
       "id": "pet-chicken",
@@ -3345,7 +3473,7 @@
           "kind": "ModifyStats",
           "target": {
             "kind": "EachShopAnimal",
-            "includingFuture": false
+            "includingFuture": true
           },
           "attackAmount": 1,
           "healthAmount": 1,
@@ -3362,7 +3490,7 @@
           "kind": "ModifyStats",
           "target": {
             "kind": "EachShopAnimal",
-            "includingFuture": false
+            "includingFuture": true
           },
           "attackAmount": 2,
           "healthAmount": 2,
@@ -3379,7 +3507,7 @@
           "kind": "ModifyStats",
           "target": {
             "kind": "EachShopAnimal",
-            "includingFuture": false
+            "includingFuture": true
           },
           "attackAmount": 3,
           "healthAmount": 3,
@@ -3398,7 +3526,7 @@
         "ExpansionPack1"
       ],
       "level1Ability": {
-        "description": "Buy: Replace food shop with 2 free milk that gives +2/+2.",
+        "description": "Buy: Replace food shop with 2 free milk that gives +1/+2.",
         "trigger": "Buy",
         "triggeredBy": {
           "kind": "Self"
@@ -3410,7 +3538,7 @@
         }
       },
       "level2Ability": {
-        "description": "Buy: Replace food shop with 2 free milk that gives +2/+2.",
+        "description": "Buy: Replace food shop with 2 free milk that gives +2/+4.",
         "trigger": "Buy",
         "triggeredBy": {
           "kind": "Self"
@@ -3422,7 +3550,7 @@
         }
       },
       "level3Ability": {
-        "description": "Buy: Replace food shop with 2 free milk that gives +2/+2.",
+        "description": "Buy: Replace food shop with 2 free milk that gives +3/+6.",
         "trigger": "Buy",
         "triggeredBy": {
           "kind": "Self"
@@ -3438,13 +3566,13 @@
       "name": "Crocodile",
       "id": "pet-crocodile",
       "tier": 5,
-      "baseAttack": 6,
-      "baseHealth": 3,
+      "baseAttack": 8,
+      "baseHealth": 4,
       "packs": [
         "StandardPack"
       ],
       "level1Ability": {
-        "description": "Start of battle: Deal 7 damage to the last enemy",
+        "description": "Start of battle: Deal 8 damage to the last enemy",
         "trigger": "StartOfBattle",
         "triggeredBy": {
           "kind": "Player"
@@ -3454,11 +3582,11 @@
           "target": {
             "kind": "LastEnemy"
           },
-          "amount": 7
+          "amount": 8
         }
       },
       "level2Ability": {
-        "description": "Start of battle: Deal 14 damage to the last enemy",
+        "description": "Start of battle: Deal 16 damage to the last enemy",
         "trigger": "StartOfBattle",
         "triggeredBy": {
           "kind": "Player"
@@ -3468,11 +3596,11 @@
           "target": {
             "kind": "LastEnemy"
           },
-          "amount": 14
+          "amount": 16
         }
       },
       "level3Ability": {
-        "description": "Start of battle: Deal 21 damage to the last enemy",
+        "description": "Start of battle: Deal 24 damage to the last enemy",
         "trigger": "StartOfBattle",
         "triggeredBy": {
           "kind": "Player"
@@ -3482,7 +3610,7 @@
           "target": {
             "kind": "LastEnemy"
           },
-          "amount": 21
+          "amount": 24
         }
       }
     },
@@ -3547,12 +3675,12 @@
       "id": "pet-goat",
       "tier": 5,
       "baseAttack": 4,
-      "baseHealth": 5,
+      "baseHealth": 6,
       "packs": [
         "ExpansionPack1"
       ],
       "level1Ability": {
-        "description": "Friend bought: Gain 1 gold.",
+        "description": "Friend bought: Gain 1 gold. Works 2 times per turn",
         "trigger": "Buy",
         "triggeredBy": {
           "kind": "EachFriend"
@@ -3561,147 +3689,31 @@
           "kind": "GainGold",
           "amount": 1
         },
-        "maxTriggers": 3
+        "maxTriggers": 2
       },
       "level2Ability": {
-        "description": "Friend bought: Gain 1 gold.",
+        "description": "Friend bought: Gain 2 gold.",
         "trigger": "Buy",
         "triggeredBy": {
           "kind": "EachFriend"
         },
         "effect": {
           "kind": "GainGold",
-          "amount": 1
+          "amount": 2
         },
-        "maxTriggers": 6
+        "maxTriggers": 2
       },
       "level3Ability": {
-        "description": "Friend bought: Gain 1 gold.",
+        "description": "Friend bought: Gain 3 gold.",
         "trigger": "Buy",
         "triggeredBy": {
           "kind": "EachFriend"
         },
         "effect": {
           "kind": "GainGold",
-          "amount": 1
+          "amount": 3
         },
-        "maxTriggers": 9
-      }
-    },
-    "pet-microbe": {
-      "name": "Microbe",
-      "id": "pet-microbe",
-      "tier": 5,
-      "baseAttack": 1,
-      "baseHealth": 1,
-      "packs": [
-        "ExpansionPack1"
-      ],
-      "level1Ability": {
-        "description": "Faint: Make all animals Weak.",
-        "trigger": "Faint",
-        "triggeredBy": {
-          "kind": "Self"
-        },
-        "effect": {
-          "kind": "ApplyStatus",
-          "status": "WEAK",
-          "target": {
-            "kind": "All"
-          }
-        }
-      },
-      "level2Ability": {
-        "description": "Faint: Make all animals Weak.",
-        "trigger": "Faint",
-        "triggeredBy": {
-          "kind": "Self"
-        },
-        "effect": {
-          "kind": "ApplyStatus",
-          "status": "WEAK",
-          "target": {
-            "kind": "All"
-          }
-        }
-      },
-      "level3Ability": {
-        "description": "Faint: Make all animals Weak.",
-        "trigger": "Faint",
-        "triggeredBy": {
-          "kind": "Self"
-        },
-        "effect": {
-          "kind": "ApplyStatus",
-          "status": "WEAK",
-          "target": {
-            "kind": "All"
-          }
-        }
-      }
-    },
-    "pet-parrot": {
-      "name": "Parrot",
-      "id": "pet-parrot",
-      "tier": 5,
-      "baseAttack": 3,
-      "baseHealth": 2,
-      "packs": [
-        "StandardPack"
-      ],
-      "level1Ability": {
-        "description": "End Turn: Copy ability from pet ahead as lvl. 1 until end of battle.",
-        "trigger": "EndOfTurn",
-        "triggeredBy": {
-          "kind": "Player"
-        },
-        "effect": {
-          "kind": "TransferAbility",
-          "from": {
-            "kind": "FriendAhead",
-            "n": 1
-          },
-          "to": {
-            "kind": "Self"
-          },
-          "level": 1
-        }
-      },
-      "level2Ability": {
-        "description": "End Turn: Copy ability from pet ahead as lvl. 2 until end of battle.",
-        "trigger": "EndOfTurn",
-        "triggeredBy": {
-          "kind": "Player"
-        },
-        "effect": {
-          "kind": "TransferAbility",
-          "from": {
-            "kind": "FriendAhead",
-            "n": 1
-          },
-          "to": {
-            "kind": "Self"
-          },
-          "level": 2
-        }
-      },
-      "level3Ability": {
-        "description": "End Turn: Copy ability from pet ahead as lvl. 3 until end of battle.",
-        "trigger": "EndOfTurn",
-        "triggeredBy": {
-          "kind": "Player"
-        },
-        "effect": {
-          "kind": "TransferAbility",
-          "from": {
-            "kind": "FriendAhead",
-            "n": 1
-          },
-          "to": {
-            "kind": "Self"
-          },
-          "level": 3
-        }
+        "maxTriggers": 2
       }
     },
     "pet-rhino": {
@@ -3709,7 +3721,7 @@
       "id": "pet-rhino",
       "tier": 5,
       "baseAttack": 5,
-      "baseHealth": 6,
+      "baseHealth": 8,
       "packs": [
         "StandardPack",
         "ExpansionPack1"
@@ -3803,7 +3815,7 @@
       "id": "pet-seal",
       "tier": 5,
       "baseAttack": 3,
-      "baseHealth": 6,
+      "baseHealth": 8,
       "packs": [
         "StandardPack",
         "ExpansionPack1"
@@ -4019,6 +4031,65 @@
         }
       }
     },
+    "pet-boar": {
+      "name": "Boar",
+      "id": "pet-boar",
+      "tier": 6,
+      "baseAttack": 8,
+      "baseHealth": 6,
+      "packs": [
+        "StandardPack",
+        "ExpansionPack1"
+      ],
+      "level1Ability": {
+        "description": "Before Attack: Gain +2/+2.",
+        "trigger": "BeforeAttack",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "effect": {
+          "kind": "ModifyStats",
+          "target": {
+            "kind": "Self"
+          },
+          "attackAmount": 2,
+          "healthAmount": 2,
+          "untilEndOfBattle": false
+        }
+      },
+      "level2Ability": {
+        "description": "Before Attack: Gain +6/+6.",
+        "trigger": "BeforeAttack",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "effect": {
+          "kind": "ModifyStats",
+          "target": {
+            "kind": "Self"
+          },
+          "attackAmount": 6,
+          "healthAmount": 6,
+          "untilEndOfBattle": false
+        }
+      },
+      "level3Ability": {
+        "description": "Before Attack: Gain +6/+6.",
+        "trigger": "BeforeAttack",
+        "triggeredBy": {
+          "kind": "Self"
+        },
+        "effect": {
+          "kind": "ModifyStats",
+          "target": {
+            "kind": "Self"
+          },
+          "attackAmount": 6,
+          "healthAmount": 6,
+          "untilEndOfBattle": false
+        }
+      }
+    },
     "pet-dragon": {
       "name": "Dragon",
       "id": "pet-dragon",
@@ -4082,13 +4153,13 @@
       "name": "Fly",
       "id": "pet-fly",
       "tier": 6,
-      "baseAttack": 2,
-      "baseHealth": 2,
+      "baseAttack": 5,
+      "baseHealth": 5,
       "packs": [
         "StandardPack"
       ],
       "level1Ability": {
-        "description": "Friend faints: Summon a 2/2 fly in its place",
+        "description": "Friend faints: Summon a 5/5 fly in its place",
         "trigger": "Faint",
         "triggeredBy": {
           "kind": "EachFriend"
@@ -4096,16 +4167,17 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-zombie-fly",
-          "withAttack": 2,
-          "withHealth": 2,
+          "withAttack": 5,
+          "withHealth": 5,
           "target": {
             "kind": "TriggeringEntity"
           },
           "n": 1
-        }
+        },
+        "maxTriggers": 3
       },
       "level2Ability": {
-        "description": "Friend faints: Summon a 4/4 fly in its place",
+        "description": "Friend faints: Summon a 10/10 fly in its place",
         "trigger": "Faint",
         "triggeredBy": {
           "kind": "EachFriend"
@@ -4113,16 +4185,17 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-zombie-fly",
-          "withAttack": 4,
-          "withHealth": 4,
+          "withAttack": 10,
+          "withHealth": 10,
           "target": {
             "kind": "TriggeringEntity"
           },
           "n": 1
-        }
+        },
+        "maxTriggers": 3
       },
       "level3Ability": {
-        "description": "Friend faints: Summon a 6/6 fly in its place",
+        "description": "Friend faints: Summon a 15/15 fly in its place",
         "trigger": "Faint",
         "triggeredBy": {
           "kind": "EachFriend"
@@ -4130,13 +4203,14 @@
         "effect": {
           "kind": "SummonPet",
           "pet": "pet-zombie-fly",
-          "withAttack": 6,
-          "withHealth": 6,
+          "withAttack": 15,
+          "withHealth": 15,
           "target": {
             "kind": "TriggeringEntity"
           },
           "n": 1
-        }
+        },
+        "maxTriggers": 3
       }
     },
     "pet-gorilla": {
@@ -4144,7 +4218,7 @@
       "id": "pet-gorilla",
       "tier": 6,
       "baseAttack": 6,
-      "baseHealth": 6,
+      "baseHealth": 9,
       "packs": [
         "StandardPack",
         "ExpansionPack1"
@@ -4177,7 +4251,7 @@
             "kind": "Self"
           }
         },
-        "maxTriggers": 1
+        "maxTriggers": 2
       },
       "level3Ability": {
         "description": "Hurt: Gain Coconut Shield.",
@@ -4192,14 +4266,14 @@
             "kind": "Self"
           }
         },
-        "maxTriggers": 1
+        "maxTriggers": 3
       }
     },
     "pet-leopard": {
       "name": "Leopard",
       "id": "pet-leopard",
       "tier": 6,
-      "baseAttack": 6,
+      "baseAttack": 10,
       "baseHealth": 4,
       "packs": [
         "StandardPack",
@@ -4261,8 +4335,8 @@
       "name": "Mammoth",
       "id": "pet-mammoth",
       "tier": 6,
-      "baseAttack": 2,
-      "baseHealth": 6,
+      "baseAttack": 3,
+      "baseHealth": 10,
       "packs": [
         "StandardPack",
         "ExpansionPack1"
@@ -4405,28 +4479,28 @@
         "maxTriggers": 3
       },
       "level2Ability": {
-        "description": "Buy food: Gain 1 gold.",
+        "description": "Buy food: Gain 2 gold.",
         "trigger": "BuyFood",
         "triggeredBy": {
           "kind": "Player"
         },
         "effect": {
           "kind": "GainGold",
-          "amount": 1
+          "amount": 2
         },
-        "maxTriggers": 6
+        "maxTriggers": 3
       },
       "level3Ability": {
-        "description": "Buy food: Gain 1 gold.",
+        "description": "Buy food: Gain 3 gold.",
         "trigger": "BuyFood",
         "triggeredBy": {
           "kind": "Player"
         },
         "effect": {
           "kind": "GainGold",
-          "amount": 1
+          "amount": 3
         },
-        "maxTriggers": 9
+        "maxTriggers": 3
       }
     },
     "pet-snake": {
@@ -4497,7 +4571,7 @@
         "StandardPack"
       ],
       "level1Ability": {
-        "description": "The friend ahead casts their ability twice in battle.",
+        "description": "The friend ahead repeats their ability in battle as if they were level 1.",
         "trigger": "CastsAbility",
         "triggeredBy": {
           "kind": "FriendAhead"
@@ -4505,13 +4579,14 @@
         "effect": {
           "kind": "RepeatAbility",
           "target": {
-            "kind": "TriggeringEntity"
+            "kind": "TriggeringEntity",
           },
-          "n": 1
+          "n": 1,
+          "withLevel": 1
         }
       },
       "level2Ability": {
-        "description": "The friend ahead casts their ability twice in battle.",
+        "description": "The friend ahead repeats their ability in battle as if they were level 2.",
         "trigger": "CastsAbility",
         "triggeredBy": {
           "kind": "FriendAhead"
@@ -4521,11 +4596,12 @@
           "target": {
             "kind": "TriggeringEntity"
           },
-          "n": 1
+          "n": 1,
+          "withLevel": 1
         }
       },
       "level3Ability": {
-        "description": "The friend ahead casts their ability twice in battle.",
+        "description": "The friend ahead repeats their ability in battle as if they were level 3.",
         "trigger": "CastsAbility",
         "triggeredBy": {
           "kind": "FriendAhead"
@@ -4535,7 +4611,8 @@
           "target": {
             "kind": "TriggeringEntity"
           },
-          "n": 1
+          "n": 1,
+          "withLevel": 1
         }
       }
     },
@@ -4549,7 +4626,7 @@
         "ExpansionPack1"
       ],
       "level1Ability": {
-        "description": "End turn: If you have 3 or more gold, give other friends +2/+2",
+        "description": "End turn: If you have 3 or more gold, give other friends +2/+1",
         "trigger": "EndOfTurnWith3PlusGold",
         "triggeredBy": {
           "kind": "Player"
@@ -4560,12 +4637,12 @@
             "kind": "EachFriend"
           },
           "attackAmount": 2,
-          "healthAmount": 2,
+          "healthAmount": 1,
           "untilEndOfBattle": false
         }
       },
       "level2Ability": {
-        "description": "End turn: If you have 3 or more gold, give other friends +4/+4",
+        "description": "End turn: If you have 3 or more gold, give other friends +4/+2",
         "trigger": "EndOfTurnWith3PlusGold",
         "triggeredBy": {
           "kind": "Player"
@@ -4576,12 +4653,12 @@
             "kind": "EachFriend"
           },
           "attackAmount": 4,
-          "healthAmount": 4,
+          "healthAmount": 2,
           "untilEndOfBattle": false
         }
       },
       "level3Ability": {
-        "description": "End turn: If you have 3 or more gold, give other friends +6/+6",
+        "description": "End turn: If you have 3 or more gold, give other friends +6/+3",
         "trigger": "EndOfTurnWith3PlusGold",
         "triggeredBy": {
           "kind": "Player"
@@ -4592,7 +4669,7 @@
             "kind": "EachFriend"
           },
           "attackAmount": 6,
-          "healthAmount": 6,
+          "healthAmount": 3,
           "untilEndOfBattle": false
         }
       }
@@ -4637,54 +4714,6 @@
         "StandardPack",
         "ExpansionPack1"
       ],
-      "level1Ability": {
-        "description": "Friend ahead attacks: Deal 1 Damage",
-        "trigger": "AfterAttack",
-        "triggeredBy": {
-          "kind": "FriendAhead",
-          "n": 1
-        },
-        "effect": {
-          "kind": "DealDamage",
-          "target": {
-            "kind": "FriendAhead",
-            "n": 1
-          },
-          "amount": 1
-        }
-      },
-      "level2Ability": {
-        "description": "Friend ahead attacks: Deal 1 Damage",
-        "trigger": "AfterAttack",
-        "triggeredBy": {
-          "kind": "FriendAhead",
-          "n": 1
-        },
-        "effect": {
-          "kind": "DealDamage",
-          "target": {
-            "kind": "FriendAhead",
-            "n": 1
-          },
-          "amount": 2
-        }
-      },
-      "level3Ability": {
-        "description": "Friend ahead attacks: Deal 1 Damage",
-        "trigger": "AfterAttack",
-        "triggeredBy": {
-          "kind": "FriendAhead",
-          "n": 1
-        },
-        "effect": {
-          "kind": "DealDamage",
-          "target": {
-            "kind": "FriendAhead",
-            "n": 1
-          },
-          "amount": 3
-        }
-      },
       "tier": "Summoned",
       "baseAttack": 1,
       "baseHealth": 1

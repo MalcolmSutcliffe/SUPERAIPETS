@@ -556,6 +556,8 @@ class PetAbility:
         self.trigger = TRIGGER.NA
         self.triggered_by = TRIGGERED_BY.NA
         self.summon_random = False
+        self.has_charges = False
+        self.charges = 0
 
         # try to get effect
         try:
@@ -594,6 +596,15 @@ class PetAbility:
         except AttributeError:
             pass
 
+        # try to implement triggered_by
+        try:
+            self.charges = self.ability_data.get("maxTriggers")
+            self.has_charges = True
+        except KeyError:
+            pass
+        except AttributeError:
+            pass
+
         if self.trigger == TRIGGER.Faint and self.triggered_by == TRIGGERED_BY.Self:
             self.perform_while_fainted = True
 
@@ -616,7 +627,12 @@ class PetAbility:
             print(self.pet.get_name() + " performs ability " + str(self.effect_type)[12:] + " to " + str(self.targets))
 
         # performs the function
+        if self.has_charges:
+            if self.charges <= 0:
+                return
+
         effect_functions[self.effect_type](self)
+        self.charges = self.charges - 1
 
     def receive_trigger(self, trigger, triggering_entity):
         if trigger[0] == self.get_trigger() and trigger[1] == self.get_triggered_by():
