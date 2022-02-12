@@ -555,7 +555,7 @@ class PetAbility:
         self.trigger = TRIGGER.NA
         self.triggered_by = TRIGGERED_BY.NA
         self.summon_random = False
-        self.has_charges = False
+        self.max_charges = None
         self.charges = 0
 
         # try to get effect
@@ -597,11 +597,13 @@ class PetAbility:
 
         # try to implement triggered_by
         try:
-            self.charges = self.ability_data.get("maxTriggers")
+            self.max_charges = self.ability_data.get("maxTriggers")
         except KeyError:
             pass
         except AttributeError:
             pass
+
+        self.charges = self.max_charges
 
         if self.trigger == TRIGGER.Faint and self.triggered_by == TRIGGERED_BY.Self:
             self.perform_while_fainted = True
@@ -669,6 +671,9 @@ class PetAbility:
             return self.pet.get_attack() < other.pet.get_attack()
         else:
             return self.priority > other.priority
+
+    def reset_max_triggers(self):
+        self.charges = self.max_charges
 
     # getters and setters
     def get_trigger(self):

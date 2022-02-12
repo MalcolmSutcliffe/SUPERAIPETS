@@ -192,6 +192,7 @@ class Pet:
         self.temp_health = 0
         self.attack = self.base_attack + self.temp_attack
         self.health = self.base_health + self.temp_health
+        self.ability.reset_max_triggers()
 
     def gain_exp(self, exp):
         self.experience += exp
