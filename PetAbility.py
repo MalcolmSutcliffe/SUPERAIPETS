@@ -239,7 +239,6 @@ def target_strongest_friend(pet_ability):
 
 # ModifyStats
 def modify_stats(pet_ability):
-
     stats = [0, 0]
     multiplier = 1
     until_end_of_battle = False
@@ -271,8 +270,8 @@ def modify_stats(pet_ability):
     if multiplier is None:
         multiplier = 1
 
-    stats[0] = stats[0]*multiplier
-    stats[1] = stats[1]*multiplier
+    stats[0] = stats[0] * multiplier
+    stats[1] = stats[1] * multiplier
 
     pet_ability.generate_targets()
 
@@ -599,7 +598,6 @@ class PetAbility:
         # try to implement triggered_by
         try:
             self.charges = self.ability_data.get("maxTriggers")
-            self.has_charges = True
         except KeyError:
             pass
         except AttributeError:
@@ -627,12 +625,12 @@ class PetAbility:
             print(self.pet.get_name() + " performs ability " + str(self.effect_type)[12:] + " to " + str(self.targets))
 
         # performs the function
-        if self.has_charges:
+        if self.charges is not None:
             if self.charges <= 0:
                 return
+            self.charges = self.charges - 1
 
         effect_functions[self.effect_type](self)
-        self.charges = self.charges - 1
 
     def receive_trigger(self, trigger, triggering_entity):
         if trigger[0] == self.get_trigger() and trigger[1] == self.get_triggered_by():
