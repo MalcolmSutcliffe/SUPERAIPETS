@@ -5,6 +5,7 @@ from Battleground import *
 from Team import Team
 from Shop import Shop
 from SAP_Data import *
+from RandomName import *
 import webbrowser
 
 # initialize the pygame module
@@ -175,9 +176,16 @@ def main():
     shop_menu_bg = shop_menu_3_slots
     team_slot_selected = -1
 
-    team1 = Team(1, "North Korean National SAP Team", False)
+    t_f_list = [0, 1]
+    plural = random.choice(t_f_list)
+    randomName = ""
+    if plural == 0:
+        randomName = generateRandomNameSingular()
+    else:
+        randomName = generateRandomNamePlural()
+    team1 = Team(1, randomName, False)
     # team1.randomize_team()
-    team2 = Team(1, "Team Name", False)
+    team2 = Team(1, "", False)
     team2.randomize_team()
 
     # print(random_pet[i])
@@ -259,6 +267,8 @@ def main():
             window.fill(BLACK)
         if get_debug_mode():
             display_fps()
+            ptext.draw(str(get_game_speed()), centerx=1000, centery=40, fontname="Lapsus", fontsize=40, owidth=1.5,
+                       ocolor=(0, 0, 0), color=(255, 255, 255))
         if soy_mode:
             window.blit(soyboys, (0, 0))
 

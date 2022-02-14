@@ -107,12 +107,13 @@ class Battleground:
 
             display_battle(self)
 
-            time.sleep(GAME_SPEED)
+            time.sleep(get_game_speed())
 
             self.smack()
 
             display_battle(self)
-            time.sleep(GAME_SPEED)
+
+            time.sleep(get_game_speed())
 
             display_battle(self)
 
